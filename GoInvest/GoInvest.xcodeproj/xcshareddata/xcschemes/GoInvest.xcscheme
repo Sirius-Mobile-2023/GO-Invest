@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DomainModels"
-               BuildableName = "DomainModels"
-               BlueprintName = "DomainModels"
-               ReferencedContainer = "container:Modules">
+               BlueprintIdentifier = "8790EA7629E5938800A9FD42"
+               BuildableName = "GoInvest.app"
+               BlueprintName = "GoInvest"
+               ReferencedContainer = "container:GoInvest.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -28,16 +28,6 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "DomainModelsTests"
-               BuildableName = "DomainModelsTests"
-               BlueprintName = "DomainModelsTests"
-               ReferencedContainer = "container:Modules">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -50,6 +40,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "8790EA7629E5938800A9FD42"
+            BuildableName = "GoInvest.app"
+            BlueprintName = "GoInvest"
+            ReferencedContainer = "container:GoInvest.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -57,15 +57,16 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "DomainModels"
-            BuildableName = "DomainModels"
-            BlueprintName = "DomainModels"
-            ReferencedContainer = "container:Modules">
+            BlueprintIdentifier = "8790EA7629E5938800A9FD42"
+            BuildableName = "GoInvest.app"
+            BlueprintName = "GoInvest"
+            ReferencedContainer = "container:GoInvest.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
