@@ -12,6 +12,7 @@
 		8790EA7F29E5938800A9FD42 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7E29E5938800A9FD42 /* ViewController.swift */; };
 		8790EA8429E5938A00A9FD42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8329E5938A00A9FD42 /* Assets.xcassets */; };
 		8790EA8729E5938A00A9FD42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8529E5938A00A9FD42 /* LaunchScreen.storyboard */; };
+		87C32D0729E5B51A00CC7A4D /* Modules in Frameworks */ = {isa = PBXBuildFile; productRef = 87C32D0629E5B51A00CC7A4D /* Modules */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				87C32D0729E5B51A00CC7A4D /* Modules in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +42,7 @@
 			children = (
 				8790EA7929E5938800A9FD42 /* GoInvest */,
 				8790EA7829E5938800A9FD42 /* Products */,
+				87C32D0529E5B51A00CC7A4D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,6 +67,13 @@
 			path = GoInvest;
 			sourceTree = "<group>";
 		};
+		87C32D0529E5B51A00CC7A4D /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -80,6 +90,9 @@
 			dependencies = (
 			);
 			name = GoInvest;
+			packageProductDependencies = (
+				87C32D0629E5B51A00CC7A4D /* Modules */,
+			);
 			productName = GoInvest;
 			productReference = 8790EA7729E5938800A9FD42 /* GoInvest.app */;
 			productType = "com.apple.product-type.application";
@@ -344,6 +357,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		87C32D0629E5B51A00CC7A4D /* Modules */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Modules;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8790EA6F29E5938800A9FD42 /* Project object */;
 }
