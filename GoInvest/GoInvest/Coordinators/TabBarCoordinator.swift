@@ -20,8 +20,8 @@ class TabBarCoordinator: Coordinator {
     func start() {
         let quotes = QuotesViewController()
         let profile = ProfileViewController()
-        quotes.didSendClosure = { [self] title in
-            self.showQuoteController(with: title)
+        quotes.didSendClosure = { [weak self] title in
+            self?.showQuoteController(with: title)
         }
 
         let nav1 = UINavigationController(rootViewController: quotes)
