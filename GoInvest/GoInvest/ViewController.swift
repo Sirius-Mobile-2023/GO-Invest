@@ -7,17 +7,12 @@
 
 import UIKit
 import DomainModels
+import Quotes
 
 class ViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .red
-        let m = MyLibrary()
-        print(m.text)
-        // Do any additional setup after loading the view.
     }
-
-
 }
-

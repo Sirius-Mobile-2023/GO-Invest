@@ -1,14 +1,7 @@
-//
-//  QuotesViewController.swift
-//  GoInvest
-//
-//  Created by Анастасия Бегинина on 11.04.2023.
-//
-
 import UIKit
 
-class QuotesViewController: UIViewController {
-    var didTapButton: ((_ attribute: String) -> Void)?
+public class QuotesViewController: UIViewController {
+    public var didTapButton: ((_ attribute: String) -> Void)?
     lazy var toQuoteButton: UIButton = {
         let button = UIButton()
         button.setTitle("To Quote", for: .normal)
@@ -19,7 +12,7 @@ class QuotesViewController: UIViewController {
         return button
     }()
 
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         setupLayout()
@@ -29,7 +22,7 @@ class QuotesViewController: UIViewController {
         view.backgroundColor = .blue
         view.addSubview(toQuoteButton)
     }
-    
+
     private func setupLayout() {
         NSLayoutConstraint.activate([
             toQuoteButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),

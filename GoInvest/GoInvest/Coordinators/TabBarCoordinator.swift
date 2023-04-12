@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import Quotes
+import Profile
 
 class TabBarCoordinator: Coordinator {
     var navigationController: UINavigationController

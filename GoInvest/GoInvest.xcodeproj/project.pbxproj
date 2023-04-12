@@ -10,10 +10,7 @@
 		4D26228829E5DF0200B56C18 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228729E5DF0200B56C18 /* Coordinator.swift */; };
 		4D26228A29E5DF2800B56C18 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228929E5DF2800B56C18 /* AppCoordinator.swift */; };
 		4D26228C29E5E0C300B56C18 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */; };
-		4D26228F29E5E12100B56C18 /* QuotesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228E29E5E12100B56C18 /* QuotesViewController.swift */; };
-		4D26229129E5E18000B56C18 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26229029E5E17F00B56C18 /* ProfileViewController.swift */; };
 		4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */; };
-		4D26229729E5EAA700B56C18 /* QuoteDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26229629E5EAA700B56C18 /* QuoteDetailViewController.swift */; };
 		8790EA7B29E5938800A9FD42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7A29E5938800A9FD42 /* AppDelegate.swift */; };
 		8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */; };
 		8790EA7F29E5938800A9FD42 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7E29E5938800A9FD42 /* ViewController.swift */; };
@@ -26,10 +23,7 @@
 		4D26228729E5DF0200B56C18 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		4D26228929E5DF2800B56C18 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
-		4D26228E29E5E12100B56C18 /* QuotesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuotesViewController.swift; sourceTree = "<group>"; };
-		4D26229029E5E17F00B56C18 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCoordinator.swift; sourceTree = "<group>"; };
-		4D26229629E5EAA700B56C18 /* QuoteDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteDetailViewController.swift; sourceTree = "<group>"; };
 		8790EA7729E5938800A9FD42 /* GoInvest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoInvest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8790EA7A29E5938800A9FD42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,16 +56,6 @@
 			path = Coordinators;
 			sourceTree = "<group>";
 		};
-		4D26228D29E5E10F00B56C18 /* Controllers */ = {
-			isa = PBXGroup;
-			children = (
-				4D26228E29E5E12100B56C18 /* QuotesViewController.swift */,
-				4D26229029E5E17F00B56C18 /* ProfileViewController.swift */,
-				4D26229629E5EAA700B56C18 /* QuoteDetailViewController.swift */,
-			);
-			path = Controllers;
-			sourceTree = "<group>";
-		};
 		8790EA6E29E5938800A9FD42 = {
 			isa = PBXGroup;
 			children = (
@@ -92,7 +76,6 @@
 		8790EA7929E5938800A9FD42 /* GoInvest */ = {
 			isa = PBXGroup;
 			children = (
-				4D26228D29E5E10F00B56C18 /* Controllers */,
 				4D26228629E5DEEA00B56C18 /* Coordinators */,
 				8790EA7A29E5938800A9FD42 /* AppDelegate.swift */,
 				8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */,
@@ -212,9 +195,6 @@
 				4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */,
 				8790EA7B29E5938800A9FD42 /* AppDelegate.swift in Sources */,
 				8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */,
-				4D26229129E5E18000B56C18 /* ProfileViewController.swift in Sources */,
-				4D26229729E5EAA700B56C18 /* QuoteDetailViewController.swift in Sources */,
-				4D26228F29E5E12100B56C18 /* QuotesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
