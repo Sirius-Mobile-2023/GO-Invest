@@ -20,7 +20,7 @@ class TabBarCoordinator: Coordinator {
     func start() {
         let quotes = QuotesViewController()
         let profile = ProfileViewController()
-        quotes.didSendClosure = { title in
+        quotes.didTapButton = { title in
             self.showQuoteController(with: title)
         }
 

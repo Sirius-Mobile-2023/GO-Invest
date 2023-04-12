@@ -8,7 +8,7 @@
 import UIKit
 
 class QuotesViewController: UIViewController {
-    var didSendClosure: ((_ attribute: String) -> Void)?
+    var didTapButton: ((_ attribute: String) -> Void)?
     lazy var toQuoteButton: UIButton = {
         let button = UIButton()
         button.setTitle("To Quote", for: .normal)
@@ -43,6 +43,6 @@ class QuotesViewController: UIViewController {
 extension QuotesViewController {
     @objc
     private func toQuoteTapped(_ sender: UIButton) {
-        didSendClosure?("Quote")
+        didTapButton?("Quote")
     }
 }
