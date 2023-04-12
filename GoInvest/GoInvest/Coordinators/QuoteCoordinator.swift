@@ -19,7 +19,6 @@ class QuoteCoordinator: Coordinator {
 
     func start() {
         let viewController = QuoteDetailViewController()
-        viewController.coordinator = self
         viewController.navigationItem.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
     }

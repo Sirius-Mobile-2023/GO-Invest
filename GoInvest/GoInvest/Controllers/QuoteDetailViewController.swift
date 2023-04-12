@@ -8,8 +8,6 @@
 import UIKit
 
 class QuoteDetailViewController: UIViewController {
-    var coordinator: QuoteCoordinator?
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .orange

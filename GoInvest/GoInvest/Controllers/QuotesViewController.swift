@@ -8,8 +8,8 @@
 import UIKit
 
 class QuotesViewController: UIViewController {
-    var coordinator: TabBarCoordinator?
-    let toQuoteButton: UIButton = {
+    var didSendClosure: ((_ attribute: String) -> Void)?
+    lazy var toQuoteButton: UIButton = {
         let button = UIButton()
         button.setTitle("To Quote", for: .normal)
         button.backgroundColor = UIColor.systemOrange
@@ -43,6 +43,6 @@ class QuotesViewController: UIViewController {
 extension QuotesViewController {
     @objc
     private func toQuoteTapped(_ sender: UIButton) {
-        coordinator?.showQuoteController(with: "Quote")
+        didSendClosure?("Quote")
     }
 }
