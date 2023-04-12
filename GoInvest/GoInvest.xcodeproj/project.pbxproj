@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4D26228829E5DF0200B56C18 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228729E5DF0200B56C18 /* Coordinator.swift */; };
 		4D26228A29E5DF2800B56C18 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228929E5DF2800B56C18 /* AppCoordinator.swift */; };
 		4D26228C29E5E0C300B56C18 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */; };
 		4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */; };
@@ -20,7 +19,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		4D26228729E5DF0200B56C18 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		4D26228929E5DF2800B56C18 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 		4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCoordinator.swift; sourceTree = "<group>"; };
@@ -48,7 +46,6 @@
 		4D26228629E5DEEA00B56C18 /* Coordinators */ = {
 			isa = PBXGroup;
 			children = (
-				4D26228729E5DF0200B56C18 /* Coordinator.swift */,
 				4D26228929E5DF2800B56C18 /* AppCoordinator.swift */,
 				4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */,
 				4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */,
@@ -188,7 +185,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4D26228829E5DF0200B56C18 /* Coordinator.swift in Sources */,
 				8790EA7F29E5938800A9FD42 /* ViewController.swift in Sources */,
 				4D26228C29E5E0C300B56C18 /* TabBarCoordinator.swift in Sources */,
 				4D26228A29E5DF2800B56C18 /* AppCoordinator.swift in Sources */,

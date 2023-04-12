@@ -1,17 +1,10 @@
-//
-//  TabBarCoordinator.swift
-//  GoInvest
-//
-//  Created by Анастасия Бегинина on 11.04.2023.
-//
-
 import UIKit
 import Quotes
 import Profile
 
-class TabBarCoordinator: Coordinator {
+class TabBarCoordinator {
     var navigationController: UINavigationController
-    var childCoordinators: [Coordinator] = []
+//    var childCoordinators: [Coordinator] = []
     var tabBarController: UITabBarController
 
     required init(_ navigationController: UINavigationController) {
