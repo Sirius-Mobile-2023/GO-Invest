@@ -4,4 +4,7 @@
    <FileRef
       location = "container:GoInvest.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Modules">
+   </FileRef>
 </Workspace>
