@@ -1,13 +1,6 @@
-//
-//  QuoteShort.swift
-//
-//
-//  Created by Grigorii Rassadnikov on 12.04.2023.
-//
-
 import Foundation
 
-public struct QuoteShort {
+public struct Quote {
     public let id: String
     public let name: String?
     public let price: Int?

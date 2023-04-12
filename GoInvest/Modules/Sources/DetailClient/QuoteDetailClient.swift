@@ -1,28 +1,21 @@
-//
-//  QuoteDetailClient.swift
-//
-//
-//  Created by Grigorii Rassadnikov on 12.04.2023.
-//
-
 import DomainModels
 import Foundation
 
-public final class QuoteDetailClient: ProviderDetail {
-    public func quoteDetail(id: String, completion: (_ with: QuoteDetail) -> Void) {
-        guard let quoteDetailResult = getQuoteDetailById(id: id) else {
-            print("ERROR: get response for quoteDetail was completed with an errror. ")
-            return
-        }
-        guard let quoteDetail = quoteDetailResult.toQuoteDetail() else {
-            print("ERROR: can't parse QuoteDetailResult to QuoteDetail (maybe you code is bad). ")
-            return
+public final class QuoteDetailClient: DetailProvider {
+    public func quoteDetail(id: String, completion: (_: Result<QuoteDetail, Error>) -> Void) {
+        let quoteDetailResult = getQuoteDetailById(id: id)
+        let quoteDetail: Result<QuoteDetail, Error>
+        switch quoteDetailResult {
+        case let .success(quoteDR):
+            quoteDetail = quoteDR.toQuoteDetail()
+        case let .failure(error):
+            quoteDetail = Result.failure(error)
         }
         completion(quoteDetail)
     }
 
-    private func getQuoteDetailById(id _: String) -> QuoteDetailResult? {
+    private func getQuoteDetailById(id _: String) -> Result<QuoteDetailResult, Error> {
         // make get response to server
-        return nil
+        return .failure(fatalError("Write code!!! QuoteDetailClient.getQuoteDetailById"))
     }
 }

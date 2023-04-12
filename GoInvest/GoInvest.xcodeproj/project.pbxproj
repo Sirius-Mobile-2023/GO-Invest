@@ -10,11 +10,11 @@
 		4D26228A29E5DF2800B56C18 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228929E5DF2800B56C18 /* AppCoordinator.swift */; };
 		4D26228C29E5E0C300B56C18 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */; };
 		4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */; };
+		874BEA4D29E72EE5001383BD /* Modules in Frameworks */ = {isa = PBXBuildFile; productRef = 874BEA4C29E72EE5001383BD /* Modules */; };
 		8790EA7B29E5938800A9FD42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7A29E5938800A9FD42 /* AppDelegate.swift */; };
 		8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */; };
 		8790EA8429E5938A00A9FD42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8329E5938A00A9FD42 /* Assets.xcassets */; };
 		8790EA8729E5938A00A9FD42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8529E5938A00A9FD42 /* LaunchScreen.storyboard */; };
-		87C32D0729E5B51A00CC7A4D /* Modules in Frameworks */ = {isa = PBXBuildFile; productRef = 87C32D0629E5B51A00CC7A4D /* Modules */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,7 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				87C32D0729E5B51A00CC7A4D /* Modules in Frameworks */,
+				874BEA4D29E72EE5001383BD /* Modules in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -106,7 +106,7 @@
 			);
 			name = GoInvest;
 			packageProductDependencies = (
-				87C32D0629E5B51A00CC7A4D /* Modules */,
+				874BEA4C29E72EE5001383BD /* Modules */,
 			);
 			productName = GoInvest;
 			productReference = 8790EA7729E5938800A9FD42 /* GoInvest.app */;
@@ -396,7 +396,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		87C32D0629E5B51A00CC7A4D /* Modules */ = {
+		874BEA4C29E72EE5001383BD /* Modules */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Modules;
 		};

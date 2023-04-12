@@ -1,25 +1,21 @@
-//
-//  QuoteListClient.swift
-//
-//
-//  Created by Grigorii Rassadnikov on 12.04.2023.
-//
-
 import DomainModels
 import Foundation
 
-public final class QuoteListClient: ProviderList {
-    public func quoteList(url: URL, completion: (_ with: [QuoteShort]) -> Void) {
-        guard let quoteListResult = getQuoteListByUrl(url: url) else {
-            print("ERROR: get response for quoteList was completed with an errror. ")
-            return
+public final class QuoteListClient: ListProvider {
+    public func quoteList(search: SearchForList, completion: (_: Result<[Quote], Error>) -> Void) {
+        let quoteListResult = getQuoteListByUrl(search: search)
+        let quoteList: Result<[Quote], Error>
+        switch quoteListResult {
+        case let .success(quoteLR):
+            quoteList = Result.success(quoteLR.compactMap { $0.toQuoteShort() })
+        case let .failure(error):
+            quoteList = Result.failure(error)
         }
-        let quoteList = quoteListResult.compactMap { $0.toQuoteShort() }
         completion(quoteList)
     }
 
-    private func getQuoteListByUrl(url _: URL) -> [QuoteShortResult]? {
+    private func getQuoteListByUrl(search _: SearchForList) -> Result<[QuoteResult], Error> {
         // make get response to server
-        return nil
+        return Result.failure(fatalError("Write code!!! QuoteListClient.getQuoteListByUrl"))
     }
 }

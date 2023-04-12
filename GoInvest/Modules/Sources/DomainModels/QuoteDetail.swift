@@ -1,38 +1,38 @@
-//
-//  QuoteDetail.swift
-//
-//
-//  Created by Grigorii Rassadnikov on 12.04.2023.
-//
-
 import Foundation
 
 public struct QuoteDetail {
-    public enum QuoteType {
-        case oil
-        case food
+    public enum PriceIntervals {
+        case day
+        case week
+        case month
+        case threeMonth
+        case halfYear
+        case year
     }
 
     public let id: String
-    public let title: String?
     public let name: String?
-    public let price: Int?
+    public let currentPrice: Decimal?
+    public let priceInterval: PriceIntervals?
     public let date: Date?
-    public let quoteType: QuoteType?
+    public let closePrice: Decimal?
+    public let pointsData: (date: Date, price: Decimal)?
 
     public init(
         id: String,
-        title: String?,
         name: String?,
-        price: Int?,
+        currentPrice: Decimal?,
+        priceInterval: PriceIntervals?,
         date: Date?,
-        quoteType: QuoteType?
+        closePrice: Decimal?,
+        pointsData: (date: Date, price: Decimal)?
     ) {
         self.id = id
-        self.title = title
         self.name = name
-        self.price = price
+        self.currentPrice = currentPrice
+        self.priceInterval = priceInterval
         self.date = date
-        self.quoteType = quoteType
+        self.closePrice = closePrice
+        self.pointsData = pointsData
     }
 }
