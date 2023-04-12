@@ -22,21 +22,21 @@ class QuotesViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupLayout()
     }
 
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
+    private func setupUI() {
+        view.backgroundColor = .blue
+        view.addSubview(toQuoteButton)
+    }
+    
+    private func setupLayout() {
         NSLayoutConstraint.activate([
             toQuoteButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             toQuoteButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             toQuoteButton.widthAnchor.constraint(equalToConstant: 150),
             toQuoteButton.heightAnchor.constraint(equalToConstant: 50)
         ])
-    }
-
-    private func setupUI() {
-        view.backgroundColor = .blue
-        view.addSubview(toQuoteButton)
     }
 }
 
