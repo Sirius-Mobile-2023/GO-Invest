@@ -1,12 +1,12 @@
 import Foundation
 
-public struct QuoteCharts {
+public typealias Point = (date: Date, price: Decimal)
 
-    public typealias Point = (date: Date, price: Decimal)
-    public let points: [Point]?
+public struct QuoteCharts {
+    public let points: [Point]
 
     public init(
-        points: [Point]?
+        points: [Point]
     ) {
         self.points = points
     }
