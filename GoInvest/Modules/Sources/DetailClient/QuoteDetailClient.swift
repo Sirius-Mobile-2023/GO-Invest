@@ -3,6 +3,9 @@ import Foundation
 
 public final class QuoteDetailClient: DetailProvider {
     public func quoteDetail(id: String, completion: (_: Result<QuoteDetail, Error>) -> Void) {
+        
+        // ! make resoponse with completion
+        
         let quoteDetailResult = getQuoteDetailById(id: id)
         let quoteDetail: Result<QuoteDetail, Error>
         switch quoteDetailResult {
