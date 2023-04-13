@@ -1,6 +1,6 @@
-import UIKit
-import Quotes
 import Profile
+import Quotes
+import UIKit
 
 class TabBarCoordinator {
     var navigationController: UINavigationController
@@ -9,7 +9,7 @@ class TabBarCoordinator {
 
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.tabBarController = .init()
+        tabBarController = .init()
     }
 
     func start() {
