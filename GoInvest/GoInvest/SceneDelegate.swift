@@ -14,10 +14,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
 
+        let navController = UINavigationController(rootViewController: ViewController())
+        navController.navigationBar.prefersLargeTitles = true
     guard let windowScene = (scene as? UIWindowScene) else { return }
                         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
                         window?.windowScene = windowScene
-                        window?.rootViewController = ViewController()
+                        window?.rootViewController = navController
                         window?.makeKeyAndVisible()
     }
 
