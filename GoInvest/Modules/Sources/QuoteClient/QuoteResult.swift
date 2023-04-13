@@ -4,7 +4,7 @@ import Foundation
 struct QuoteResult {
     //  fields...
 
-    public func toQuoteShort() -> Quote? {
+    func toQuote() -> Quote? {
         return nil
     }
 }
