@@ -6,12 +6,12 @@ class IntervalButton: UIButton {
     let cornerRadius: CGFloat = 15.0
     let borderWidth: CGFloat = 1.0
     
-    init(titile: String, titleColor: UIColor, backGroundColor: UIColor) {
+    init(title: String, titleColor: UIColor, backgroundColor: UIColor) {
         super.init(frame: .zero)
         
-        self.setTitle(titile, for: .normal)
+        self.setTitle(title, for: .normal)
         self.setTitleColor(titleColor, for: .normal)
-        self.backgroundColor = backGroundColor
+        self.backgroundColor = backgroundColor
         self.layer.borderColor = self.borderColor.cgColor
         self.layer.borderWidth = self.borderWidth
         self.layer.cornerRadius = self.cornerRadius
