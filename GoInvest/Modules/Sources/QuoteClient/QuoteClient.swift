@@ -20,7 +20,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
     public func quoteList(search: SearchForList, completion: @escaping (_: Result<[Quote], Error>) -> Void) {
         let url: URL?
         switch search {
-        case .listByName(let searchStr):
+        case let .listByName(searchStr):
             url = URL(string: QuoteClient.UrlComponentGetListBySearch + "q=" + searchStr)
         case .defaultList:
             url = URL(string: QuoteClient.UrlComponentGetDefaultList)
@@ -55,21 +55,11 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         task.resume()
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public func quoteCharts(id: String, completion: (_: Result<QuoteCharts, Error>) -> Void) {
+    public func quoteCharts(id _: String, completion _: (_: Result<QuoteCharts, Error>) -> Void) {
         fatalError("Code will be modified")
     }
-    public func quoteDetail(id: String, completion: (_: Result<QuoteDetail, Error>) -> Void) {
+
+    public func quoteDetail(id _: String, completion _: (_: Result<QuoteDetail, Error>) -> Void) {
         fatalError("Code will be modified")
 //        let url: URL?
 //        switch search {
@@ -91,15 +81,15 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
 //                print(error as Any)
 //                return
 //            }
-////            do {
-////                let json = try JSONSerialization.jsonObject(with: data, options: [])
-////                print(json)
-////            } catch {
-////                DispatchQueue.main.async {
-////                    completion(.failure(ClientError.decodeJsonError))
-////                }
-////                return
-////            }
+        ////            do {
+        ////                let json = try JSONSerialization.jsonObject(with: data, options: [])
+        ////                print(json)
+        ////            } catch {
+        ////                DispatchQueue.main.async {
+        ////                    completion(.failure(ClientError.decodeJsonError))
+        ////                }
+        ////                return
+        ////            }
 //            do {
 //                let quotesResult = try self.decoder.decode(QuoteListResult.self, from: data)
 //                DispatchQueue.main.async {
@@ -114,5 +104,4 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
 //        }
 //        task.resume()
     }
-    
 }

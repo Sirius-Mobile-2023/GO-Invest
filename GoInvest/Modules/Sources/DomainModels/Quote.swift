@@ -5,7 +5,7 @@ public struct Quote {
     public let name: String
     public let openPrice: Decimal?
     public let closePrice: Decimal?
-    
+
     public init(id: String, name: String, openPrice: Decimal?, closePrice: Decimal?) {
         self.id = id
         self.name = name
