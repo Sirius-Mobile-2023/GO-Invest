@@ -1,23 +1,24 @@
 import UIKit
 
 class AppCoordinator {
-    var navigationController: UINavigationController
+    var tabBarController: UITabBarController
     let window: UIWindow
 
-    init(window: UIWindow, navigationController: UINavigationController) {
+    init(window: UIWindow, tabBarController: UITabBarController) {
         self.window = window
-        self.navigationController = navigationController
+
+        self.tabBarController = tabBarController
     }
 
     func start() {
-        window.rootViewController = navigationController
+        window.rootViewController = tabBarController
         window.makeKeyAndVisible()
 
-        startFirstVC(navigationController)
+        startFirstVC(tabBarController)
     }
 
-    fileprivate func startFirstVC(_ navigationController: UINavigationController) {
-        let firstCoordinator = TabBarCoordinator(navigationController)
+    private func startFirstVC(_: UITabBarController) {
+        let firstCoordinator = TabBarCoordinator(tabBarController)
         firstCoordinator.start()
     }
 }
