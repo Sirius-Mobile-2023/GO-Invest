@@ -14,7 +14,7 @@ class TimeIntervalsControl: UIView {
        return view
     }()
     
-    let stackView: UIStackView = {
+    private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.alignment = .center
@@ -42,7 +42,10 @@ class TimeIntervalsControl: UIView {
             let button = IntervalButton(
                 title: interval,
                 titleColor: Constant.defaultTitleColor,
-                backgroundColor: Constant.defaultBackgroundColor
+                backgroundColor: Constant.defaultBackgroundColor,
+                borderColor: Constant.selectBackgroundColor,
+                cornerRadius: Constant.cornerRadius,
+                borderWidth: Constant.borderWidth
             )
             
             if index == self.selectedSegmentIndex {
@@ -107,5 +110,6 @@ private extension TimeIntervalsControl {
         static let selectTitleColor = UIColor.white
         static let defaultTitleColor = UIColor.gray
         static let cornerRadius: CGFloat = 15
+        static let borderWidth: CGFloat = 1
     }
 }
