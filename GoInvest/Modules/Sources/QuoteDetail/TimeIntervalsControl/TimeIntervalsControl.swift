@@ -8,8 +8,8 @@ class TimeIntervalsControl: UIView {
     
     private var selectorView: UIView = {
         let view = UIView()
-        view.layer.cornerRadius = Constant.cornerRadius
-        view.backgroundColor = Constant.selectBackgroundColor
+        view.layer.cornerRadius = Constants.cornerRadius
+        view.backgroundColor = Constants.selectBackgroundColor
         view.translatesAutoresizingMaskIntoConstraints = false
        return view
     }()
@@ -29,7 +29,7 @@ class TimeIntervalsControl: UIView {
         selectedSegmentIndex: Int
     ){
         if selectedSegmentIndex >= intervals.count || selectedSegmentIndex < 0 {
-            self.selectedSegmentIndex = Constant.defaultSelectedSegmentIndex
+            self.selectedSegmentIndex = Constants.defaultSelectedSegmentIndex
         } else {
             self.selectedSegmentIndex = selectedSegmentIndex
         }
@@ -41,15 +41,15 @@ class TimeIntervalsControl: UIView {
         for (index, interval) in intervals.enumerated() {
             let button = IntervalButton(
                 title: interval,
-                titleColor: Constant.defaultTitleColor,
-                backgroundColor: Constant.defaultBackgroundColor,
-                borderColor: Constant.selectBackgroundColor,
-                cornerRadius: Constant.cornerRadius,
-                borderWidth: Constant.borderWidth
+                titleColor: Constants.defaultTitleColor,
+                backgroundColor: Constants.defaultBackgroundColor,
+                borderColor: Constants.selectBackgroundColor,
+                cornerRadius: Constants.cornerRadius,
+                borderWidth: Constants.borderWidth
             )
             
             if index == self.selectedSegmentIndex {
-                button.setTitleColor(Constant.selectTitleColor, for: .normal)
+                button.setTitleColor(Constants.selectTitleColor, for: .normal)
             }
             
             segments.append(button)
@@ -89,10 +89,10 @@ class TimeIntervalsControl: UIView {
                     options: .curveEaseOut,
                     animations: {
                         self.selectorView.frame = btn.frame
-                        self.segments[self.selectedSegmentIndex].backgroundColor = Constant.defaultBackgroundColor
-                        self.segments[self.selectedSegmentIndex].setTitleColor(Constant.defaultTitleColor, for: .normal)
-                        btn.backgroundColor = Constant.selectBackgroundColor
-                        btn.setTitleColor(Constant.selectTitleColor, for: .normal)
+                        self.segments[self.selectedSegmentIndex].backgroundColor = Constants.defaultBackgroundColor
+                        self.segments[self.selectedSegmentIndex].setTitleColor(Constants.defaultTitleColor, for: .normal)
+                        btn.backgroundColor = Constants.selectBackgroundColor
+                        btn.setTitleColor(Constants.selectTitleColor, for: .normal)
                     }, completion: { _ in
                         self.selectedSegmentIndex = index
                         UIImpactFeedbackGenerator(style: .light).impactOccurred()
@@ -103,7 +103,7 @@ class TimeIntervalsControl: UIView {
 }
 
 private extension TimeIntervalsControl {
-    struct Constant {
+    struct Constants {
         static let defaultSelectedSegmentIndex = 0
         static let selectBackgroundColor = UIColor.gray
         static let defaultBackgroundColor = UIColor.clear

@@ -12,14 +12,14 @@ public class QuoteDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(control)
-        
-        var constraints: [NSLayoutConstraint] = [
+    }
+    
+    private func setupLayout() {
+        NSLayoutConstraint.activate([
             control.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 45),
             control.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -45),
             control.heightAnchor.constraint(equalToConstant: 40),
             control.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraints)
+        ])
     }
 }
