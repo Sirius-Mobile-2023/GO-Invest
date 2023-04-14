@@ -12,6 +12,7 @@ public class QuoteDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(control)
+        setupLayout()
     }
     
     private func setupLayout() {

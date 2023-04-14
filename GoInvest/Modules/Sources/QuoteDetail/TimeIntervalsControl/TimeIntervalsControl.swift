@@ -34,10 +34,17 @@ class TimeIntervalsControl: UIView {
             self.selectedSegmentIndex = selectedSegmentIndex
         }
         super.init(frame: .zero)
-        var constraints: [NSLayoutConstraint] = []
+        self.setupLayout()
+        self.setupUI(intervals: intervals)
+    }
+    
+    private func setupLayout() {
         self.backgroundColor = .clear
         self.addSubview(selectorView)
         self.addSubview(stackView)
+    }
+    
+    private func setupUI(intervals: [String]) {
         for (index, interval) in intervals.enumerated() {
             let button = IntervalButton(
                 title: interval,
@@ -56,13 +63,13 @@ class TimeIntervalsControl: UIView {
             stackView.addArrangedSubview(button)
             button.tag = index
             button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
-            constraints.append(contentsOf: [
+            NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalTo: stackView.heightAnchor),
                 button.widthAnchor.constraint(equalTo: stackView.heightAnchor)
             ])
         }
         
-        constraints.append(contentsOf: [
+        NSLayoutConstraint.activate([
             selectorView.widthAnchor.constraint(equalTo: segments[self.selectedSegmentIndex].widthAnchor),
             selectorView.heightAnchor.constraint(equalTo: segments[self.selectedSegmentIndex].heightAnchor),
             selectorView.leadingAnchor.constraint(equalTo: segments[self.selectedSegmentIndex].leadingAnchor),
@@ -70,8 +77,6 @@ class TimeIntervalsControl: UIView {
             stackView.widthAnchor.constraint(equalTo: self.widthAnchor),
             stackView.heightAnchor.constraint(equalTo: self.heightAnchor)
         ])
-        
-        NSLayoutConstraint.activate(constraints)
     }
     
     required public init?(coder aDecoder: NSCoder) {
