@@ -73,7 +73,7 @@ public class QuoteDetailViewController: UIViewController {
             mainStackView.topAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: 20),
             mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor)
+            mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 
@@ -87,11 +87,12 @@ public class QuoteDetailViewController: UIViewController {
 
     private func applyStyleForAmountLabel(
         for label: UILabel,
-        text: String) {
-            label.text = text
-            label.textAlignment = .right
-            label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
-        }
+        text: String
+    ) {
+        label.text = text
+        label.textAlignment = .right
+        label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+    }
 
     private func arrangeStackView(
         for stackView: UIStackView,

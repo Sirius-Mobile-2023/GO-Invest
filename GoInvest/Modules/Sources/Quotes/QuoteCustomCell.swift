@@ -1,9 +1,9 @@
 import UIKit
 
 final class QuoteCustomCell: UITableViewCell {
-    private var shortNameLabel = UILabel()
-    private var priceLabel = UILabel()
-    private var differencePriceLabel = UILabel()
+    private let shortNameLabel = UILabel()
+    private let priceLabel = UILabel()
+    private let differencePriceLabel = UILabel()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
