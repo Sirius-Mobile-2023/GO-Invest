@@ -1,13 +1,6 @@
 import UIKit
 
 public class QuoteDetailViewController: UIViewController {
-    override public func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .white
-        setupUI()
-        setupLayout()
-    }
-
     private let graphView: UIView = {
         var view = UIView()
         view.backgroundColor = .green
@@ -35,10 +28,30 @@ public class QuoteDetailViewController: UIViewController {
     private let averagePriceAmountLabel = UILabel()
 
     private let mainStackView = UIStackView()
+    private let labelStackView = UIStackView()
     private let dateStackView = UIStackView()
     private let openPriceStackView = UIStackView()
     private let closePriceStackView = UIStackView()
     private let averagePriceStackView = UIStackView()
+
+    private let addToPortfolioButton: UIButton = {
+        var button = UIButton()
+        button.backgroundColor = .black
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.layer.cornerRadius = 10
+        button.setTitle("Add to Portfolio", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 19, weight: .semibold)
+        button.titleLabel?.adjustsFontForContentSizeCategory = true
+        return button
+    }()
+
+    override public func viewDidLoad() {
+        super.viewDidLoad()
+        view.backgroundColor = .white
+        setupUI()
+        setupLayout()
+    }
 
     private func setupUI() {
         applyStyleForLabel(for: lastDateLabel, text: "Date")
@@ -50,40 +63,66 @@ public class QuoteDetailViewController: UIViewController {
         applyStyleForAmountLabel(for: openPriceAmountLabel, text: "1000 $")
         applyStyleForAmountLabel(for: averagePriceAmountLabel, text: "1000 $")
     }
-
+    
     func setupLayout() {
-        view.addSubview(graphView)
-        view.addSubview(buttonView)
-        arrangeStackView(for: dateStackView, subviews: [lastDateLabel, lastDate])
-        arrangeStackView(for: closePriceStackView, subviews: [closePriceLabel, closePriceAmountLabel])
-        arrangeStackView(for: openPriceStackView, subviews: [openPriceLabel, openPriceAmountLabel])
-        arrangeStackView(for: averagePriceStackView, subviews: [averagePriceLabel, averagePriceAmountLabel])
-        arrangeStackView(for: mainStackView, subviews: [dateStackView, closePriceStackView, openPriceStackView, averagePriceStackView], axis: .vertical)
+        arrangeStackView(
+            for: dateStackView,
+            subviews: [lastDateLabel, lastDate]
+        )
+        arrangeStackView(
+            for: closePriceStackView,
+            subviews: [closePriceLabel, closePriceAmountLabel]
+        )
+        arrangeStackView(
+            for: openPriceStackView,
+            subviews: [openPriceLabel, openPriceAmountLabel]
+        )
+        arrangeStackView(
+            for: averagePriceStackView,
+            subviews: [averagePriceLabel, averagePriceAmountLabel]
+        )
+        arrangeStackView(
+            for: labelStackView,
+            subviews: [dateStackView,
+                       closePriceStackView,
+                       openPriceStackView,
+                       averagePriceStackView
+                       ],
+            spacing: 10.0,
+            axis: .vertical
+        )
+        arrangeStackView(
+            for: mainStackView,
+            subviews: [graphView,
+                       buttonView,
+                       labelStackView,
+                       addToPortfolioButton
+                       ],
+            spacing: 20,
+            axis: .vertical
+        )
         view.addSubview(mainStackView)
 
         NSLayoutConstraint.activate([
-            graphView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            graphView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            graphView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             graphView.heightAnchor.constraint(equalToConstant: 300),
-            buttonView.topAnchor.constraint(equalTo: graphView.bottomAnchor, constant: 20),
-            buttonView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            buttonView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
             buttonView.heightAnchor.constraint(equalToConstant: 70),
-            mainStackView.topAnchor.constraint(equalTo: buttonView.bottomAnchor, constant: 20),
-            mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
-            mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
-            mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor)
+            addToPortfolioButton.heightAnchor.constraint(equalToConstant: 55),
+            mainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            mainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25),
+            mainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25),
+            mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10)
         ])
     }
+}
 
+// MARK: - Apply style to UI Elements
+extension QuoteDetailViewController{
     private func applyStyleForLabel(
         for label: UILabel,
-        text: String
-    ) {
-        label.text = text
-        label.font = UIFont.systemFont(ofSize: 17, weight: .thin)
-    }
+        text: String) {
+            label.text = text
+            label.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        }
 
     private func applyStyleForAmountLabel(
         for label: UILabel,
@@ -106,7 +145,6 @@ public class QuoteDetailViewController: UIViewController {
         stackView.distribution = distribution
         stackView.alignment = aligment
         stackView.translatesAutoresizingMaskIntoConstraints = false
-
         subviews.forEach { item in
             item.translatesAutoresizingMaskIntoConstraints = false
             stackView.addArrangedSubview(item)
