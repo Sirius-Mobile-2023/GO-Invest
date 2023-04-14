@@ -64,7 +64,7 @@ public class QuoteDetailViewController: UIViewController {
         applyStyleForAmountLabel(for: averagePriceAmountLabel, text: "1000 $")
     }
 
-    func setupLayout() {
+    private func setupLayout() {
         arrangeStackView(
             for: dateStackView,
             subviews: [lastDateLabel, lastDate]
@@ -116,15 +116,15 @@ public class QuoteDetailViewController: UIViewController {
 }
 
 // MARK: - Apply style to UI Elements
-extension QuoteDetailViewController {
-    private func applyStyleForLabel(
+private extension QuoteDetailViewController {
+    func applyStyleForLabel(
         for label: UILabel,
         text: String) {
             label.text = text
             label.font = UIFont.systemFont(ofSize: 17, weight: .light)
         }
 
-    private func applyStyleForAmountLabel(
+    func applyStyleForAmountLabel(
         for label: UILabel,
         text: String) {
             label.text = text
@@ -132,7 +132,7 @@ extension QuoteDetailViewController {
             label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         }
 
-    private func arrangeStackView(
+    func arrangeStackView(
         for stackView: UIStackView,
         subviews: [UIView],
         spacing: CGFloat = 0,
