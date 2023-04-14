@@ -1,10 +1,10 @@
 import Foundation
 
 public enum SearchForList {
-    case listByString(String)
-    case listDefault
+    case listByName(String)
+    case defaultList
 }
 
-public protocol ListProvider {
-    func quoteList(search: SearchForList, completion: (_: Result<[Quote], Error>) -> Void)
+public protocol QuoteListProvider {
+    func quoteList(search: SearchForList, completion: (Result<[Quote], Error>) -> Void)
 }

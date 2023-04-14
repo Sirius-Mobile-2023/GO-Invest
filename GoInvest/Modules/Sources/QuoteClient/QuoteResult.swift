@@ -7,12 +7,12 @@ import Foundation
 //}
 
 struct QuoteResult: Codable {
- // let secid: String?
-  let name: String?
+    let secid: String?
+    let name: String?
     
-  public func toQuote() -> Quote?  {
-        return Quote(id: "default", name: name, price: nil)
-  }
+    public func toQuote() -> Quote?  {
+        return Quote(id: "default", name: "def", price: nil)
+    }
     
 }
 
