@@ -3,15 +3,15 @@ import UIKit
 public class QuotesViewController: UIViewController {
     private let viewModels = Data.getData()
     public var didTapButton: ((String) -> Void)?
-    private var animationFlag = true
+    private var animationPlayed = true
     private lazy var tableView = UITableView()
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.alpha = 1
-        if animationFlag {
+        if animationPlayed {
             animateTableView()
-            animationFlag = false
+            animationPlayed = false
         }
     }
 
@@ -19,7 +19,7 @@ public class QuotesViewController: UIViewController {
         super.viewDidLoad()
         configureTitle()
         configureTableView()
-        if animationFlag {
+        if animationPlayed {
             tableView.alpha = 0
         }
     }
