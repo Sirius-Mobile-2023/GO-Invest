@@ -15,8 +15,8 @@ class QuoteDetailView: UIView {
         return view
     }()
 
+    private let lastDateTextLabel = UILabel()
     private let lastDateLabel = UILabel()
-    private let lastDate = UILabel()
 
     private let closePriceLabel = UILabel()
     private let closePriceAmountLabel = UILabel()
@@ -28,7 +28,7 @@ class QuoteDetailView: UIView {
     private let averagePriceAmountLabel = UILabel()
 
     private let mainStackView = UIStackView()
-    private let labelStackView = UIStackView()
+    private let detailLabelsStackView = UIStackView()
     private let dateStackView = UIStackView()
     private let openPriceStackView = UIStackView()
     private let closePriceStackView = UIStackView()
@@ -58,11 +58,11 @@ class QuoteDetailView: UIView {
     }
 
     private func setupUI() {
-        applyStyleForLabel(for: lastDateLabel, text: "Date")
+        applyStyleForLabel(for: lastDateTextLabel, text: "Date")
         applyStyleForLabel(for: closePriceLabel, text: "Close price")
         applyStyleForLabel(for: openPriceLabel, text: "Open price")
         applyStyleForLabel(for: averagePriceLabel, text: "Average price")
-        applyStyleForAmountLabel(for: lastDate, text: "10.10.1010")
+        applyStyleForAmountLabel(for: lastDateLabel, text: "10.10.1010")
         applyStyleForAmountLabel(for: closePriceAmountLabel, text: "1000 $")
         applyStyleForAmountLabel(for: openPriceAmountLabel, text: "1000 $")
         applyStyleForAmountLabel(for: averagePriceAmountLabel, text: "1000 $")
@@ -71,10 +71,10 @@ class QuoteDetailView: UIView {
     private func setupLayout() {
         arrangeStackView(
             for: dateStackView,
-            subviews: [lastDateLabel, lastDate]
+            subviews: [lastDateTextLabel, lastDateLabel]
         )
-        lastDateLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        lastDate.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        lastDateTextLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        lastDateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         arrangeStackView(
             for: closePriceStackView,
             subviews: [closePriceLabel, closePriceAmountLabel]
@@ -94,7 +94,7 @@ class QuoteDetailView: UIView {
         averagePriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         averagePriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         arrangeStackView(
-            for: labelStackView,
+            for: detailLabelsStackView,
             subviews: [dateStackView,
                        closePriceStackView,
                        openPriceStackView,
@@ -107,7 +107,7 @@ class QuoteDetailView: UIView {
             for: mainStackView,
             subviews: [graphView,
                        buttonView,
-                       labelStackView,
+                       detailLabelsStackView,
                        addToPortfolioButton
                        ],
             spacing: 20,
@@ -155,9 +155,7 @@ private extension QuoteDetailView {
         stackView.distribution = distribution
         stackView.alignment = aligment
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        subviews.forEach { item in
-            item.translatesAutoresizingMaskIntoConstraints = false
-            stackView.addArrangedSubview(item)
+        subviews.forEach { item in            stackView.addArrangedSubview(item)
         }
     }
 }

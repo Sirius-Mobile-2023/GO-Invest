@@ -1,7 +1,7 @@
 import UIKit
 
 public class QuoteDetailViewController: UIViewController {
-    private var quoteDetailView: QuoteDetailView = {
+    private lazy var quoteDetailView: QuoteDetailView = {
         let view = QuoteDetailView()
         return view
     }()
