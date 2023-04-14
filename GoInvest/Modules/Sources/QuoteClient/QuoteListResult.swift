@@ -1,52 +1,49 @@
 import Foundation
 import DomainModels
 
-//struct QuoteListResult : Codable {
-//    let securities: Securities
-//
-//    struct Securities: Codable {
-//        let data: [QuoteResult]
-//    }
-//
-//    public func toQuoteList() -> [Quote]  {
-//
-//        return securities.data.compactMap {$0.toQuote()}
-//    }
-//
-//}
-
-
 struct QuoteListResult: Decodable {
-    let securities: Securities
-    
-    struct Securities: Decodable{
+    let history: History
+    struct History: Decodable {
+        let columns: [String]
         let data: [[AnyDecodable]]
     }
+
+    func toQuotes() -> [Quote] {
+        var quotes: [Quote] = []
+        guard let idQuoteIndex = history.columns.firstIndex(of: QuoteListResult.idJsonName) else {
+            return []
+        }
+        guard let nameQuoteIndex = history.columns.firstIndex(of: QuoteListResult.nameJsonName) else {
+            return []
+        }
+        let openPriceQuoteIndex = history.columns.firstIndex(of: QuoteListResult.openPriceJsonName)
+        let closePriceQuoteIndex = history.columns.firstIndex(of: QuoteListResult.closePriceJsonName)
+        for element in history.data {
+            if let idQuoteAny  = element[safe: idQuoteIndex],
+               let nameQuoteAny = element[safe: nameQuoteIndex] {
+                let openPriceQuote = element[safe: openPriceQuoteIndex ?? -1]
+                let closePriceQuote = element[safe: closePriceQuoteIndex ?? -1]
+                if let idQuote = idQuoteAny.getStringValue(),
+                   let nameQuote = nameQuoteAny.getStringValue() {
+                    quotes.append(
+                        Quote(id: idQuote,
+                              name: nameQuote,
+                              openPrice: openPriceQuote?.getDecimalValue(),
+                              closePrice: closePriceQuote?.getDecimalValue()))
+                }
+            }
+        }
+        return quotes
+    }
+    
+    private static let idJsonName = "SECID"
+    private static let nameJsonName = "SHORTNAME"
+    private static let openPriceJsonName = "OPEN"
+    private static let closePriceJsonName = "CLOSE"
 }
 
-
-//extension QuoteListResult {
-//    enum CodingKeys: String, CodingKey {
-//        case securities
-//        enum SecuritiesKeys: String, CodingKey {
-//            case data
-//        }
-//    }
-//
-//    init(from decoder: Decoder) throws {
-////        do {
-//            let container = try decoder.container(keyedBy: CodingKeys.self)
-////        } catch {
-////           print("!!!!ERRR")
-////        }
-//
-//        let securitiesContainer = try container.nestedContainer(keyedBy: CodingKeys.SecuritiesKeys.self, forKey: .securities)
-//        quoteList = try securitiesContainer.decode([QuoteResult].self, forKey: .data)
-//    }
-//}
-
-public struct AnyDecodable: Decodable {
-  public var value: Any?
+struct AnyDecodable: Decodable {
+  var value: Any?
 
   private struct CodingKeys: CodingKey {
     var stringValue: String
@@ -58,7 +55,23 @@ public struct AnyDecodable: Decodable {
     init?(stringValue: String) { self.stringValue = stringValue }
   }
 
-  public init(from decoder: Decoder) throws {
+    func getIntValue() -> Int? {
+        return value as? Int
+    }
+    
+    func getStringValue() -> String? {
+        return value as? String
+    }
+    
+    func getDoubleValue() -> Double? {
+        return value as? Double
+    }
+    
+    func getDecimalValue() -> Decimal? {
+        return value as? Decimal
+    }
+    
+  init(from decoder: Decoder) throws {
     if let container = try? decoder.container(keyedBy: CodingKeys.self) {
       var result = [String: Any]()
       try container.allKeys.forEach { (key) throws in
@@ -66,7 +79,7 @@ public struct AnyDecodable: Decodable {
       }
       value = result
     } else if var container = try? decoder.unkeyedContainer() {
-      var result = [Any]()
+      var result = [Any?]()
       while !container.isAtEnd {
         result.append(try container.decode(AnyDecodable.self).value)
       }
@@ -74,7 +87,7 @@ public struct AnyDecodable: Decodable {
     } else if let container = try? decoder.singleValueContainer() {
       if let intVal = try? container.decode(Int.self) {
         value = intVal
-      } else if let doubleVal = try? container.decode(Double.self) {
+      } else if let doubleVal = try? container.decode(Decimal.self) {
         value = doubleVal
       } else if let boolVal = try? container.decode(Bool.self) {
         value = boolVal
@@ -82,13 +95,16 @@ public struct AnyDecodable: Decodable {
         value = stringVal
       } else {
         value = nil
-//        throw DecodingError.dataCorruptedError(in: container, debugDescription: "the container contains nothing serialisable")
       }
     } else {
-      throw DecodingError.dataCorrupted(DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Could not serialise"))
+      throw DecodingError.dataCorrupted(
+        DecodingError.Context(codingPath: decoder.codingPath, debugDescription: "Could not serialise"))
     }
   }
 }
 
-
-
+extension Collection {
+    subscript (safe index: Index) -> Element? {
+        return indices.contains(index) ? self[index] : nil
+    }
+}
