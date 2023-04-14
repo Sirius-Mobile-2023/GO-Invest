@@ -63,7 +63,7 @@ public class QuoteDetailViewController: UIViewController {
         applyStyleForAmountLabel(for: openPriceAmountLabel, text: "1000 $")
         applyStyleForAmountLabel(for: averagePriceAmountLabel, text: "1000 $")
     }
-    
+
     func setupLayout() {
         arrangeStackView(
             for: dateStackView,
@@ -116,7 +116,7 @@ public class QuoteDetailViewController: UIViewController {
 }
 
 // MARK: - Apply style to UI Elements
-extension QuoteDetailViewController{
+extension QuoteDetailViewController {
     private func applyStyleForLabel(
         for label: UILabel,
         text: String) {
