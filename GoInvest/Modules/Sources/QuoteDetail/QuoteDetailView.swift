@@ -73,26 +73,18 @@ class QuoteDetailView: UIView {
             for: dateStackView,
             subviews: [lastDateTextLabel, lastDateLabel]
         )
-        lastDateTextLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        lastDateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         arrangeStackView(
             for: closePriceStackView,
             subviews: [closePriceLabel, closePriceAmountLabel]
         )
-        closePriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        closePriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         arrangeStackView(
             for: openPriceStackView,
             subviews: [openPriceLabel, openPriceAmountLabel]
         )
-        openPriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        openPriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         arrangeStackView(
             for: averagePriceStackView,
             subviews: [averagePriceLabel, averagePriceAmountLabel]
         )
-        averagePriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        averagePriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         arrangeStackView(
             for: detailLabelsStackView,
             subviews: [dateStackView,
@@ -100,7 +92,7 @@ class QuoteDetailView: UIView {
                        openPriceStackView,
                        averagePriceStackView
                        ],
-            spacing: 10.0,
+            spacing: 10,
             axis: .vertical
         )
         arrangeStackView(
@@ -113,6 +105,7 @@ class QuoteDetailView: UIView {
             spacing: 20,
             axis: .vertical
         )
+        setContentHuggingPriorities()
         self.addSubview(mainStackView)
         NSLayoutConstraint.activate([
             graphView.heightAnchor.constraint(equalToConstant: 300),
@@ -122,6 +115,17 @@ class QuoteDetailView: UIView {
             mainStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
         ])
+    }
+    
+    private func setContentHuggingPriorities(){
+        averagePriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        averagePriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        openPriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        openPriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        closePriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        closePriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        lastDateTextLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        lastDateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
 }
 
