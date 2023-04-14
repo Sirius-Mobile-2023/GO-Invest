@@ -8,5 +8,6 @@ public enum SearchForList {
 public protocol QuoteListProvider {
     func quoteList(
         search: SearchForList,
-        completion: @escaping (Result<[Quote], Error>) -> Void)
+        completion: @escaping (Result<[Quote], Error>) -> Void
+    )
 }
