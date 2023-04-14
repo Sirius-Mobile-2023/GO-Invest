@@ -1,7 +1,6 @@
 import Foundation
 
 public struct QuoteDetail {
-
     public let id: String
     public let name: String?
     public let currentPrice: Decimal?

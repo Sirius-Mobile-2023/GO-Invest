@@ -2,11 +2,10 @@ import DomainModels
 import Foundation
 
 public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvider {
-    
-    public func quoteCharts(id: String, completion: (_: Result<QuoteCharts, Error>) -> Void) {
+    public func quoteCharts(id _: String, completion _: (_: Result<QuoteCharts, Error>) -> Void) {
         // make get response to server
     }
-    
+
     public func quoteDetail(id: String, completion: (_: Result<QuoteDetail, Error>) -> Void) {
         let quoteDetailResult = getQuoteDetailById(id: id)
         let quoteDetail: Result<QuoteDetail, Error>
@@ -18,7 +17,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         }
         completion(quoteDetail)
     }
-    
+
     public func quoteList(search: SearchForList, completion: (_: Result<[Quote], Error>) -> Void) {
         let quoteListResult = getQuoteListBySearch(search: search)
         let quoteList: Result<[Quote], Error>
@@ -33,13 +32,11 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
 
     private func getQuoteListBySearch(search _: SearchForList) -> Result<[QuoteResult], Error> {
         // make get response to server
-        return Result.failure(fatalError("Write code!!! QuoteListClient.getQuoteListByUrl"))
+        Result.failure(fatalError("Write code!!! QuoteListClient.getQuoteListByUrl"))
     }
-    
 
     private func getQuoteDetailById(id _: String) -> Result<QuoteDetailResult, Error> {
         // make get response to server
-        return .failure(fatalError("Write code!!! QuoteDetailClient.getQuoteDetailById"))
+        .failure(fatalError("Write code!!! QuoteDetailClient.getQuoteDetailById"))
     }
-    
 }
