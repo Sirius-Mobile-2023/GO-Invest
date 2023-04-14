@@ -4,7 +4,7 @@ public class QuotesViewController: UIViewController {
     private let viewModels = Data.getData()
     public var didTapButton: ((String) -> Void)?
     private var animationFlag = true
-    private var tableView = UITableView()
+    private lazy var tableView = UITableView()
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -17,19 +17,15 @@ public class QuotesViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        confinfigureQuotesListVC()
+        configureTitle()
         configureTableView()
         if animationFlag {
             tableView.alpha = 0
         }
     }
 
-    private func confinfigureQuotesListVC() {
+    private func configureTitle() {
         title = "Quotes"
-    }
-
-    override public func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
 
     private func animateTableView() {
@@ -88,6 +84,6 @@ extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     public func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
-        didTapButton!("Quote")
+        didTapButton?("Quote")
     }
 }

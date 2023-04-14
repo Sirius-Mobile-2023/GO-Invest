@@ -15,9 +15,7 @@
 		8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */; };
 		8790EA8429E5938A00A9FD42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8329E5938A00A9FD42 /* Assets.xcassets */; };
 		8790EA8729E5938A00A9FD42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8529E5938A00A9FD42 /* LaunchScreen.storyboard */; };
-		87C32D0729E5B51A00CC7A4D /* Modules in Frameworks */ = {isa = PBXBuildFile; productRef = 87C32D0629E5B51A00CC7A4D /* Modules */; };
 		971039DB29E95901008C4370 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 971039DA29E95901008C4370 /* .swiftlint.yml */; };
-		979B1E8329E6F5B20095E46C /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979B1E8229E6F5B20095E46C /* Client.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,7 +29,6 @@
 		8790EA8629E5938A00A9FD42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8790EA8829E5938A00A9FD42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		971039DA29E95901008C4370 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
-		979B1E8229E6F5B20095E46C /* Client.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +77,6 @@
 				4D26228629E5DEEA00B56C18 /* Coordinators */,
 				8790EA7A29E5938800A9FD42 /* AppDelegate.swift */,
 				8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */,
-				979B1E8229E6F5B20095E46C /* Client.swift */,
 				8790EA8329E5938A00A9FD42 /* Assets.xcassets */,
 				8790EA8529E5938A00A9FD42 /* LaunchScreen.storyboard */,
 				8790EA8829E5938A00A9FD42 /* Info.plist */,
@@ -217,7 +213,6 @@
 				4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */,
 				8790EA7B29E5938800A9FD42 /* AppDelegate.swift in Sources */,
 				8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */,
-				979B1E8329E6F5B20095E46C /* Client.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

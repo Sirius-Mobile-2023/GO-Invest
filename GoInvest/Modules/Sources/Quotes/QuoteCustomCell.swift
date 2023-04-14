@@ -54,7 +54,7 @@ final class QuoteCustomCell: UITableViewCell {
         differencePriceLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             differencePriceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            differencePriceLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: 10),
+            differencePriceLabel.topAnchor.constraint(equalTo: priceLabel.bottomAnchor),
             differencePriceLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5),
         ])
     }
