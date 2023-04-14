@@ -1,5 +1,5 @@
-import UIKit
 import QuoteDetail
+import UIKit
 
 class QuoteCoordinator {
     var navigationController: UINavigationController
@@ -7,7 +7,7 @@ class QuoteCoordinator {
 
     init(navigationController: UINavigationController, title: String) {
         self.navigationController = navigationController
-        self.navigationTitle = title
+        navigationTitle = title
     }
 
     func start() {
