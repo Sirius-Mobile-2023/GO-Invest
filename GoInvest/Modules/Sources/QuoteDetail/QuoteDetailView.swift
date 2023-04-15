@@ -2,19 +2,13 @@ import UIKit
 import Theme
 
 class QuoteDetailView: UIView {
-    private let graphView: UIView = {
-        var view = UIView()
-        view.backgroundColor = .green
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
     private let buttonView: UIView = {
         var view = UIView()
         view.backgroundColor = .blue
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    private var detailSpinner = UIActivityIndicatorView(style: .large)
 
     private let lastDateTextLabel = UILabel()
     private let lastDateLabel = UILabel()
@@ -29,7 +23,7 @@ class QuoteDetailView: UIView {
     private let averagePriceAmountLabel = UILabel()
 
     private let mainStackView = UIStackView()
-    private let detailLabelsStackView = UIStackView()
+    let detailLabelsStackView = UIStackView()
     private let dateStackView = UIStackView()
     private let openPriceStackView = UIStackView()
     private let closePriceStackView = UIStackView()
@@ -98,8 +92,7 @@ class QuoteDetailView: UIView {
         )
         arrangeStackView(
             for: mainStackView,
-            subviews: [graphView,
-                       buttonView,
+            subviews: [buttonView,
                        detailLabelsStackView,
                        addToPortfolioButton
                        ],
@@ -109,7 +102,6 @@ class QuoteDetailView: UIView {
         setContentHuggingPriorities()
         self.addSubview(mainStackView)
         NSLayoutConstraint.activate([
-            graphView.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 70),
             addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: self.topAnchor),
@@ -162,5 +154,23 @@ private extension QuoteDetailView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         subviews.forEach { item in            stackView.addArrangedSubview(item)
         }
+    }
+}
+
+// MARK: - Add spinner subview to DetailStackView
+extension QuoteDetailView {
+    func addSpinnerToDetails() {
+        detailSpinner.translatesAutoresizingMaskIntoConstraints = false
+        detailLabelsStackView.addSubview(detailSpinner)
+        setupLayoutForDetailSpinner()
+        detailSpinner.startAnimating()
+
+    }
+
+    private func setupLayoutForDetailSpinner() {
+        NSLayoutConstraint.activate([
+            detailSpinner.centerXAnchor.constraint(equalTo: detailLabelsStackView.centerXAnchor),
+            detailSpinner.centerYAnchor.constraint(equalTo: detailLabelsStackView.centerYAnchor)
+        ])
     }
 }
