@@ -117,7 +117,7 @@ class QuoteDetailView: UIView {
         ])
     }
     
-    private func setContentHuggingPriorities(){
+    private func setContentHuggingPriorities() {
         averagePriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         averagePriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         openPriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
