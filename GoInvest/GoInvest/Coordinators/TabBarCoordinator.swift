@@ -29,7 +29,7 @@ class TabBarCoordinator {
         styleNavigationController()
         prepareTabBarController(withTabControllers: controllers)
     }
-    
+
     private func styleNavigationController() {
         navigationController.navigationBar.backIndicatorImage = Theme.backNavBarImage
         navigationController.navigationBar.backIndicatorTransitionMaskImage = Theme.backNavBarImage
