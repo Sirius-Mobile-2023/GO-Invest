@@ -19,17 +19,14 @@ struct QuoteListResult: Decodable {
         let openPriceQuoteIndex = history.columns.firstIndex(of: QuoteListResult.Constants.openPriceJsonName)
         let closePriceQuoteIndex = history.columns.firstIndex(of: QuoteListResult.Constants.closePriceJsonName)
         for element in history.data {
-            if let idQuoteAny = element[safe: idQuoteIndex],
-               let nameQuoteAny = element[safe: nameQuoteIndex] {
+            if let idQuoteAny = element[safe: idQuoteIndex], let nameQuoteAny = element[safe: nameQuoteIndex] {
                 let openPriceQuote = element[safe: openPriceQuoteIndex ?? -1]
                 let closePriceQuote = element[safe: closePriceQuoteIndex ?? -1]
-                if let idQuote = idQuoteAny.getStringValue(),
-                   let nameQuote = nameQuoteAny.getStringValue() {
-                    quotes.append(
-                        Quote(id: idQuote,
-                              name: nameQuote,
-                              openPrice: openPriceQuote?.getDecimalValue(),
-                              closePrice: closePriceQuote?.getDecimalValue()))
+                if let idQuote = idQuoteAny.getStringValue(), let nameQuote = nameQuoteAny.getStringValue() {
+                    quotes.append(Quote(id: idQuote,
+                                        name: nameQuote,
+                                        openPrice: openPriceQuote?.getDecimalValue(),
+                                        closePrice: closePriceQuote?.getDecimalValue()))
                 }
             }
         }
@@ -38,7 +35,7 @@ struct QuoteListResult: Decodable {
 }
 
 private extension QuoteListResult {
-    struct Constants {
+    enum Constants {
         static let idJsonName = "SECID"
         static let nameJsonName = "SHORTNAME"
         static let openPriceJsonName = "OPEN"
@@ -48,6 +45,6 @@ private extension QuoteListResult {
 
 extension Collection {
     subscript(safe index: Index) -> Element? {
-        return indices.contains(index) ? self[index] : nil
+        indices.contains(index) ? self[index] : nil
     }
 }

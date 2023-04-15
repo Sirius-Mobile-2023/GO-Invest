@@ -12,7 +12,7 @@ class QuoteCoordinator {
 
     func start() {
         let viewController = QuoteDetailViewController()
-        viewController.navigationItem.title = navigationTitle
+        viewController.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
     }
 }

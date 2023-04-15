@@ -1,0 +1,206 @@
+disabled_rules:
+ - trailing_comma
+ - unused_closure_parameter
+ - nesting
+ - implicit_return
+ - conditional_returns_on_newline
+ - force_cast
+
+opt_in_rules:
+ - anyobject_protocol
+ - closure_end_indentation
+ - closure_spacing
+ - contains_over_first_not_nil
+ - discouraged_optional_boolean
+ - discouraged_optional_collection
+ - empty_count
+ - empty_string
+ - explicit_init
+ - fallthrough
+ - fatal_error_message
+ - first_where
+ - let_var_whitespace
+ - lower_acl_than_parent
+ - modifier_order
+ - operator_usage_whitespace
+ - overridden_super_call
+ - override_in_extension
+ - private_action
+ - prohibited_super_call
+ - redundant_nil_coalescing
+ - redundant_type_annotation
+ - sorted_first_last
+ - switch_case_on_newline
+ - unavailable_function
+ - unneeded_parentheses_in_closure_argument
+ - untyped_error_in_catch
+ - vertical_parameter_alignment_on_call
+ - yoda_condition
+
+excluded:
+  - Pods
+  - Package.swift
+  - ./GoInvest/AppDelegate.swift
+
+
+closing_brace:
+    severity: error
+
+colon:
+    severity: error
+
+comma:
+    severity: error
+
+compiler_protocol_init:
+    severity: error
+
+control_statement:
+    severity: error
+
+class_delegate_protocol:
+    severity: error
+
+closure_spacing:
+    severity: error
+
+discouraged_optional_collection:
+    severity: error
+
+discouraged_optional_boolean:
+    severity: error
+
+empty_enum_arguments:
+    severity: error
+
+empty_parentheses_with_trailing_closure:
+    severity: error
+
+file_length:
+    warning: 1000
+    error: 1200
+
+for_where:
+    severity: error
+
+implicit_getter:
+    severity: error
+
+identifier_name:
+  min_length:
+    error: 3
+  excluded:
+    - i
+    - id
+    - j
+    - k
+    - m
+    - nc
+    - no
+    - to
+    - up
+    - vc
+    - x
+    - y
+
+leading_whitespace:
+    severity: error
+
+line_length:
+    warning: 120
+    error: 155
+
+mark:
+    severity: error
+
+multiple_closures_with_trailing_closure:
+    severity: error
+
+opening_brace:
+    severity: error
+
+operator_whitespace:
+    severity: error
+
+overridden_super_call:
+    severity: error
+
+prohibited_super_call:
+    severity: error
+
+redundant_discardable_let:
+    severity: error
+
+redundant_nil_coalescing:
+    severity: error
+
+redundant_optional_initialization:
+    severity: error
+
+redundant_void_return:
+    severity: error
+
+return_arrow_whitespace:
+    severity: error
+
+statement_position:
+    severity: error
+
+switch_case_alignment:
+    severity: error
+
+trailing_semicolon:
+    severity: error
+
+type_body_length:
+    warning: 500
+    error: 1200
+
+type_name:
+  min_length:
+    warning: 4
+  max_length:
+    warning: 40
+    error: 50
+
+unneeded_break_in_switch:
+    severity: error
+
+unneeded_parentheses_in_closure_argument:
+    severity: error
+
+unused_optional_binding:
+    severity: error
+
+vertical_parameter_alignment:
+    severity: error
+
+void_return:
+    severity: error
+
+xctfail_message:
+    severity: error
+
+reporter: "xcode"
+
+custom_rules:
+    swiftgen_assets:
+        name: "SwiftGen Assets"
+        regex: 'UIImage(\.init)?\(named: ?"?.+"?(, ?in:.+?, ?compatibleWith:.+?)?\)|#imageLiteral\(resourceName: ?".+"\)'
+        message: "Use ImageRepository().<asset>.image instead"
+        severity: warning
+
+#custom_rules:
+#  pirates_beat_ninjas: # rule identifier
+#    included: ".*\\.swift" # regex that defines paths to include during linting. optional.
+#    excluded: ".*Test\\.swift" # regex that defines paths to exclude during linting. optional
+#    name: "Pirates Beat Ninjas" # rule name. optional.
+#    regex: "([n,N]inja)" # matching pattern
+#    match_kinds: # SyntaxKinds to match. optional.
+#      - comment
+#      - identifier
+#    message: "Pirates are better than ninjas." # violation message. optional.
+#    severity: error # violation severity. optional.
+#  no_hiding_in_strings:
+#    regex: "([n,N]inja)"
+#    match_kinds: string
