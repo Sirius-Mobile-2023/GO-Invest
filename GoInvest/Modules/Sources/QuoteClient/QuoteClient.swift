@@ -2,11 +2,11 @@ import DomainModels
 import Foundation
 
 public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvider {
-    
+
     public func quoteCharts(id: String, completion: (_: Result<QuoteCharts, Error>) -> Void) {
         // make get response to server
     }
-    
+
     public func quoteDetail(id: String, completion: (_: Result<QuoteDetail, Error>) -> Void) {
         let quoteDetailResult = getQuoteDetailById(id: id)
         let quoteDetail: Result<QuoteDetail, Error>
@@ -18,7 +18,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         }
         completion(quoteDetail)
     }
-    
+
     public func quoteList(search: SearchForList, completion: (_: Result<[Quote], Error>) -> Void) {
         let quoteListResult = getQuoteListBySearch(search: search)
         let quoteList: Result<[Quote], Error>

@@ -1,5 +1,6 @@
 import Profile
 import Quotes
+import Theme
 import UIKit
 
 class TabBarCoordinator {
@@ -21,12 +22,17 @@ class TabBarCoordinator {
         let nav1 = UINavigationController(rootViewController: quotes)
         let nav2 = UINavigationController(rootViewController: profile)
 
-        nav1.tabBarItem = UITabBarItem(title: "Quotes", image: UIImage(systemName: "arrow.up.arrow.down"), tag: 0)
-        nav2.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
-        nav2.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
-
+        nav1.tabBarItem = UITabBarItem(title: "Quotes", image: Theme.quotesTabBarImage, tag: 0)
+        nav2.tabBarItem = UITabBarItem(title: "Profile", image: Theme.profileTabBarImageUnchecked, tag: 1)
+        nav2.tabBarItem.selectedImage = Theme.profileTabBarImageChecked
         let controllers = [nav1, nav2]
+        styleNavigationController()
         prepareTabBarController(withTabControllers: controllers)
+    }
+    
+    private func styleNavigationController() {
+        navigationController.navigationBar.backIndicatorImage = Theme.backNavBarImage
+        navigationController.navigationBar.backIndicatorTransitionMaskImage = Theme.backNavBarImage
     }
 
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
