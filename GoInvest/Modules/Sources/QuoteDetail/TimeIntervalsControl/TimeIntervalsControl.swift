@@ -12,6 +12,7 @@ class TimeIntervalsControl: UIView {
         }
     }
     
+    private var selectedSegmentConstraint: NSLayoutConstraint!
     private var segments = [UIButton]()
     
     private var selectorView: UIView = {
@@ -25,8 +26,9 @@ class TimeIntervalsControl: UIView {
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
+        stackView.spacing = 20
         stackView.alignment = .center
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -66,25 +68,30 @@ class TimeIntervalsControl: UIView {
                 borderWidth: Constants.borderWidth
             )
             
-            if index == selectedSegmentIndex {
+            if index == self.selectedSegmentIndex {
                 button.setTitleColor(Constants.selectTitleColor, for: .normal)
+                button.backgroundColor = Constants.selectedBackgroundColor
             }
             
             segments.append(button)
             stackView.addArrangedSubview(button)
             button.tag = index
             button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
+            
             NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalTo: stackView.heightAnchor),
-                button.widthAnchor.constraint(equalTo: stackView.heightAnchor)
+                button.widthAnchor.constraint(lessThanOrEqualToConstant: 45)
             ])
         }
-        
+
+        selectedSegmentConstraint = selectorView.centerXAnchor.constraint(
+            equalTo: segments[selectedSegmentIndex].centerXAnchor
+        )
         NSLayoutConstraint.activate([
-            selectorView.widthAnchor.constraint(equalTo: segments[self.selectedSegmentIndex].widthAnchor),
-            selectorView.heightAnchor.constraint(equalTo: segments[self.selectedSegmentIndex].heightAnchor),
-            selectorView.leadingAnchor.constraint(equalTo: segments[self.selectedSegmentIndex].leadingAnchor),
-            selectorView.topAnchor.constraint(equalTo: segments[self.selectedSegmentIndex].topAnchor),
+            selectorView.centerYAnchor.constraint(equalTo: segments[self.selectedSegmentIndex].centerYAnchor),
+            selectedSegmentConstraint,
+            selectorView.heightAnchor.constraint(equalTo: segments[selectedSegmentIndex].heightAnchor),
+            selectorView.widthAnchor.constraint(equalTo: segments[selectedSegmentIndex].widthAnchor),
             stackView.widthAnchor.constraint(equalTo: self.widthAnchor),
             stackView.heightAnchor.constraint(equalTo: self.heightAnchor)
         ])
@@ -94,17 +101,23 @@ class TimeIntervalsControl: UIView {
         segments.forEach { button in
             button.isSelected = false
         }
+
         segments[selectedSegmentIndex].isSelected.toggle()
+        self.selectedSegmentConstraint.isActive = false
+        self.selectedSegmentConstraint = self.selectorView.centerXAnchor.constraint(
+            equalTo: self.segments[selectedSegmentIndex].centerXAnchor
+        )
+        self.selectedSegmentConstraint.isActive = true
         UIView.animate(
             withDuration: 0.2,
             delay: 0,
             options: .curveEaseOut,
             animations: {
-                self.selectorView.frame = self.segments[selectedSegmentIndex].frame
                 self.segments[oldSelectedSegmentIndex].backgroundColor = Constants.defaultBackgroundColor
                 self.segments[oldSelectedSegmentIndex].setTitleColor(Constants.defaultTitleColor, for: .normal)
                 self.segments[selectedSegmentIndex].backgroundColor = Constants.selectedBackgroundColor
                 self.segments[selectedSegmentIndex].setTitleColor(Constants.selectTitleColor, for: .normal)
+                self.layoutIfNeeded()
             }, completion: { _ in
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
             })

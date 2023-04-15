@@ -3,7 +3,7 @@ import UIKit
 public class QuoteDetailViewController: UIViewController {
     
     private lazy var control: TimeIntervalsControl = {
-        let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"])
+        let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 4)
         control.translatesAutoresizingMaskIntoConstraints = false
         return control
     }()
