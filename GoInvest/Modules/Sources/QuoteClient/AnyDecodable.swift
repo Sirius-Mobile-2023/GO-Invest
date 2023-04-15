@@ -15,19 +15,19 @@ struct AnyDecodable: Decodable {
     }
 
     func getIntValue() -> Int? {
-        return value as? Int
+        value as? Int
     }
 
     func getStringValue() -> String? {
-        return value as? String
+        value as? String
     }
 
     func getDoubleValue() -> Double? {
-        return value as? Double
+        value as? Double
     }
 
     func getDecimalValue() -> Decimal? {
-        return value as? Decimal
+        value as? Decimal
     }
 
     init(from decoder: Decoder) throws {
@@ -40,7 +40,7 @@ struct AnyDecodable: Decodable {
         } else if var container = try? decoder.unkeyedContainer() {
             var result = [Any?]()
             while !container.isAtEnd {
-                result.append(try container.decode(AnyDecodable.self).value)
+                try result.append(container.decode(AnyDecodable.self).value)
             }
             value = result
         } else if let container = try? decoder.singleValueContainer() {

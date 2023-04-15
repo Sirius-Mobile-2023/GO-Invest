@@ -48,12 +48,13 @@ class QuoteDetailView: UIView {
 
     init() {
         super.init(frame: .zero)
-        self.translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
         setupUI()
         setupLayout()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -90,8 +91,7 @@ class QuoteDetailView: UIView {
             subviews: [dateStackView,
                        closePriceStackView,
                        openPriceStackView,
-                       averagePriceStackView
-                       ],
+                       averagePriceStackView],
             spacing: 10,
             axis: .vertical
         )
@@ -100,24 +100,23 @@ class QuoteDetailView: UIView {
             subviews: [graphView,
                        buttonView,
                        detailLabelsStackView,
-                       addToPortfolioButton
-                       ],
+                       addToPortfolioButton],
             spacing: 20,
             axis: .vertical
         )
         setContentHuggingPriorities()
-        self.addSubview(mainStackView)
+        addSubview(mainStackView)
         NSLayoutConstraint.activate([
             graphView.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 70),
             addToPortfolioButton.heightAnchor.constraint(equalToConstant: 55),
-            mainStackView.topAnchor.constraint(equalTo: self.topAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+            mainStackView.topAnchor.constraint(equalTo: topAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
         ])
     }
-    
-    private func setContentHuggingPriorities(){
+
+    private func setContentHuggingPriorities() {
         averagePriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         averagePriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         openPriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -130,21 +129,24 @@ class QuoteDetailView: UIView {
 }
 
 // MARK: - Apply style to UI Elements
+
 private extension QuoteDetailView {
     func applyStyleForLabel(
         for label: UILabel,
-        text: String) {
-            label.text = text
-            label.font = UIFont.systemFont(ofSize: 17, weight: .light)
-        }
+        text: String
+    ) {
+        label.text = text
+        label.font = UIFont.systemFont(ofSize: 17, weight: .light)
+    }
 
     func applyStyleForAmountLabel(
         for label: UILabel,
-        text: String) {
-            label.text = text
-            label.textAlignment = .right
-            label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
-        }
+        text: String
+    ) {
+        label.text = text
+        label.textAlignment = .right
+        label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+    }
 
     func arrangeStackView(
         for stackView: UIStackView,
@@ -159,7 +161,7 @@ private extension QuoteDetailView {
         stackView.distribution = distribution
         stackView.alignment = aligment
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        subviews.forEach { item in            stackView.addArrangedSubview(item)
+        subviews.forEach { item in stackView.addArrangedSubview(item)
         }
     }
 }
