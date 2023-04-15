@@ -1,67 +1,21 @@
 import UIKit
 
 public class QuoteDetailViewController: UIViewController {
+    private lazy var quoteDetailView: QuoteDetailView = {
+        let view = QuoteDetailView()
+        return view
+    }()
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupUI()
+        view.addSubview(quoteDetailView)
         setupLayout()
     }
 
-    private let graphView: UIView = {
-        var view = UIView()
-        view.backgroundColor = .green
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    private let buttonView: UIView = {
-        var view = UIView()
-        view.backgroundColor = .blue
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    private let lastDateLabel = UILabel()
-    private let lastDate = UILabel()
-
-    private let closePriceLabel = UILabel()
-    private let closePriceAmountLabel = UILabel()
-
-    private let openPriceLabel = UILabel()
-    private let openPriceAmountLabel = UILabel()
-
-    private let averagePriceLabel = UILabel()
-    private let averagePriceAmountLabel = UILabel()
-
-    private let mainStackView = UIStackView()
-    private let dateStackView = UIStackView()
-    private let openPriceStackView = UIStackView()
-    private let closePriceStackView = UIStackView()
-    private let averagePriceStackView = UIStackView()
-
-    private func setupUI() {
-        applyStyleForLabel(for: lastDateLabel, text: "Date")
-        applyStyleForLabel(for: closePriceLabel, text: "Close price")
-        applyStyleForLabel(for: openPriceLabel, text: "Open price")
-        applyStyleForLabel(for: averagePriceLabel, text: "Average price")
-        applyStyleForAmountLabel(for: lastDate, text: "10.10.1010")
-        applyStyleForAmountLabel(for: closePriceAmountLabel, text: "1000 $")
-        applyStyleForAmountLabel(for: openPriceAmountLabel, text: "1000 $")
-        applyStyleForAmountLabel(for: averagePriceAmountLabel, text: "1000 $")
-    }
-
-    func setupLayout() {
-        view.addSubview(graphView)
-        view.addSubview(buttonView)
-        arrangeStackView(for: dateStackView, subviews: [lastDateLabel, lastDate])
-        arrangeStackView(for: closePriceStackView, subviews: [closePriceLabel, closePriceAmountLabel])
-        arrangeStackView(for: openPriceStackView, subviews: [openPriceLabel, openPriceAmountLabel])
-        arrangeStackView(for: averagePriceStackView, subviews: [averagePriceLabel, averagePriceAmountLabel])
-        arrangeStackView(for: mainStackView, subviews: [dateStackView, closePriceStackView, openPriceStackView, averagePriceStackView], axis: .vertical)
-        view.addSubview(mainStackView)
-
+    private func setupLayout() {
         NSLayoutConstraint.activate([
+<<<<<<< HEAD
             graphView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             graphView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             graphView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20),
@@ -113,4 +67,12 @@ public class QuoteDetailViewController: UIViewController {
             stackView.addArrangedSubview(item)
         }
     }
+=======
+            quoteDetailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            quoteDetailView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 25),
+            quoteDetailView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -25),
+            quoteDetailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+>>>>>>> origin/main
 }

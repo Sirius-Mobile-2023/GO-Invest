@@ -2,22 +2,25 @@ import Foundation
 
 public struct QuoteDetail {
     public let id: String
-    public let name: String?
+    public let name: String
+    public let openPrice: String?
     public let currentPrice: Decimal?
-    public let date: Date?
     public let closePrice: Decimal?
+    public let date: Date?
 
     public init(
         id: String,
-        name: String?,
+        name: String,
+        openPrice: String?,
         currentPrice: Decimal?,
-        date: Date?,
-        closePrice: Decimal?
+        closePrice: Decimal?,
+        date: Date?
     ) {
         self.id = id
         self.name = name
+        self.openPrice = openPrice
         self.currentPrice = currentPrice
-        self.date = date
         self.closePrice = closePrice
+        self.date = date
     }
 }
