@@ -4,7 +4,6 @@ import UIKit
 
 class TabBarCoordinator {
     var navigationController: UINavigationController
-//    var childCoordinators: [Coordinator] = []
     var tabBarController: UITabBarController
 
     required init(_ navigationController: UINavigationController) {
