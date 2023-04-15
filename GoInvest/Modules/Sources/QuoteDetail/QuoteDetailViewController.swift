@@ -2,6 +2,7 @@ import UIKit
 import Theme
 import QuoteClient
 import DomainModels
+import SkeletonView
 
 enum GraphState {
     case none
@@ -18,22 +19,15 @@ enum DetailState {
 
 public class QuoteDetailViewController: UIViewController {
     private var quoteDetailClient: DetailProvider? = QuoteClient()
-    
-    private var graphSpinner = UIActivityIndicatorView(style: .large)
-    private var detailSpinner = UIActivityIndicatorView(style: .large)
+    private var chartDataClient: ChartsProvider? = QuoteClient()
     private var graphState: GraphState = .none {
         didSet {
             switch graphState {
             case .load:
-                graphSpinner.translatesAutoresizingMaskIntoConstraints = false
-                graphSpinner.hidesWhenStopped = true
-                graphView.addSubview(graphSpinner)
-                setupLayoutForGraphSpinner()
-                graphSpinner.startAnimating()
+                view.showAnimatedGradientSkeleton()
             case .error:
                 print("error")
             case .success:
-                graphSpinner.stopAnimating()
                 print("error")
             case .none:
                 print("none")
@@ -44,7 +38,7 @@ public class QuoteDetailViewController: UIViewController {
         didSet {
             switch detailState {
             case .load:
-                quoteDetailView.addSpinnerToDetails()
+                view.showAnimatedGradientSkeleton()
             case .error:
                 print("error")
             case .success:
@@ -56,27 +50,35 @@ public class QuoteDetailViewController: UIViewController {
     }
     private lazy var quoteDetailView: QuoteDetailView = {
         let view = QuoteDetailView()
+        view.isSkeletonable = true
         return view
     }()
     private lazy var graphView: GraphView = {
         let view = GraphView()
+        view.isSkeletonable = true
         return view
     }()
     private lazy var quoteDetailMainStackView: UIStackView = {
         var stack = UIStackView(arrangedSubviews: [graphView, quoteDetailView])
         stack.spacing = Theme.bigSpacing
         stack.axis = .vertical
+        stack.isSkeletonable = true
         return stack
     }()
 
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.backgroundColor
+        view.isSkeletonable = true
         quoteDetailMainStackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(quoteDetailMainStackView)
         setupLayout()
-        graphState = .load
-        detailState = .load
+    }
+    
+    override public func viewDidLayoutSubviews() {
+        fetchDataForDetails()
+        fetchDataForGraph()
+
     }
 
     private func setupLayout() {
@@ -88,12 +90,31 @@ public class QuoteDetailViewController: UIViewController {
             quoteDetailMainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-
-    private func setupLayoutForGraphSpinner() {
-        NSLayoutConstraint.activate([
-            graphSpinner.centerXAnchor.constraint(equalTo: graphView.centerXAnchor),
-            graphSpinner.centerYAnchor.constraint(equalTo: graphView.centerYAnchor)
-        ])
+    
+    private func fetchDataForDetails(){
+        detailState = .load
+        quoteDetailClient?.quoteDetail(id: "null") { [self] result in
+            switch result {
+            case .success(let quoteDetail):
+                detailState = .success
+                print("success")
+            case .failure(_):
+                detailState = .error
+                print("error")
+            }
+        }
+    }
+    
+    private func fetchDataForGraph(){
+        graphState = .load
+        chartDataClient?.quoteCharts(id: "", boardId: "", fromDate: Date()){ [self] result in
+            switch result {
+            case .success(let graphData):
+                self.graphState = .success
+            case .failure(_):
+                self.graphState = .error
+            }
+        }
     }
 }
 

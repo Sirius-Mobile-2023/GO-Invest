@@ -1,4 +1,5 @@
 import UIKit
+import SkeletonView
 
 class AppCoordinator {
     var navigationController: UINavigationController

@@ -19,6 +19,7 @@ public extension Theme {
     // MARK: - Elements style
     static let imageCornerRadius: CGFloat = 20
     static let buttonCornerRadius: CGFloat = 10
+    static let skeletonCornerRadius: Float = 20
     // MARK: - Images
     static let quotesTabBarImage = UIImage(systemName: "arrow.up.arrow.down")
     static let profileTabBarImageUnchecked = UIImage(systemName: "person")

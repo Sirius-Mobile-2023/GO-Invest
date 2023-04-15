@@ -91,7 +91,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
     }
 
     public func quoteDetail(id _: String, completion _: (_: Result<QuoteDetail, Error>) -> Void) {
-        fatalError("Code will be modified")
+        return
     }
 }
 

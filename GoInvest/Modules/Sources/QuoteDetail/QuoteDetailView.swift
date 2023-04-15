@@ -1,5 +1,6 @@
 import UIKit
 import Theme
+import SkeletonView
 
 class QuoteDetailView: UIView {
     private let buttonView: UIView = {
@@ -8,7 +9,6 @@ class QuoteDetailView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    private var detailSpinner = UIActivityIndicatorView(style: .large)
 
     private let lastDateTextLabel = UILabel()
     private let lastDateLabel = UILabel()
@@ -120,6 +120,9 @@ class QuoteDetailView: UIView {
         lastDateTextLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         lastDateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
+    public func startAnimating() {
+        self.showAnimatedGradientSkeleton()
+    }
 }
 
 // MARK: - Apply style to UI Elements
@@ -128,6 +131,8 @@ private extension QuoteDetailView {
         for label: UILabel,
         text: String) {
             label.text = text
+            label.isSkeletonable = true
+            label.skeletonCornerRadius = Theme.skeletonCornerRadius
             label.font = Theme.Fonts.subtitleFont
         }
 
@@ -136,6 +141,8 @@ private extension QuoteDetailView {
         text: String) {
             label.text = text
             label.textAlignment = .right
+            label.isSkeletonable = true
+            label.skeletonCornerRadius = Theme.skeletonCornerRadius
             label.font = Theme.Fonts.titleFont
         }
 
@@ -147,6 +154,7 @@ private extension QuoteDetailView {
         distribution: UIStackView.Distribution = .fill,
         aligment: UIStackView.Alignment = .fill
     ) {
+        stackView.isSkeletonable = true
         stackView.axis = axis
         stackView.spacing = spacing
         stackView.distribution = distribution
@@ -154,23 +162,5 @@ private extension QuoteDetailView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         subviews.forEach { item in            stackView.addArrangedSubview(item)
         }
-    }
-}
-
-// MARK: - Add spinner subview to DetailStackView
-extension QuoteDetailView {
-    func addSpinnerToDetails() {
-        detailSpinner.translatesAutoresizingMaskIntoConstraints = false
-        detailLabelsStackView.addSubview(detailSpinner)
-        setupLayoutForDetailSpinner()
-        detailSpinner.startAnimating()
-
-    }
-
-    private func setupLayoutForDetailSpinner() {
-        NSLayoutConstraint.activate([
-            detailSpinner.centerXAnchor.constraint(equalTo: detailLabelsStackView.centerXAnchor),
-            detailSpinner.centerYAnchor.constraint(equalTo: detailLabelsStackView.centerYAnchor)
-        ])
     }
 }

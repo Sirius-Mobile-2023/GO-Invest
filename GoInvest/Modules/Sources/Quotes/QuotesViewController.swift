@@ -48,7 +48,7 @@ public class QuotesViewController: UIViewController {
     }
 
     private func loadData() {
-        quoteClient?.quoteList(search: .defaultList) {result in
+        quoteClient?.quoteList(search: .defaultList) {[self] result in
             switch result {
             case .success(let quotesList):
                 self.currentViewState = .success

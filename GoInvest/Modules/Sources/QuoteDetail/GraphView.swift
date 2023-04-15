@@ -1,9 +1,10 @@
 import UIKit
+import Theme
 
 class GraphView: UIView {
     init() {
         super.init(frame: .zero)
-        self.backgroundColor = .green
+        self.skeletonCornerRadius = Theme.skeletonCornerRadius
         self.translatesAutoresizingMaskIntoConstraints = false
     }
 
