@@ -1,12 +1,15 @@
 import UIKit
 import Theme
 import SkeletonView
+import DomainModels
 
 class QuoteDetailView: UIView {
     private let buttonView: UIView = {
         var view = UIView()
         view.backgroundColor = .blue
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.skeletonCornerRadius = Theme.skeletonCornerRadius
+        view.isSkeletonable = true
         return view
     }()
 
@@ -38,6 +41,8 @@ class QuoteDetailView: UIView {
         button.setTitleColor(Theme.buttonTextColor, for: .normal)
         button.titleLabel?.font = Theme.Fonts.buttonFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.isSkeletonable = true
+        button.skeletonCornerRadius = Theme.skeletonCornerRadius
         return button
     }()
 
@@ -86,7 +91,7 @@ class QuoteDetailView: UIView {
                        closePriceStackView,
                        openPriceStackView,
                        averagePriceStackView
-                       ],
+                      ],
             spacing: Theme.smallSpacing,
             axis: .vertical
         )
@@ -95,7 +100,7 @@ class QuoteDetailView: UIView {
             subviews: [buttonView,
                        detailLabelsStackView,
                        addToPortfolioButton
-                       ],
+                      ],
             spacing: Theme.bigSpacing,
             axis: .vertical
         )
@@ -131,8 +136,8 @@ private extension QuoteDetailView {
         for label: UILabel,
         text: String) {
             label.text = text
+            label.linesCornerRadius = Theme.skeletonLinesCornerRadius
             label.isSkeletonable = true
-            label.skeletonCornerRadius = Theme.skeletonCornerRadius
             label.font = Theme.Fonts.subtitleFont
         }
 
@@ -141,8 +146,8 @@ private extension QuoteDetailView {
         text: String) {
             label.text = text
             label.textAlignment = .right
+            label.linesCornerRadius = Theme.skeletonLinesCornerRadius
             label.isSkeletonable = true
-            label.skeletonCornerRadius = Theme.skeletonCornerRadius
             label.font = Theme.Fonts.titleFont
         }
 
@@ -155,12 +160,29 @@ private extension QuoteDetailView {
         aligment: UIStackView.Alignment = .fill
     ) {
         stackView.isSkeletonable = true
+        stackView.skeletonCornerRadius = Theme.skeletonCornerRadius
         stackView.axis = axis
         stackView.spacing = spacing
         stackView.distribution = distribution
         stackView.alignment = aligment
         stackView.translatesAutoresizingMaskIntoConstraints = false
         subviews.forEach { item in            stackView.addArrangedSubview(item)
+        }
+    }
+}
+
+extension QuoteDetailView {
+    func setDetailsData(quoteDetailData: QuoteDetail) {
+        if let closePrice = quoteDetailData.closePrice,
+           let openPrice = quoteDetailData.openPrice,
+           let averagePrice = quoteDetailData.currentPrice,
+           let lastDate = quoteDetailData.date {
+            closePriceAmountLabel.text = "\(closePrice)"
+            openPriceAmountLabel.text = "\(openPrice)"
+            averagePriceAmountLabel.text = "\(averagePrice)"
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "YYYY-MM-dd"
+            lastDateLabel.text = dateFormatter.string(from: lastDate)
         }
     }
 }

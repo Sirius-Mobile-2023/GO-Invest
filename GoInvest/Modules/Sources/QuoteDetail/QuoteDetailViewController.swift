@@ -5,13 +5,16 @@ import DomainModels
 import SkeletonView
 
 enum GraphState {
-    case none
     case load
     case error
     case success
 }
 enum DetailState {
-    case none
+    case load
+    case error
+    case success
+}
+enum QuoteDetailViewState {
     case load
     case error
     case success
@@ -20,34 +23,14 @@ enum DetailState {
 public class QuoteDetailViewController: UIViewController {
     private var quoteDetailClient: DetailProvider? = QuoteClient()
     private var chartDataClient: ChartsProvider? = QuoteClient()
-    private var graphState: GraphState = .none {
-        didSet {
-            switch graphState {
-            case .load:
-                view.showAnimatedGradientSkeleton()
-            case .error:
-                print("error")
-            case .success:
-                print("error")
-            case .none:
-                print("none")
-            }
-        }
-    }
-    private var detailState: DetailState = .none {
-        didSet {
-            switch detailState {
-            case .load:
-                view.showAnimatedGradientSkeleton()
-            case .error:
-                print("error")
-            case .success:
-                print("error")
-            case .none:
-                print("none")
-            }
-        }
-    }
+    private var graphData: QuoteCharts?
+    private var detailsData: QuoteDetail?
+
+    private lazy var errorView: ErrorView = {
+        let view = ErrorView()
+        view.isSkeletonable = true
+        return view
+    }()
     private lazy var quoteDetailView: QuoteDetailView = {
         let view = QuoteDetailView()
         view.isSkeletonable = true
@@ -66,22 +49,76 @@ public class QuoteDetailViewController: UIViewController {
         return stack
     }()
 
+    private var viewState: QuoteDetailViewState? {
+        didSet {
+            switch viewState {
+            case .load:
+                view.showAnimatedGradientSkeleton()
+            case .success:
+                view.hideSkeleton()
+                errorView.isHidden = true
+                graphView.graphData = graphData
+                if let quoteDetailData = detailsData {
+                    quoteDetailView.setDetailsData(quoteDetailData: quoteDetailData)
+                }
+            case .error:
+                view.addSubview(errorView)
+                layoutErrorView()
+            case .none:
+                break
+            }
+        }
+    }
+    private var graphState: GraphState? {
+        didSet {
+            switch graphState {
+            case .load:
+                viewState = .load
+            case .error:
+                viewState = .error
+            case .success:
+                if detailState == .success {
+                    viewState = .success
+                }
+            case .none:
+                break
+            }
+        }
+    }
+    private var detailState: DetailState? {
+        didSet {
+            switch detailState {
+            case .load:
+                viewState = .load
+            case .error:
+                viewState = .error
+            case .success:
+                if graphState == .success {
+                    viewState = .success
+                }
+            case .none:
+                break
+            }
+        }
+    }
     override public func viewDidLoad() {
         super.viewDidLoad()
+        setupUI()
+        getQuoteData()
+        setupLayout()
+    }
+}
+
+// MARK: - UI and Layout
+private extension QuoteDetailViewController {
+    func setupUI() {
         view.backgroundColor = Theme.backgroundColor
         view.isSkeletonable = true
         quoteDetailMainStackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(quoteDetailMainStackView)
-        setupLayout()
-    }
-    
-    override public func viewDidLayoutSubviews() {
-        fetchDataForDetails()
-        fetchDataForGraph()
-
     }
 
-    private func setupLayout() {
+    func setupLayout() {
         NSLayoutConstraint.activate([
             graphView.heightAnchor.constraint(equalToConstant: 300),
             quoteDetailMainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.topOffset),
@@ -90,31 +127,49 @@ public class QuoteDetailViewController: UIViewController {
             quoteDetailMainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
-    private func fetchDataForDetails(){
-        detailState = .load
+
+    func layoutErrorView() {
+        NSLayoutConstraint.activate([
+            errorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.topOffset),
+            errorView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Theme.sideOffset),
+            errorView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.sideOffset),
+            errorView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+}
+
+// MARK: - Work with client
+private extension QuoteDetailViewController {
+    func getQuoteData() {
+        getDataForDetails()
+        getDataForGraph()
+    }
+
+    func getDataForDetails() {
+        detailState = .error
+        #warning ("TODO: - Pass real data")
         quoteDetailClient?.quoteDetail(id: "null") { [self] result in
             switch result {
             case .success(let quoteDetail):
-                detailState = .success
-                print("success")
-            case .failure(_):
-                detailState = .error
-                print("error")
+                self.detailState = .success
+                self.detailsData = quoteDetail
+            case .failure:
+                self.detailState = .error
             }
         }
     }
-    
-    private func fetchDataForGraph(){
+
+    func getDataForGraph() {
         graphState = .load
-        chartDataClient?.quoteCharts(id: "", boardId: "", fromDate: Date()){ [self] result in
+        #warning ("TODO: - Pass real data")
+        chartDataClient?.quoteCharts(id: "VTBR", boardId: "TQBR", fromDate: Date()) { [self] result in
             switch result {
             case .success(let graphData):
                 self.graphState = .success
-            case .failure(_):
+                self.graphData = graphData
+            case .failure:
                 self.graphState = .error
             }
         }
     }
 }
-

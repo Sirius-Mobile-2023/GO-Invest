@@ -6,6 +6,7 @@ public enum Theme {
         public static let buttonFont = UIFont.systemFont(ofSize: 19, weight: .semibold)
         public static let titleFont = UIFont.systemFont(ofSize: 19, weight: .bold)
         public static let subtitleFont = UIFont.systemFont(ofSize: 17, weight: .light)
+        public static let errorFont = UIFont.systemFont(ofSize: 22, weight: .medium)
     }
 }
 
@@ -20,6 +21,7 @@ public extension Theme {
     static let imageCornerRadius: CGFloat = 20
     static let buttonCornerRadius: CGFloat = 10
     static let skeletonCornerRadius: Float = 20
+    static let skeletonLinesCornerRadius: Int = 5
     // MARK: - Images
     static let quotesTabBarImage = UIImage(systemName: "arrow.up.arrow.down")
     static let profileTabBarImageUnchecked = UIImage(systemName: "person")

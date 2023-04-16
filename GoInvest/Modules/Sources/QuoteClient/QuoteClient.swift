@@ -56,7 +56,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
             boardId: String,
             fromDate: Date,
             completion: @escaping (_: Result<QuoteCharts, Error>) -> Void
-    ){
+    ) {
         let urlComponentGetCharts = "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json?from=\(String(date: fromDate))"
         let url = URL(string: urlComponentGetCharts)
         guard let url = url else {

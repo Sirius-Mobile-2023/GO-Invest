@@ -20,7 +20,6 @@ public class QuotesViewController: UIViewController {
                 self.showSpinner(onView: self.view)
             case .error:
                 self.removeSpinner()
-                print("error")
             case .success:
                 self.removeSpinner()
             case .none:
@@ -53,10 +52,8 @@ public class QuotesViewController: UIViewController {
             case .success(let quotesList):
                 self.currentViewState = .success
                 self.quotes = quotesList
-                print("success")
-            case .failure(let error):
+            case .failure(_):
                 self.currentViewState = .error
-                print(error)
             }
         }
     }
@@ -84,6 +81,7 @@ extension QuotesViewController {
     }
 }
 
+#warning ("Change spinner to Skeleton")
 private extension QuotesViewController {
     func showSpinner(onView: UIView) {
         var spinnerView = UIView.init(frame: onView.bounds)

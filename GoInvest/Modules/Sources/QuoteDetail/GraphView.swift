@@ -1,7 +1,10 @@
 import UIKit
 import Theme
+import DomainModels
 
 class GraphView: UIView {
+    var graphData: QuoteCharts?
+
     init() {
         super.init(frame: .zero)
         self.skeletonCornerRadius = Theme.skeletonCornerRadius
