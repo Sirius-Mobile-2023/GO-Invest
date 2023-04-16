@@ -147,13 +147,13 @@ private extension QuoteDetailViewController {
     func getDataForDetails() {
         detailState = .load
         #warning ("TODO: - Pass real data")
-        quoteDetailClient?.quoteDetail(id: "null") { [self] result in
+        quoteDetailClient?.quoteDetail(id: "null") { [weak self] result in
             switch result {
             case .success(let quoteDetail):
-                self.detailState = .success
-                self.detailsData = quoteDetail
+                self?.detailState = .success
+                self?.detailsData = quoteDetail
             case .failure:
-                self.detailState = .error
+                self?.detailState = .error
             }
         }
     }
@@ -161,13 +161,13 @@ private extension QuoteDetailViewController {
     func getDataForGraph() {
         graphState = .load
         #warning ("TODO: - Pass real data")
-        chartDataClient?.quoteCharts(id: "VTBR", boardId: "TQBR", fromDate: Date()) { [self] result in
+        chartDataClient?.quoteCharts(id: "VTBR", boardId: "TQBR", fromDate: Date()) { [weak self] result in
             switch result {
             case .success(let graphData):
-                self.graphState = .success
-                self.graphData = graphData
+                self?.graphState = .success
+                self?.graphData = graphData
             case .failure:
-                self.graphState = .error
+                self?.graphState = .error
             }
         }
     }
