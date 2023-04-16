@@ -37,11 +37,11 @@ class QuoteDetailView: UIView {
 
     private let addToPortfolioButton: UIButton = {
         var button = UIButton()
-        button.backgroundColor = Theme.buttonColor
+        button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = Theme.buttonCornerRadius
         button.setTitle("Add to Portfolio", for: .normal)
-        button.setTitleColor(Theme.buttonTextColor, for: .normal)
+        button.setTitleColor(Theme.Colors.buttonText, for: .normal)
         button.titleLabel?.font = Theme.Fonts.buttonFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button

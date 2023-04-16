@@ -9,7 +9,7 @@ public class QuoteDetailViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = Theme.backgroundColor
+        view.backgroundColor = Theme.Colors.background
         view.addSubview(quoteDetailView)
         setupLayout()
     }

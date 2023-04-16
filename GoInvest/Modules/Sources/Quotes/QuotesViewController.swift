@@ -6,7 +6,7 @@ public class QuotesViewController: UIViewController {
     lazy var toQuoteButton: UIButton = {
         let button = UIButton()
         button.setTitle("To Quote", for: .normal)
-        button.backgroundColor = Theme.buttonColor
+        button.backgroundColor = Theme.Colors.button
         button.layer.cornerRadius = Theme.buttonCornerRadius
         button.addTarget(self, action: #selector(toQuoteTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -20,7 +20,7 @@ public class QuotesViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.backgroundColor = Theme.yellowColor
+        view.backgroundColor = Theme.Colors.yellow
         view.addSubview(toQuoteButton)
     }
 
