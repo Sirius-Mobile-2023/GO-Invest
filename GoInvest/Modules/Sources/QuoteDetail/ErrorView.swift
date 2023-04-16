@@ -2,6 +2,9 @@ import UIKit
 import Theme
 
 class ErrorView: UIView {
+    typealias RetryHandler = () -> Void
+    var tryAgainHandler: RetryHandler?
+    
     private let errorLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.errorFont
@@ -57,6 +60,6 @@ class ErrorView: UIView {
 extension ErrorView {
     @objc
     private func tryAgainButtonTapped(_ sender: UIButton) {
-        print("Try again tapped. Add functionality")
+        tryAgainHandler?()
     }
 }

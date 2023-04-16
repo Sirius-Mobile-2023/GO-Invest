@@ -28,6 +28,9 @@ public class QuoteDetailViewController: UIViewController {
 
     private lazy var errorView: ErrorView = {
         let view = ErrorView()
+        view.tryAgainHandler = { [weak self] in
+            self?.getQuoteData()
+        }
         return view
     }()
     private lazy var quoteDetailView: QuoteDetailView = {
@@ -140,6 +143,7 @@ private extension QuoteDetailViewController {
 // MARK: - Work with client
 private extension QuoteDetailViewController {
     func getQuoteData() {
+        print("data")
         getDataForDetails()
         getDataForGraph()
     }
