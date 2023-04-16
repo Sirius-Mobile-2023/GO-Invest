@@ -28,7 +28,6 @@ public class QuoteDetailViewController: UIViewController {
 
     private lazy var errorView: ErrorView = {
         let view = ErrorView()
-        view.isSkeletonable = true
         return view
     }()
     private lazy var quoteDetailView: QuoteDetailView = {
@@ -146,7 +145,7 @@ private extension QuoteDetailViewController {
     }
 
     func getDataForDetails() {
-        detailState = .error
+        detailState = .load
         #warning ("TODO: - Pass real data")
         quoteDetailClient?.quoteDetail(id: "null") { [self] result in
             switch result {
