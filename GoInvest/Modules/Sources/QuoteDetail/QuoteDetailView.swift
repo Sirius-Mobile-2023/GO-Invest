@@ -1,4 +1,5 @@
 import UIKit
+import Theme
 
 class QuoteDetailView: UIView {
     private let graphView: UIView = {
@@ -35,12 +36,12 @@ class QuoteDetailView: UIView {
 
     private let addToPortfolioButton: UIButton = {
         var button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
         button.setTitle("Add to Portfolio", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 19, weight: .semibold)
+        button.setTitleColor(Theme.Colors.buttonText, for: .normal)
+        button.titleLabel?.font = Theme.Fonts.button
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
     }()
@@ -90,8 +91,9 @@ class QuoteDetailView: UIView {
             subviews: [dateStackView,
                        closePriceStackView,
                        openPriceStackView,
-                       averagePriceStackView],
-            spacing: 10,
+                       averagePriceStackView
+                       ],
+            spacing: Theme.Layout.smallSpacing,
             axis: .vertical
         )
         arrangeStackView(
@@ -99,8 +101,9 @@ class QuoteDetailView: UIView {
             subviews: [graphView,
                        buttonView,
                        detailLabelsStackView,
-                       addToPortfolioButton],
-            spacing: 20,
+                       addToPortfolioButton
+                       ],
+            spacing: Theme.Layout.bigSpacing,
             axis: .vertical
         )
         setContentHuggingPriorities()
@@ -108,10 +111,11 @@ class QuoteDetailView: UIView {
         NSLayoutConstraint.activate([
             graphView.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 40),
-            addToPortfolioButton.heightAnchor.constraint(equalToConstant: 55),
+            addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: topAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+
         ])
     }
 
@@ -132,20 +136,18 @@ class QuoteDetailView: UIView {
 private extension QuoteDetailView {
     func applyStyleForLabel(
         for label: UILabel,
-        text: String
-    ) {
-        label.text = text
-        label.font = UIFont.systemFont(ofSize: 17, weight: .light)
-    }
+        text: String) {
+            label.text = text
+            label.font = Theme.Fonts.subtitle
+        }
 
     func applyStyleForAmountLabel(
         for label: UILabel,
-        text: String
-    ) {
-        label.text = text
-        label.textAlignment = .right
-        label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
-    }
+        text: String) {
+            label.text = text
+            label.textAlignment = .right
+            label.font = Theme.Fonts.title
+        }
 
     func arrangeStackView(
         for stackView: UIStackView,
