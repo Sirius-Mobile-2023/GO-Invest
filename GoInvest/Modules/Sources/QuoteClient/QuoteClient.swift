@@ -57,6 +57,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
             fromDate: Date,
             completion: @escaping (_: Result<QuoteCharts, Error>) -> Void
     ) {
+        // swiftlint:disable:next line_length
         let urlComponentGetCharts = "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json?from=\(String(date: fromDate))"
         let url = URL(string: urlComponentGetCharts)
         guard let url = url else {

@@ -1,43 +1,15 @@
 import UIKit
-import QuoteClient
-import Theme
-import DomainModels
 
-enum ViewState {
+enum QuotesViewState {
     case load
     case error
     case success
 }
-
 public class QuotesViewController: UIViewController {
-    public var didTapButton: ((_ attribute: String) -> Void)?
-    private var quoteClient: QuoteListProvider? = QuoteClient()
-    private var quotes: [Quote]?
-    private var currentViewState: ViewState? {
-        didSet {
-            switch self.currentViewState {
-            case .load:
-                self.showSpinner(onView: self.view)
-            case .error:
-                self.removeSpinner()
-            case .success:
-                self.removeSpinner()
-            case .none:
-                break
-            }
-        }
-    }
-    private var spinnerView: UIView?
-
-    lazy var toQuoteButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("To Quote", for: .normal)
-        button.backgroundColor = Theme.buttonColor
-        button.layer.cornerRadius = Theme.buttonCornerRadius
-        button.addTarget(self, action: #selector(toQuoteTapped(_:)), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
+    private let viewModels = Data.getData()
+    public var didTapButton: ((String) -> Void)?
+    private var animationPlayed = true
+    private lazy var tableView = UITableView()
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -52,9 +24,6 @@ public class QuotesViewController: UIViewController {
         super.viewDidLoad()
         configureTitle()
         configureTableView()
-        setupUI()
-        loadData()
-        setupLayout()
         if animationPlayed {
             tableView.alpha = 0
         }
@@ -86,23 +55,6 @@ public class QuotesViewController: UIViewController {
             delayCounter += 1
         }
     }
-
-    private func loadData() {
-        quoteClient?.quoteList(search: .defaultList) {[self] result in
-            switch result {
-            case .success(let quotesList):
-                self.currentViewState = .success
-                self.quotes = quotesList
-            case .failure(_):
-                self.currentViewState = .error
-            }
-        }
-    }
-
-    private func setupUI() {
-        currentViewState = .load
-        view.backgroundColor = Theme.yellowColor
-        view.addSubview(toQuoteButton)
 
     private func configureTableView() {
         view.addSubview(tableView)
@@ -136,30 +88,7 @@ extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
-    public func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
-        didTapButton?("Quote")
-    }
-}
-
-#warning ("Change spinner to Skeleton")
-private extension QuotesViewController {
-    func showSpinner(onView: UIView) {
-        var spinnerView = UIView.init(frame: onView.bounds)
-        spinnerView.backgroundColor = .gray
-        let activityIndicator = UIActivityIndicatorView.init(style: .large)
-        activityIndicator.startAnimating()
-        activityIndicator.center = spinnerView.center
-        DispatchQueue.main.async {
-            spinnerView.addSubview(activityIndicator)
-            onView.addSubview(spinnerView)
-        }
-        self.spinnerView = spinnerView
-    }
-
-    func removeSpinner() {
-        DispatchQueue.main.async { [self] in
-            self.spinnerView?.removeFromSuperview()
-            spinnerView = nil
-        }
+    public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+        didTapButton?(viewModels[indexPath.row].shortName)
     }
 }

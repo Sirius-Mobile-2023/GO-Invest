@@ -15,7 +15,6 @@ class TabBarCoordinator {
         let profileVC = ProfileViewController()
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let profileNC = UINavigationController(rootViewController: profileVC)
-
         quotesVC.didTapButton = { title in
             self.showQuoteController(with: title, navigationController: quotesNC)
         }
@@ -28,11 +27,6 @@ class TabBarCoordinator {
         controllers.forEach { $0.navigationBar.prefersLargeTitles = true }
 
         prepareTabBarController(withTabControllers: controllers)
-    }
-
-    private func styleNavigationController() {
-        navigationController.navigationBar.backIndicatorImage = Theme.backNavBarImage
-        navigationController.navigationBar.backIndicatorTransitionMaskImage = Theme.backNavBarImage
     }
 
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {

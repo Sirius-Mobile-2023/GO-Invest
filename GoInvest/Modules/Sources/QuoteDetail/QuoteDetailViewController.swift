@@ -25,7 +25,7 @@ public class QuoteDetailViewController: UIViewController {
     private var chartDataClient: ChartsProvider? = QuoteClient()
     private var graphData: QuoteCharts?
     private var detailsData: QuoteDetail?
-
+    
     private lazy var errorView: ErrorView = {
         let view = ErrorView()
         view.tryAgainHandler = { [weak self] in
@@ -103,6 +103,7 @@ public class QuoteDetailViewController: UIViewController {
             }
         }
     }
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -154,7 +155,7 @@ private extension QuoteDetailViewController {
             switch result {
             case .success(let quoteDetail):
                 self?.detailsData = quoteDetail
-                DispatchQueue.main.async{
+                DispatchQueue.main.async {
                     self?.detailState = .success
                 }
             case .failure:
@@ -170,7 +171,7 @@ private extension QuoteDetailViewController {
             switch result {
             case .success(let graphData):
                 self?.graphData = graphData
-                DispatchQueue.main.async{
+                DispatchQueue.main.async {
                     self?.graphState = .success
                 }
             case .failure:
