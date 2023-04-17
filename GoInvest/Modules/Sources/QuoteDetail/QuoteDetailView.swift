@@ -49,12 +49,13 @@ class QuoteDetailView: UIView {
 
     init() {
         super.init(frame: .zero)
-        self.translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
         setupUI()
         setupLayout()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -107,7 +108,7 @@ class QuoteDetailView: UIView {
             axis: .vertical
         )
         setContentHuggingPriorities()
-        self.addSubview(mainStackView)
+        addSubview(mainStackView)
         NSLayoutConstraint.activate([
             graphView.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 70),
@@ -131,6 +132,7 @@ class QuoteDetailView: UIView {
 }
 
 // MARK: - Apply style to UI Elements
+
 private extension QuoteDetailView {
     func applyStyleForLabel(
         for label: UILabel,
@@ -160,7 +162,7 @@ private extension QuoteDetailView {
         stackView.distribution = distribution
         stackView.alignment = aligment
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        subviews.forEach { item in            stackView.addArrangedSubview(item)
+        subviews.forEach { item in stackView.addArrangedSubview(item)
         }
     }
 }
