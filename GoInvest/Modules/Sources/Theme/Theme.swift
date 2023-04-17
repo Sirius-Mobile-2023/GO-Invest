@@ -1,36 +1,37 @@
 import UIKit
 
 public enum Theme {
-    // MARK: - Fonts
-    public enum Fonts {
-        public static let buttonFont = UIFont.systemFont(ofSize: 19, weight: .semibold)
-        public static let titleFont = UIFont.systemFont(ofSize: 19, weight: .bold)
-        public static let subtitleFont = UIFont.systemFont(ofSize: 17, weight: .light)
-        public static let errorFont = UIFont.systemFont(ofSize: 22, weight: .medium)
-    }
-}
 
-public extension Theme {
-    // MARK: - Colors
-    static let backgroundColor = UIColor(named: "BackgroundColor")
-    static let yellowColor = UIColor(named: "YellowColor")
-    static let buttonColor = UIColor(named: "BlackColor")
-    static let mainTextColor = UIColor(named: "BlackColor")
-    static let buttonTextColor = UIColor(named: "WhiteColor")
-    // MARK: - Elements style
-    static let imageCornerRadius: CGFloat = 20
-    static let buttonCornerRadius: CGFloat = 10
-    static let skeletonCornerRadius: Float = 20
-    static let skeletonLinesCornerRadius: Int = 5
-    // MARK: - Images
-    static let quotesTabBarImage = UIImage(systemName: "arrow.up.arrow.down")
-    static let profileTabBarImageUnchecked = UIImage(systemName: "person")
-    static let profileTabBarImageChecked = UIImage(systemName: "person.fill")
-    static let backNavBarImage = UIImage(systemName: "chevron.left.circle")
-    // MARK: - Layout
-    static let smallSpacing: CGFloat = 10
-    static let bigSpacing: CGFloat = 20
-    static let sideOffset: CGFloat = 20
-    static let topOffset: CGFloat = 10
-    static let buttonHeight: CGFloat = 55
+    public enum Fonts {
+        public static let button = UIFont.systemFont(ofSize: 19, weight: .semibold)
+        public static let title = UIFont.systemFont(ofSize: 19, weight: .bold)
+        public static let subtitle = UIFont.systemFont(ofSize: 17, weight: .light)
+    }
+
+    public enum Colors {
+        public static let background = UIColor(named: "BackgroundColor")
+        public static let yellow = UIColor(named: "YellowColor")
+        public static let button = UIColor(named: "BlackColor")
+        public static let mainText = UIColor(named: "BlackColor")
+        public static let buttonText = UIColor(named: "WhiteColor")
+    }
+
+    public enum Images {
+        public static let quotesTabBar = UIImage(systemName: "arrow.up.arrow.down")
+        public static let profileTabBarUnchecked = UIImage(systemName: "person")
+        public static let profileTabBarChecked = UIImage(systemName: "person.fill")
+        public static let backNavBar = UIImage(systemName: "chevron.left.circle")
+    }
+    public enum StyleElements {
+        public static let imageCornerRadius: CGFloat = 20
+        public static let buttonCornerRadius: CGFloat = 10
+    }
+
+    public enum Layout {
+        public static let smallSpacing: CGFloat = 10
+        public static let bigSpacing: CGFloat = 20
+        public static let sideOffset: CGFloat = 20
+        public static let topOffset: CGFloat = 10
+        public static let buttonHeight: CGFloat = 55
+    }
 }

@@ -36,7 +36,6 @@ public class QuoteDetailViewController: UIViewController {
     }()
     private lazy var quoteDetailView: QuoteDetailView = {
         let view = QuoteDetailView()
-        view.isSkeletonable = true
         return view
     }()
     private lazy var graphView: GraphView = {
@@ -139,6 +138,55 @@ private extension QuoteDetailViewController {
             errorView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.sideOffset),
             errorView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+}
+
+// MARK: - Work with client
+private extension QuoteDetailViewController {
+    func getQuoteData() {
+        getDataForGraph()
+        getDataForDetails()
+    }
+
+    func getDataForDetails() {
+        detailState = .load
+        #warning("TODO: Paste real id")
+        quoteDetailClient?.quoteDetail(id: "abrd", boardId: "tqbr") { [weak self] result in
+            switch result {
+            case .success(let quoteDetail):
+                self?.detailsData = quoteDetail
+                DispatchQueue.main.async {
+                    self?.detailState = .success
+                }
+            case .failure(let error):
+                print(error)
+                self?.detailState = .error
+            }
+        }
+    }
+
+    func getDataForGraph() {
+        graphState = .load
+        #warning("TODO: Paste real id")
+        chartDataClient?.quoteCharts(id: "ABRD", boardId: "TQBR", fromDate: getDate()) { [weak self] result in
+            switch result {
+            case .success(let graphData):
+                self?.graphData = graphData
+                DispatchQueue.main.async {
+                    self?.graphState = .success
+                }
+            case .failure(let error):
+
+                self?.graphState = .error
+            }
+        }
+    }
+}
+
+private extension QuoteDetailViewController {
+    func getDate() -> Date {
+        let date = Calendar.current.date(byAdding: .year, value: -1, to: .now)
+        return date!
     }
 }
 

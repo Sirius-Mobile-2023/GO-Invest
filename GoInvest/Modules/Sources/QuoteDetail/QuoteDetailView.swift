@@ -34,12 +34,12 @@ class QuoteDetailView: UIView {
 
     private let addToPortfolioButton: UIButton = {
         var button = UIButton()
-        button.backgroundColor = Theme.buttonColor
+        button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = Theme.buttonCornerRadius
+        button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
         button.setTitle("Add to Portfolio", for: .normal)
-        button.setTitleColor(Theme.buttonTextColor, for: .normal)
-        button.titleLabel?.font = Theme.Fonts.buttonFont
+        button.setTitleColor(Theme.Colors.buttonText, for: .normal)
+        button.titleLabel?.font = Theme.Fonts.button
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.isSkeletonable = true
         button.skeletonCornerRadius = Theme.skeletonCornerRadius
@@ -92,8 +92,8 @@ class QuoteDetailView: UIView {
                        closePriceStackView,
                        openPriceStackView,
                        averagePriceStackView
-                      ],
-            spacing: Theme.smallSpacing,
+                       ],
+            spacing: Theme.Layout.smallSpacing,
             axis: .vertical
         )
         arrangeStackView(
@@ -101,15 +101,15 @@ class QuoteDetailView: UIView {
             subviews: [buttonView,
                        detailLabelsStackView,
                        addToPortfolioButton
-                      ],
-            spacing: Theme.bigSpacing,
+                       ],
+            spacing: Theme.Layout.bigSpacing,
             axis: .vertical
         )
         setContentHuggingPriorities()
         addSubview(mainStackView)
         NSLayoutConstraint.activate([
             buttonView.heightAnchor.constraint(equalToConstant: 70),
-            addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.buttonHeight),
+            addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: self.topAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
@@ -135,9 +135,7 @@ private extension QuoteDetailView {
         for label: UILabel,
         text: String) {
             label.text = text
-            label.linesCornerRadius = Theme.skeletonLinesCornerRadius
-            label.isSkeletonable = true
-            label.font = Theme.Fonts.subtitleFont
+            label.font = Theme.Fonts.subtitle
         }
 
     func applyStyleForAmountLabel(
@@ -145,9 +143,7 @@ private extension QuoteDetailView {
         text: String) {
             label.text = text
             label.textAlignment = .right
-            label.linesCornerRadius = Theme.skeletonLinesCornerRadius
-            label.isSkeletonable = true
-            label.font = Theme.Fonts.titleFont
+            label.font = Theme.Fonts.title
         }
 
     func arrangeStackView(
