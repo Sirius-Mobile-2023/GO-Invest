@@ -25,6 +25,7 @@ public class QuoteDetailViewController: UIViewController {
     private var chartDataClient: ChartsProvider? = QuoteClient()
     private var graphData: QuoteCharts?
     private var detailsData: QuoteDetail?
+    private var quoteId: String?
 
     private lazy var errorView: ErrorView = {
         let view = ErrorView()
@@ -104,6 +105,15 @@ public class QuoteDetailViewController: UIViewController {
         }
     }
 
+    public init(quoteId: String) {
+        self.quoteId = quoteId
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -150,8 +160,7 @@ private extension QuoteDetailViewController {
 
     func getDataForDetails() {
         detailState = .load
-        #warning ("TODO: - Pass real data")
-        quoteDetailClient?.quoteDetail(id: "null") { [weak self] result in
+        quoteDetailClient?.quoteDetail(id: quoteId ?? "") { [weak self] result in
             switch result {
             case .success(let quoteDetail):
                 self?.detailsData = quoteDetail
@@ -166,8 +175,7 @@ private extension QuoteDetailViewController {
 
     func getDataForGraph() {
         graphState = .load
-        #warning ("TODO: - Pass real data")
-        chartDataClient?.quoteCharts(id: "VTBR", boardId: "TQBR", fromDate: Date()) { [weak self] result in
+        chartDataClient?.quoteCharts(id: quoteId ?? "", boardId: "TQBR", fromDate: Date()) { [weak self] result in
             switch result {
             case .success(let graphData):
                 self?.graphData = graphData

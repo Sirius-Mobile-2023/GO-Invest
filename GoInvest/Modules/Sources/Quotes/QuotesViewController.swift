@@ -119,7 +119,6 @@ extension QuotesViewController {
             case .success(let quotesList):
                 self.currentViewState = .success
                 self.quotes = quotesList
-                print("success")
             case .failure(let error):
                 self.currentViewState = .error
                 print(error)

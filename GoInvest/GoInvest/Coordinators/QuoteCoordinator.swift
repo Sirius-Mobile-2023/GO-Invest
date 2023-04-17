@@ -27,7 +27,7 @@ class QuoteCoordinator {
                 print(error)
             }
         })
-        let viewController = QuoteDetailViewController()
+        let viewController = QuoteDetailViewController(quoteId: navigationTitle)
         viewController.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
     }
