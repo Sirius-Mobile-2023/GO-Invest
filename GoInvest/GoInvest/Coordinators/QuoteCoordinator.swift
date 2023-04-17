@@ -42,7 +42,7 @@ class QuoteCoordinator {
                                             }
                                         })
         let viewController = QuoteDetailViewController()
-        viewController.navigationItem.title = navigationTitle
+        viewController.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
     }
     //TODO: #<26 issue, функция как пример для конвертации данных>

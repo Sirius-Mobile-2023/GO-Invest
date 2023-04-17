@@ -1,4 +1,5 @@
 import UIKit
+import Theme
 
 class QuoteDetailView: UIView {
     private let graphView: UIView = {
@@ -8,11 +9,10 @@ class QuoteDetailView: UIView {
         return view
     }()
 
-    private let buttonView: UIView = {
-        var view = UIView()
-        view.backgroundColor = .blue
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    private let buttonView: TimeIntervalsControl = {
+        let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 0)
+        control.translatesAutoresizingMaskIntoConstraints = false
+        return control
     }()
 
     private let lastDateTextLabel = UILabel()
@@ -36,24 +36,25 @@ class QuoteDetailView: UIView {
 
     private let addToPortfolioButton: UIButton = {
         var button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = 10
+        button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
         button.setTitle("Add to Portfolio", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 19, weight: .semibold)
+        button.setTitleColor(Theme.Colors.buttonText, for: .normal)
+        button.titleLabel?.font = Theme.Fonts.button
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
     }()
 
     init() {
         super.init(frame: .zero)
-        self.translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
         setupUI()
         setupLayout()
     }
 
-    required init?(coder: NSCoder) {
+    @available(*, unavailable)
+    required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -92,7 +93,7 @@ class QuoteDetailView: UIView {
                        openPriceStackView,
                        averagePriceStackView
                        ],
-            spacing: 10,
+            spacing: Theme.Layout.smallSpacing,
             axis: .vertical
         )
         arrangeStackView(
@@ -102,22 +103,23 @@ class QuoteDetailView: UIView {
                        detailLabelsStackView,
                        addToPortfolioButton
                        ],
-            spacing: 20,
+            spacing: Theme.Layout.bigSpacing,
             axis: .vertical
         )
         setContentHuggingPriorities()
-        self.addSubview(mainStackView)
+        addSubview(mainStackView)
         NSLayoutConstraint.activate([
             graphView.heightAnchor.constraint(equalToConstant: 300),
-            buttonView.heightAnchor.constraint(equalToConstant: 70),
-            addToPortfolioButton.heightAnchor.constraint(equalToConstant: 55),
-            mainStackView.topAnchor.constraint(equalTo: self.topAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+            buttonView.heightAnchor.constraint(equalToConstant: 40),
+            addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
+            mainStackView.topAnchor.constraint(equalTo: topAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+
         ])
     }
-    
-    private func setContentHuggingPriorities(){
+
+    private func setContentHuggingPriorities() {
         averagePriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         averagePriceAmountLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
         openPriceLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
@@ -130,12 +132,13 @@ class QuoteDetailView: UIView {
 }
 
 // MARK: - Apply style to UI Elements
+
 private extension QuoteDetailView {
     func applyStyleForLabel(
         for label: UILabel,
         text: String) {
             label.text = text
-            label.font = UIFont.systemFont(ofSize: 17, weight: .light)
+            label.font = Theme.Fonts.subtitle
         }
 
     func applyStyleForAmountLabel(
@@ -143,7 +146,7 @@ private extension QuoteDetailView {
         text: String) {
             label.text = text
             label.textAlignment = .right
-            label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+            label.font = Theme.Fonts.title
         }
 
     func arrangeStackView(
@@ -159,7 +162,7 @@ private extension QuoteDetailView {
         stackView.distribution = distribution
         stackView.alignment = aligment
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        subviews.forEach { item in            stackView.addArrangedSubview(item)
+        subviews.forEach { item in stackView.addArrangedSubview(item)
         }
     }
 }
