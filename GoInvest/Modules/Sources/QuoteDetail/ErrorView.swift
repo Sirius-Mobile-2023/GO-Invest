@@ -4,7 +4,7 @@ import Theme
 class ErrorView: UIView {
     typealias RetryHandler = () -> Void
     var tryAgainHandler: RetryHandler?
-    
+
     private let errorLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.errorFont

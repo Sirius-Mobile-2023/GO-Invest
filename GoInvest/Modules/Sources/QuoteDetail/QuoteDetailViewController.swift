@@ -143,9 +143,8 @@ private extension QuoteDetailViewController {
 // MARK: - Work with client
 private extension QuoteDetailViewController {
     func getQuoteData() {
-        print("data")
-        getDataForDetails()
         getDataForGraph()
+        getDataForDetails()
     }
 
     func getDataForDetails() {
@@ -154,8 +153,10 @@ private extension QuoteDetailViewController {
         quoteDetailClient?.quoteDetail(id: "null") { [weak self] result in
             switch result {
             case .success(let quoteDetail):
-                self?.detailState = .success
                 self?.detailsData = quoteDetail
+                DispatchQueue.main.async{
+                    self?.detailState = .success
+                }
             case .failure:
                 self?.detailState = .error
             }
@@ -168,8 +169,10 @@ private extension QuoteDetailViewController {
         chartDataClient?.quoteCharts(id: "VTBR", boardId: "TQBR", fromDate: Date()) { [weak self] result in
             switch result {
             case .success(let graphData):
-                self?.graphState = .success
                 self?.graphData = graphData
+                DispatchQueue.main.async{
+                    self?.graphState = .success
+                }
             case .failure:
                 self?.graphState = .error
             }
