@@ -10,12 +10,11 @@
 		4D26228A29E5DF2800B56C18 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228929E5DF2800B56C18 /* AppCoordinator.swift */; };
 		4D26228C29E5E0C300B56C18 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */; };
 		4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */; };
-		874BEA4D29E72EE5001383BD /* Modules in Frameworks */ = {isa = PBXBuildFile; productRef = 874BEA4C29E72EE5001383BD /* Modules */; };
 		8790EA7B29E5938800A9FD42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7A29E5938800A9FD42 /* AppDelegate.swift */; };
 		8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */; };
 		8790EA8429E5938A00A9FD42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8329E5938A00A9FD42 /* Assets.xcassets */; };
 		8790EA8729E5938A00A9FD42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8529E5938A00A9FD42 /* LaunchScreen.storyboard */; };
-		97D196CB29EAF4DE008A10D9 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 97D196CA29EAF4DE008A10D9 /* .swiftlint.yml */; };
+		87C32D0729E5B51A00CC7A4D /* Modules in Frameworks */ = {isa = PBXBuildFile; productRef = 87C32D0629E5B51A00CC7A4D /* Modules */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,7 +27,6 @@
 		8790EA8329E5938A00A9FD42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8790EA8629E5938A00A9FD42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8790EA8829E5938A00A9FD42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		97D196CA29EAF4DE008A10D9 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,7 +34,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				874BEA4D29E72EE5001383BD /* Modules in Frameworks */,
+				87C32D0729E5B51A00CC7A4D /* Modules in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,7 +54,6 @@
 		8790EA6E29E5938800A9FD42 = {
 			isa = PBXGroup;
 			children = (
-				97D196CA29EAF4DE008A10D9 /* .swiftlint.yml */,
 				8790EA7929E5938800A9FD42 /* GoInvest */,
 				8790EA7829E5938800A9FD42 /* Products */,
 				87C32D0529E5B51A00CC7A4D /* Frameworks */,
@@ -109,7 +106,7 @@
 			);
 			name = GoInvest;
 			packageProductDependencies = (
-				874BEA4C29E72EE5001383BD /* Modules */,
+				87C32D0629E5B51A00CC7A4D /* Modules */,
 			);
 			productName = GoInvest;
 			productReference = 8790EA7729E5938800A9FD42 /* GoInvest.app */;
@@ -153,7 +150,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				97D196CB29EAF4DE008A10D9 /* .swiftlint.yml in Resources */,
 				8790EA8729E5938A00A9FD42 /* LaunchScreen.storyboard in Resources */,
 				8790EA8429E5938A00A9FD42 /* Assets.xcassets in Resources */,
 			);
@@ -177,7 +173,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n  swiftlint --fix\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -329,7 +325,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = V3HW5C4GT9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GoInvest/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -357,7 +352,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = V3HW5C4GT9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GoInvest/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -402,7 +396,7 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		874BEA4C29E72EE5001383BD /* Modules */ = {
+		87C32D0629E5B51A00CC7A4D /* Modules */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Modules;
 		};
