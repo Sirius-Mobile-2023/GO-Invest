@@ -39,6 +39,6 @@ let package = Package(
             name: "QuoteDetail",
             dependencies: []
         ),
-    
+
     ]
 )

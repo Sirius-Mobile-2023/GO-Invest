@@ -5,28 +5,29 @@ import QuoteClient
 public class QuotesViewController: UIViewController {
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
+    private var quotesArray: [Quote] = []
     private lazy var tableView = UITableView()
-    var quotesArray: [Quote] = []
-    var client = QuoteClient()
+    private let client = QuoteClient()
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print("vdls")
         tableView.alpha = 1
-        if animationPlayed {
-            animateTableView()
-            animationPlayed = false
-        }
     }
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        print("vdl")
         configureTitle()
         configureTableView()
         if animationPlayed {
             tableView.alpha = 0
         }
+        fetchData()
+    }
+    private func configureTitle() {
+        title = "Quotes"
+    }
+
+    private func fetchData() {
         client.quoteList(search: .defaultList) { [weak self] result in
             switch result {
             case let .success(array):
@@ -34,23 +35,15 @@ public class QuotesViewController: UIViewController {
             case let .failure(error):
                 print(error)
             }
-            DispatchQueue.main.async {
                 self?.tableView.reloadData()
                 self?.animateTableView()
                 self?.animationPlayed = false
-            }
         }
-    }
-
-    private func configureTitle() {
-        title = "Quotes"
     }
 
     private func animateTableView() {
         tableView.reloadData()
-
         let cells = tableView.visibleCells
-
         let tableViewHeight = tableView.bounds.size.height
 
         for cell in cells {
