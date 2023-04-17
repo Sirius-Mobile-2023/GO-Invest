@@ -11,10 +11,10 @@ class TimeIntervalsControl: UIView {
             )
         }
     }
-    
+
     private var selectedSegmentConstraint: NSLayoutConstraint!
     private var segments = [UIButton]()
-    
+
     private let selectorView: UIView = {
         let view = UIView()
         view.isSkeletonable = true
@@ -24,7 +24,7 @@ class TimeIntervalsControl: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.isSkeletonable = true
@@ -35,7 +35,7 @@ class TimeIntervalsControl: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
-    
+
     init (
         intervals: [String],
         selectedSegmentIndex: Int = Constants.defaultSelectedSegmentIndex
@@ -49,17 +49,17 @@ class TimeIntervalsControl: UIView {
         setupLayout()
         setupUI(intervals: intervals)
     }
-    
-    required public init? (coder aDecoder: NSCoder) {
+
+    required init? (coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setupLayout() {
         backgroundColor = .clear
         addSubview(selectorView)
         addSubview(stackView)
     }
-    
+
     private func setupUI(intervals: [String]) {
         for (index, interval) in intervals.enumerated() {
             let button = UIButton(
@@ -71,18 +71,18 @@ class TimeIntervalsControl: UIView {
                 borderWidth: Constants.borderWidth,
                 sizeFont: Constants.sizeFont
             )
-            
+
             if index == selectedSegmentIndex {
                 button.setTitleColor(Constants.selectTitleColor, for: .normal)
                 button.layer.borderColor = Constants.selectedBorderColor.cgColor
                 button.backgroundColor = Constants.selectedBackgroundColor
             }
-            
+
             segments.append(button)
             stackView.addArrangedSubview(button)
             button.tag = index
             button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
-            
+
             NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalTo: stackView.heightAnchor),
                 button.widthAnchor.constraint(equalTo: stackView.heightAnchor)
@@ -101,7 +101,7 @@ class TimeIntervalsControl: UIView {
             stackView.heightAnchor.constraint(equalTo: heightAnchor)
         ])
     }
-    
+
     private func updateSegments(selectedSegmentIndex: Int, oldSelectedSegmentIndex: Int) {
         segments.forEach { button in
             button.isSelected = false

@@ -156,9 +156,7 @@ private extension QuoteDetailViewController {
             switch result {
             case .success(let quoteDetail):
                 self?.detailsData = quoteDetail
-                DispatchQueue.main.async {
-                    self?.detailState = .success
-                }
+                self?.detailState = .success
             case .failure(let error):
                 print(error)
                 self?.detailState = .error
@@ -169,17 +167,18 @@ private extension QuoteDetailViewController {
     func getDataForGraph() {
         graphState = .load
         #warning("TODO: Paste real id")
-        chartDataClient?.quoteCharts(id: "ABRD", boardId: "TQBR", fromDate: getDate()) { [weak self] result in
+        chartDataClient?.quoteCharts(id: "abrd",
+                                     boardId: "tqbr",
+                                     fromDate: getDate(),
+                                     completion: { [weak self] result in
             switch result {
             case .success(let graphData):
                 self?.graphData = graphData
-                DispatchQueue.main.async {
-                    self?.graphState = .success
-                }
-            case .failure():
+                self?.graphState = .success
+            case .failure(let _):
                 self?.graphState = .error
             }
-        }
+        })
     }
 }
 

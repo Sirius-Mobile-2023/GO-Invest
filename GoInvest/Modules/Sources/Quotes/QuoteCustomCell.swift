@@ -62,7 +62,6 @@ final class QuoteCustomCell: UITableViewCell {
     func setData(model: QuoteModel) {
         shortNameLabel.text = model.shortName
         priceLabel.text = "$\(model.cost)"
-
         if model.costDifference < 0 {
             differencePriceLabel.text = "\(model.costDifference)%"
             differencePriceLabel.textColor = .red

@@ -3,12 +3,13 @@ import Theme
 
 class ErrorView: UIView {
     typealias RetryHandler = () -> Void
+
     var tryAgainHandler: RetryHandler?
 
     private let errorLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.error
-        label.textColor = Theme.Colors.mainText
+        label.textColor = Theme.Colors.buttonText
         label.text = "Error occured"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

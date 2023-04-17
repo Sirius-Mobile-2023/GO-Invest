@@ -43,12 +43,14 @@ class QuoteDetailView: UIView {
         button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
-        button.setTitle("Add to Portfolio", for: .normal)
+        button.setTitle("Add to Favorites", for: .normal)
         button.setTitleColor(Theme.Colors.buttonText, for: .normal)
+        button.setTitleColor(Theme.Colors.buttonHighlightedText, for: .highlighted)
         button.titleLabel?.font = Theme.Fonts.button
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.isSkeletonable = true
         button.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
+        button.addTarget(self, action: #selector(addToFavoritesTapped(_:)), for: .touchUpInside)
         return button
     }()
 
@@ -186,5 +188,12 @@ extension QuoteDetailView {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY-MM-dd"
         lastDateLabel.text = dateFormatter.string(from: quoteDetailData.date)
+    }
+}
+
+extension QuoteDetailView {
+    @objc private func addToFavoritesTapped(_ sender: UIButton) {
+        print("Add to favs")
+//        addToFavoritesHandler?()
     }
 }
