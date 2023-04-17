@@ -45,6 +45,7 @@ let package = Package(
         .target(
             name: "Theme",
             dependencies: []
-        )
+        ),
+
     ]
 )

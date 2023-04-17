@@ -5,15 +5,13 @@ public class QuotesViewController: UIViewController {
     private let viewModels = Data.getData()
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
+    private var quotesArray: [Quote] = []
     private lazy var tableView = UITableView()
+    private let client = QuoteClient()
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.alpha = 1
-        if animationPlayed {
-            animateTableView()
-            animationPlayed = false
-        }
     }
 
     override public func viewDidLoad() {
@@ -23,17 +21,29 @@ public class QuotesViewController: UIViewController {
         if animationPlayed {
             tableView.alpha = 0
         }
+        fetchData()
     }
-
     private func configureTitle() {
         title = "Quotes"
     }
 
+    private func fetchData() {
+        client.quoteList(search: .defaultList) { [weak self] result in
+            switch result {
+            case let .success(array):
+                self?.quotesArray = array
+            case let .failure(error):
+                print(error)
+            }
+                self?.tableView.reloadData()
+                self?.animateTableView()
+                self?.animationPlayed = false
+        }
+    }
+
     private func animateTableView() {
         tableView.reloadData()
-
         let cells = tableView.visibleCells
-
         let tableViewHeight = tableView.bounds.size.height
 
         for cell in cells {
