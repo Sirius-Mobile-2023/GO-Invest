@@ -3,8 +3,8 @@ import SwiftUI
 import Theme
 
 class QuoteDetailView: UIView {
-    private let graphView: UIHostingController<GraphViewController> = {
-        let graphView = GraphViewController()
+    private let graphView: UIHostingController<GraphView> = {
+        let graphView = GraphView()
         let hostingController = UIHostingController(rootView: graphView)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         return hostingController

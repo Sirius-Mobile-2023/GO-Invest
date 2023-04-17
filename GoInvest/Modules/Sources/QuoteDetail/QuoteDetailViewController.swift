@@ -9,7 +9,7 @@ public class QuoteDetailViewController: UIViewController {
         return view
     }()
 
-    private let graphView = UIHostingController(rootView: GraphViewController())
+    private let graphView = UIHostingController(rootView: GraphView())
 
     override public func viewDidLoad() {
         super.viewDidLoad()

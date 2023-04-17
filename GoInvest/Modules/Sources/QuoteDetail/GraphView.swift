@@ -1,12 +1,10 @@
 import SwiftUI
 import Charts
 
-struct GraphViewController: View {
+struct GraphView: View {
     @State var sampleAnalytics: [GraphMockModel] = sampleData
-    @State var currentTab: String = "7 Days"
     @State var currentActiveItem: GraphMockModel?
     @State var plotWidth: CGFloat = 0
-    @State var isLineGraph: Bool = false
 
     var body: some View {
         NavigationStack {
@@ -21,6 +19,10 @@ struct GraphViewController: View {
 
     @ViewBuilder
     func animatedChart() -> some View {
+        let max = sampleAnalytics.max { item1, item2 in
+            return item2.price > item1.price
+        }?.price ?? 0
+        
         Chart {
             ForEach(sampleAnalytics) { item in
                 LineMark(
@@ -55,7 +57,7 @@ struct GraphViewController: View {
                 }
             }
         }
-        .chartYScale(domain: 0...(15000))
+        .chartYScale(domain: 0...(max))
         .chartOverlay(content: { proxy in
             GeometryReader {_ in
                 Rectangle()
@@ -99,7 +101,7 @@ struct GraphViewController: View {
 
 struct GraphViewController_Previews: PreviewProvider {
     static var previews: some View {
-        GraphViewController()
+        GraphView()
     }
 }
 
@@ -110,8 +112,7 @@ struct GraphMockModel: Identifiable {
     var animate: Bool = false
 }
 
-/* // Временное решение, для данных из сети оно будет изменено.
-Сейчас пока не знаю в каком формате дата будет приходить */
+// TODO: Get data for chart #24
 extension Date {
     func updateHour(value: Int) -> Date {
         let calendar = Calendar.current
@@ -119,7 +120,6 @@ extension Date {
     }
 }
 
-// этого тоже не будет
 var sampleData: [GraphMockModel] = [
     GraphMockModel(day: Date().updateHour(value: 8), price: 1500),
     GraphMockModel(day: Date().updateHour(value: 9), price: 2625),
