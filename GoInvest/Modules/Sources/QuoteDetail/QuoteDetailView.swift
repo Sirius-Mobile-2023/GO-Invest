@@ -126,9 +126,6 @@ class QuoteDetailView: UIView {
         lastDateTextLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         lastDateLabel.setContentHuggingPriority(.defaultLow, for: .horizontal)
     }
-    public func startAnimating() {
-        self.showAnimatedGradientSkeleton()
-    }
 }
 
 // MARK: - Apply style to UI Elements
@@ -188,4 +185,3 @@ extension QuoteDetailView {
         }
     }
 }
-

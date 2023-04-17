@@ -25,7 +25,7 @@ public class QuoteDetailViewController: UIViewController {
     private var chartDataClient: ChartsProvider? = QuoteClient()
     private var graphData: QuoteCharts?
     private var detailsData: QuoteDetail?
-    
+
     private lazy var errorView: ErrorView = {
         let view = ErrorView()
         view.tryAgainHandler = { [weak self] in

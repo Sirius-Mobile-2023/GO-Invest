@@ -1,4 +1,6 @@
 import UIKit
+import QuoteClient
+import DomainModels
 
 enum QuotesViewState {
     case load
@@ -10,6 +12,22 @@ public class QuotesViewController: UIViewController {
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
     private lazy var tableView = UITableView()
+    private var quoteClient: QuoteListProvider? = QuoteClient()
+    private var quotes: [Quote] = []
+    private var currentViewState: QuotesViewState? {
+        didSet {
+            switch self.currentViewState {
+            case .load:
+#warning("TODO: Add load animation")
+            case .error:
+#warning("TODO: Add error view")
+            case .success:
+#warning("TODO: Add table reload")
+            case .none:
+                break
+            }
+        }
+    }
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -22,6 +40,7 @@ public class QuotesViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        loadData()
         configureTitle()
         configureTableView()
         if animationPlayed {
@@ -90,5 +109,21 @@ extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
 
     public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         didTapButton?(viewModels[indexPath.row].shortName)
+    }
+}
+
+extension QuotesViewController {
+    private func loadData() {
+        quoteClient?.quoteList(search: .defaultList) {result in
+            switch result {
+            case .success(let quotesList):
+                self.currentViewState = .success
+                self.quotes = quotesList
+                print("success")
+            case .failure(let error):
+                self.currentViewState = .error
+                print(error)
+            }
+        }
     }
 }
