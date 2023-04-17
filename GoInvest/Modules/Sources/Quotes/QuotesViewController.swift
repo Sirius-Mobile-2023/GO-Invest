@@ -1,5 +1,4 @@
 import UIKit
-import Theme
 
 public class QuotesViewController: UIViewController {
     private let viewModels = Data.getData()

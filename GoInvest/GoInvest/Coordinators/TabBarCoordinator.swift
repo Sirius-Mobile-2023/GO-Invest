@@ -1,6 +1,5 @@
 import Profile
 import Quotes
-import Theme
 import UIKit
 
 class TabBarCoordinator {
@@ -20,18 +19,14 @@ class TabBarCoordinator {
             self.showQuoteController(with: title, navigationController: quotesNC)
         }
 
-        let nav1 = UINavigationController(rootViewController: quotes)
-        let nav2 = UINavigationController(rootViewController: profile)
+        quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: UIImage(systemName: "arrow.up.arrow.down"), tag: 0)
+        profileNC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
+        profileNC.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
 
         let controllers = [quotesNC, profileNC]
         controllers.forEach { $0.navigationBar.prefersLargeTitles = true }
 
         prepareTabBarController(withTabControllers: controllers)
-    }
-
-    private func styleNavigationController() {
-        navigationController.navigationBar.backIndicatorImage = Theme.Images.backNavBar
-        navigationController.navigationBar.backIndicatorTransitionMaskImage = Theme.Images.backNavBar
     }
 
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
