@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import Theme
 
 public class QuoteDetailViewController: UIViewController {
@@ -8,11 +9,16 @@ public class QuoteDetailViewController: UIViewController {
         return view
     }()
 
+    private let graphView = UIHostingController(rootView: GraphViewController())
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.Colors.background
         view.addSubview(quoteDetailView)
         setupLayout()
+
+        addChild(graphView)
+        graphView.didMove(toParent: self)
     }
 
     private func setupLayout() {
