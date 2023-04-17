@@ -20,18 +20,10 @@ class TabBarCoordinator {
             self.showQuoteController(with: title, navigationController: quotesNC)
         }
 
-        let nav1 = UINavigationController(rootViewController: quotes)
-        let nav2 = UINavigationController(rootViewController: profile)
-
         let controllers = [quotesNC, profileNC]
         controllers.forEach { $0.navigationBar.prefersLargeTitles = true }
 
         prepareTabBarController(withTabControllers: controllers)
-    }
-
-    private func styleNavigationController() {
-        navigationController.navigationBar.backIndicatorImage = Theme.Images.backNavBar
-        navigationController.navigationBar.backIndicatorTransitionMaskImage = Theme.Images.backNavBar
     }
 
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
