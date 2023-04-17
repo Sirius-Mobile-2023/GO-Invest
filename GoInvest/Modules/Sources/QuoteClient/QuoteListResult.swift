@@ -38,7 +38,7 @@ struct QuoteListResult: Decodable {
 }
 
 private extension QuoteListResult {
-    struct Constants {
+    enum Constants {
         static let idJsonName = "SECID"
         static let nameJsonName = "SHORTNAME"
         static let openPriceJsonName = "OPEN"
