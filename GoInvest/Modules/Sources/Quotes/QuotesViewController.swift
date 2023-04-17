@@ -7,7 +7,7 @@ public class QuotesViewController: UIViewController {
         let button = UIButton()
         button.setTitle("To Quote", for: .normal)
         button.backgroundColor = Theme.Colors.button
-        button.layer.cornerRadius = Theme.buttonCornerRadius
+        button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
         button.addTarget(self, action: #selector(toQuoteTapped(_:)), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button

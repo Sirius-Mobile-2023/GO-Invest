@@ -39,10 +39,10 @@ class QuoteDetailView: UIView {
         var button = UIButton()
         button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.layer.cornerRadius = Theme.buttonCornerRadius
+        button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
         button.setTitle("Add to Portfolio", for: .normal)
         button.setTitleColor(Theme.Colors.buttonText, for: .normal)
-        button.titleLabel?.font = Theme.Fonts.buttonFont
+        button.titleLabel?.font = Theme.Fonts.button
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
     }()
@@ -93,7 +93,7 @@ class QuoteDetailView: UIView {
                        openPriceStackView,
                        averagePriceStackView
                        ],
-            spacing: Theme.smallSpacing,
+            spacing: Theme.Layout.smallSpacing,
             axis: .vertical
         )
         arrangeStackView(
@@ -103,7 +103,7 @@ class QuoteDetailView: UIView {
                        detailLabelsStackView,
                        addToPortfolioButton
                        ],
-            spacing: Theme.bigSpacing,
+            spacing: Theme.Layout.bigSpacing,
             axis: .vertical
         )
         setContentHuggingPriorities()
@@ -111,7 +111,7 @@ class QuoteDetailView: UIView {
         NSLayoutConstraint.activate([
             graphView.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 70),
-            addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.buttonHeight),
+            addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: self.topAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
@@ -136,7 +136,7 @@ private extension QuoteDetailView {
         for label: UILabel,
         text: String) {
             label.text = text
-            label.font = Theme.Fonts.subtitleFont
+            label.font = Theme.Fonts.subtitle
         }
 
     func applyStyleForAmountLabel(
@@ -144,7 +144,7 @@ private extension QuoteDetailView {
         text: String) {
             label.text = text
             label.textAlignment = .right
-            label.font = Theme.Fonts.titleFont
+            label.font = Theme.Fonts.title
         }
 
     func arrangeStackView(
