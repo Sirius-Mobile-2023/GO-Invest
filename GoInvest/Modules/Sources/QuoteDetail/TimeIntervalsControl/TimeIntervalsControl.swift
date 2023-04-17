@@ -2,7 +2,6 @@ import UIKit
 import AudioToolbox
 
 class TimeIntervalsControl: UIView {
-
     var selectedSegmentIndex: Int {
         didSet {
             updateSegments(
@@ -15,7 +14,7 @@ class TimeIntervalsControl: UIView {
     private var selectedSegmentConstraint: NSLayoutConstraint!
     private var segments = [UIButton]()
     
-    private var selectorView: UIView = {
+    private let selectorView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = Constants.cornerRadius
         view.backgroundColor = Constants.selectedBackgroundColor
@@ -26,9 +25,8 @@ class TimeIntervalsControl: UIView {
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.spacing = 20
         stackView.alignment = .center
-        stackView.distribution = .fillEqually
+        stackView.distribution = .equalCentering
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -63,13 +61,15 @@ class TimeIntervalsControl: UIView {
                 title: interval,
                 titleColor: Constants.defaultTitleColor,
                 backgroundColor: Constants.defaultBackgroundColor,
-                borderColor: Constants.selectedBackgroundColor,
+                borderColor: Constants.defaultBorderColor,
                 cornerRadius: Constants.cornerRadius,
-                borderWidth: Constants.borderWidth
+                borderWidth: Constants.borderWidth,
+                sizeFont: Constants.sizeFont
             )
             
-            if index == self.selectedSegmentIndex {
+            if index == selectedSegmentIndex {
                 button.setTitleColor(Constants.selectTitleColor, for: .normal)
+                button.layer.borderColor = Constants.selectedBorderColor.cgColor
                 button.backgroundColor = Constants.selectedBackgroundColor
             }
             
@@ -80,7 +80,7 @@ class TimeIntervalsControl: UIView {
             
             NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalTo: stackView.heightAnchor),
-                button.widthAnchor.constraint(lessThanOrEqualToConstant: 45)
+                button.widthAnchor.constraint(equalTo: stackView.heightAnchor)
             ])
         }
 
@@ -88,12 +88,12 @@ class TimeIntervalsControl: UIView {
             equalTo: segments[selectedSegmentIndex].centerXAnchor
         )
         NSLayoutConstraint.activate([
-            selectorView.centerYAnchor.constraint(equalTo: segments[self.selectedSegmentIndex].centerYAnchor),
+            selectorView.centerYAnchor.constraint(equalTo: segments[selectedSegmentIndex].centerYAnchor),
             selectedSegmentConstraint,
             selectorView.heightAnchor.constraint(equalTo: segments[selectedSegmentIndex].heightAnchor),
             selectorView.widthAnchor.constraint(equalTo: segments[selectedSegmentIndex].widthAnchor),
-            stackView.widthAnchor.constraint(equalTo: self.widthAnchor),
-            stackView.heightAnchor.constraint(equalTo: self.heightAnchor)
+            stackView.widthAnchor.constraint(equalTo: widthAnchor),
+            stackView.heightAnchor.constraint(equalTo: heightAnchor)
         ])
     }
     
@@ -103,9 +103,9 @@ class TimeIntervalsControl: UIView {
         }
 
         segments[selectedSegmentIndex].isSelected.toggle()
-        self.selectedSegmentConstraint.isActive = false
-        self.selectedSegmentConstraint = self.selectorView.centerXAnchor.constraint(
-            equalTo: self.segments[selectedSegmentIndex].centerXAnchor
+        selectedSegmentConstraint.isActive = false
+        selectedSegmentConstraint = selectorView.centerXAnchor.constraint(
+            equalTo: segments[selectedSegmentIndex].centerXAnchor
         )
         self.selectedSegmentConstraint.isActive = true
         UIView.animate(
@@ -114,8 +114,10 @@ class TimeIntervalsControl: UIView {
             options: .curveEaseOut,
             animations: {
                 self.segments[oldSelectedSegmentIndex].backgroundColor = Constants.defaultBackgroundColor
+                self.segments[oldSelectedSegmentIndex].layer.borderColor = Constants.defaultBorderColor.cgColor
                 self.segments[oldSelectedSegmentIndex].setTitleColor(Constants.defaultTitleColor, for: .normal)
                 self.segments[selectedSegmentIndex].backgroundColor = Constants.selectedBackgroundColor
+                self.segments[selectedSegmentIndex].layer.borderColor = Constants.selectedBorderColor.cgColor
                 self.segments[selectedSegmentIndex].setTitleColor(Constants.selectTitleColor, for: .normal)
                 self.layoutIfNeeded()
             }, completion: { _ in
@@ -134,12 +136,15 @@ extension TimeIntervalsControl {
 private extension TimeIntervalsControl {
     struct Constants {
         static let defaultSelectedSegmentIndex = 0
-        static let selectedBackgroundColor = UIColor.gray
+        static let selectedBorderColor = UIColor.black
+        static let defaultBorderColor = UIColor.lightGray
+        static let selectedBackgroundColor = UIColor.black
         static let defaultBackgroundColor = UIColor.clear
         static let selectTitleColor = UIColor.white
-        static let defaultTitleColor = UIColor.gray
-        static let cornerRadius: CGFloat = 15
-        static let borderWidth: CGFloat = 1
+        static let defaultTitleColor = UIColor.black
+        static let cornerRadius: CGFloat = 18
+        static let borderWidth: CGFloat = 0.5
+        static let sizeFont: CGFloat = 13
     }
 }
 
@@ -150,7 +155,8 @@ private extension UIButton {
         backgroundColor: UIColor,
         borderColor: UIColor,
         cornerRadius: CGFloat,
-        borderWidth: CGFloat
+        borderWidth: CGFloat,
+        sizeFont: CGFloat
     ) {
         self.init(frame: .zero)
         self.setTitle(title, for: .normal)
@@ -159,8 +165,7 @@ private extension UIButton {
         self.layer.borderColor = borderColor.cgColor
         self.layer.borderWidth = borderWidth
         self.layer.cornerRadius = cornerRadius
+        self.titleLabel?.font = .systemFont(ofSize: sizeFont)
         self.translatesAutoresizingMaskIntoConstraints = false
     }
 }
-
-
