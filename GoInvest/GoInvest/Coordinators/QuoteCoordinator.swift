@@ -14,19 +14,32 @@ class QuoteCoordinator {
 
     func start() {
         let client = QuoteClient()
-        let points = client.quoteCharts(id: "ABRD",
+        let detail = client.quoteDetail(id: "ABRD",
                                         boardId: "TQBR",
-                                        fromDate: dateFromString(str: "2021-04-14")!,
                                         completion: { result in
             switch result {
-            case .success(let quoteCharts):
+            case .success(let quote):
                 print("✅")
-                print(quoteCharts.points)
+                print(quote)
             case .failure(let error):
                 print("❌")
                 print(error)
             }
         })
+
+//        let points = client.quoteCharts(id: "ABRD",
+//                                        boardId: "TQBR",
+//                                        fromDate: dateFromString(str: "2021-04-14")!,
+//                                        completion: { result in
+//            switch result {
+//            case .success(let quoteCharts):
+//                print("✅")
+//                print(quoteCharts.points)
+//            case .failure(let error):
+//                print("❌")
+//                print(error)
+//            }
+//        })
         let viewController = QuoteDetailViewController()
         viewController.navigationItem.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)

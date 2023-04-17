@@ -18,6 +18,7 @@ public class QuotesViewController: UIViewController {
         setupLayout()
     }
 
+
     private func setupUI() {
         view.backgroundColor = .blue
         view.addSubview(toQuoteButton)
