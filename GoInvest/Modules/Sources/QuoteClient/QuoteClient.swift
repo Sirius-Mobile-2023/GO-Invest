@@ -12,7 +12,6 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
     private let session = URLSession(configuration: URLSessionConfiguration.default)
     private let decoder = JSONDecoder()
     public init() {}
-
     public func quoteList(search: SearchForList, completion: @escaping (_: Result<[Quote], Error>) -> Void) {
         let url: URL?
         switch search {
@@ -52,13 +51,84 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
     }
 
     public func quoteCharts(
-            id: String,
-            boardId: String,
-            fromDate: Date,
-            completion: @escaping (_: Result<QuoteCharts, Error>) -> Void
+        id: String,
+        boardId: String,
+        fromDate: Date,
+        completion: @escaping (_: Result<QuoteCharts, Error>) -> Void
     ) {
-        // swiftlint:disable:next line_length
-        let urlComponentGetCharts = "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json?from=\(String(date: fromDate))"
+        let urlComponentGetCharts = "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json?"
+        getHundredtChartsAfterDate(array: [],
+                                   fromDate: fromDate,
+                                   urlComponentGetCharts: urlComponentGetCharts,
+                                   callback: completion)
+    }
+
+    private func getHundredtChartsAfterDate(
+        array: [Point],
+        fromDate: Date,
+        urlComponentGetCharts: String,
+        callback: @escaping (_: Result<QuoteCharts, Error>) -> Void
+    ) {
+//        print("run get")
+        let url = URL(string: urlComponentGetCharts + "from=\(String(date: fromDate))")
+        guard let url = url else {
+            DispatchQueue.main.async {
+                callback(.failure(ClientError.algorithmError))
+            }
+            return
+        }
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        let task = session.dataTask(with: request) { data, _, _ in
+            guard let data = data else {
+                callback(.failure(ClientError.getRequestError))
+                return
+            }
+            do {
+                let quotChartsResult = try self.decoder.decode(QuoteChartsResult.self, from: data)
+                let result = quotChartsResult.toQuoteCharts()
+                switch result {
+                case let .success(quotCharts):
+                    DispatchQueue.main.async {
+                        let points = quotCharts.points
+                        var newArray = array
+                        newArray.append(contentsOf: points)
+//                        print("point size:\(points.count)")
+//                        print("New Date: \(newDate)")
+//                        print("New array size: \(newArray.count)")
+                        if points.count > 1 {
+                            self.getHundredtChartsAfterDate(
+                                array: newArray,
+                                fromDate: points[points.count - 1].date,
+                                urlComponentGetCharts: urlComponentGetCharts,
+                                callback: callback
+                            )
+                        } else {
+//                            print("!!!!run LAST")
+                            callback(.success(QuoteCharts(points: newArray)))
+                        }
+                    }
+                case .failure:
+                    DispatchQueue.main.async {
+                        callback(result)
+                    }
+                }
+            } catch {
+                DispatchQueue.main.async {
+                    callback(.failure(ClientError.decodeJsonError))
+                }
+            }
+        }
+        task.resume()
+    }
+
+    public func quoteDetail(
+        id: String,
+        boardId: String,
+        completion: @escaping (_: Result<QuoteDetail, Error>) -> Void
+    ) {
+        let urlComponentGetCharts = "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json?sort_order=desc"
+
         let url = URL(string: urlComponentGetCharts)
         guard let url = url else {
             DispatchQueue.main.async {
@@ -78,7 +148,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
             do {
                 let quotCharts = try self.decoder.decode(QuoteChartsResult.self, from: data)
                 DispatchQueue.main.async {
-                    completion(quotCharts.toQuoteCharts())
+                    completion(quotCharts.toQuoteDetail())
                 }
             } catch {
                 DispatchQueue.main.async {
@@ -88,11 +158,6 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
             }
         }
         task.resume()
-
-    }
-
-    public func quoteDetail(id _: String, completion _: (_: Result<QuoteDetail, Error>) -> Void) {
-        return
     }
 }
 
