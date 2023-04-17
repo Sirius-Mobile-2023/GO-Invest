@@ -25,7 +25,7 @@ public class QuoteDetailViewController: UIViewController {
     private var chartDataClient: ChartsProvider? = QuoteClient()
     private var graphData: QuoteCharts?
     private var detailsData: QuoteDetail?
-    private var quoteId: String?
+    public var quoteId: String?
 
     private lazy var errorView: ErrorView = {
         let view = ErrorView()
@@ -105,15 +105,6 @@ public class QuoteDetailViewController: UIViewController {
         }
     }
 
-    public init(quoteId: String) {
-        self.quoteId = quoteId
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -160,14 +151,16 @@ private extension QuoteDetailViewController {
 
     func getDataForDetails() {
         detailState = .load
-        quoteDetailClient?.quoteDetail(id: quoteId ?? "") { [weak self] result in
+        #warning("TODO: Paste real id")
+        quoteDetailClient?.quoteDetail(id: "abrd", boardId: "tqbr") { [weak self] result in
             switch result {
             case .success(let quoteDetail):
                 self?.detailsData = quoteDetail
                 DispatchQueue.main.async {
                     self?.detailState = .success
                 }
-            case .failure:
+            case .failure(let error):
+                print(error)
                 self?.detailState = .error
             }
         }
@@ -175,16 +168,25 @@ private extension QuoteDetailViewController {
 
     func getDataForGraph() {
         graphState = .load
-        chartDataClient?.quoteCharts(id: quoteId ?? "", boardId: "TQBR", fromDate: Date()) { [weak self] result in
+        #warning("TODO: Paste real id")
+        chartDataClient?.quoteCharts(id: "ABRD", boardId: "TQBR", fromDate: getDate()) { [weak self] result in
             switch result {
             case .success(let graphData):
                 self?.graphData = graphData
                 DispatchQueue.main.async {
                     self?.graphState = .success
                 }
-            case .failure:
+            case .failure(let error):
+
                 self?.graphState = .error
             }
         }
+    }
+}
+
+private extension QuoteDetailViewController {
+    func getDate() -> Date {
+        let date = Calendar.current.date(byAdding: .year, value: -1, to: .now)
+        return date!
     }
 }

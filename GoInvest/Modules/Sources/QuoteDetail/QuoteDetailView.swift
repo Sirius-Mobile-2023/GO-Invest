@@ -172,16 +172,11 @@ private extension QuoteDetailView {
 
 extension QuoteDetailView {
     func setDetailsData(quoteDetailData: QuoteDetail) {
-        if let closePrice = quoteDetailData.closePrice,
-           let openPrice = quoteDetailData.openPrice,
-           let averagePrice = quoteDetailData.currentPrice,
-           let lastDate = quoteDetailData.date {
-            closePriceAmountLabel.text = "\(closePrice)"
-            openPriceAmountLabel.text = "\(openPrice)"
-            averagePriceAmountLabel.text = "\(averagePrice)"
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "YYYY-MM-dd"
-            lastDateLabel.text = dateFormatter.string(from: lastDate)
-        }
+        closePriceAmountLabel.text = "\(quoteDetailData.closePrice)"
+        openPriceAmountLabel.text = "\(quoteDetailData.openPrice)"
+        averagePriceAmountLabel.text = "\(quoteDetailData.currentPrice)"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd"
+        lastDateLabel.text = dateFormatter.string(from: quoteDetailData.date)
     }
 }

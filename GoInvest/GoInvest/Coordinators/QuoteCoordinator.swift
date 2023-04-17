@@ -29,7 +29,7 @@ class QuoteCoordinator {
                                         })
 
         let points = client.quoteCharts(id: "ABRD",
-                                        boardId: "TQBR",
+                                        boardId: "TQBR", fromDate: dateFromString(str: "2020-04-20")!,
                                         completion: { result in
                                             switch result {
                                             case let .success(quoteCharts):
@@ -41,10 +41,11 @@ class QuoteCoordinator {
                                             }
                                         })
         let viewController = QuoteDetailViewController()
+        viewController.quoteId = navigationTitle
         viewController.navigationItem.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
     }
-    //TODO: #<26 issue, функция как пример для конвертации данных>
+    // TODO: #<26 issue, функция как пример для конвертации данных>
     func dateFromString(str: String?) -> Date? {
         guard let str = str else {
             return nil

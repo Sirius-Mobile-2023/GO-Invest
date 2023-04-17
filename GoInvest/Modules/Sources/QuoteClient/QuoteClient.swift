@@ -127,6 +127,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         boardId: String,
         completion: @escaping (_: Result<QuoteDetail, Error>) -> Void
     ) {
+        // swiftlint:disable:next line_length
         let urlComponentGetCharts = "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json?sort_order=desc"
 
         let url = URL(string: urlComponentGetCharts)
