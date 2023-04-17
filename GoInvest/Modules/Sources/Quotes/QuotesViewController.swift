@@ -1,12 +1,14 @@
 import UIKit
-import Theme
+import DomainModels
+import QuoteClient
 
 public class QuotesViewController: UIViewController {
-    private let viewModels = Data.getData()
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
+    private var searchController = UISearchController(searchResultsController: nil)
     private var quotesArray: [Quote] = []
     private lazy var tableView = UITableView()
+    private let myRefreshControll = UIRefreshControl()
     private let client = QuoteClient()
 
     override public func viewDidLayoutSubviews() {
@@ -18,13 +20,11 @@ public class QuotesViewController: UIViewController {
         super.viewDidLoad()
         configureTitle()
         configureTableView()
+        configureSearchbar()
         if animationPlayed {
             tableView.alpha = 0
         }
         fetchData()
-    }
-    private func configureTitle() {
-        title = "Quotes"
     }
 
     private func fetchData() {
@@ -41,9 +41,20 @@ public class QuotesViewController: UIViewController {
         }
     }
 
+    private func configureSearchbar() {
+        navigationItem.searchController = searchController
+        searchController.searchBar.delegate = self
+    }
+
+    private func configureTitle() {
+        title = "Quotes"
+    }
+
     private func animateTableView() {
         tableView.reloadData()
+
         let cells = tableView.visibleCells
+
         let tableViewHeight = tableView.bounds.size.height
 
         for cell in cells {
@@ -67,6 +78,8 @@ public class QuotesViewController: UIViewController {
         setTableViewDelegates()
         tableView.rowHeight = 90
         tableView.register(QuoteCustomCell.self, forCellReuseIdentifier: "QuoteCustomCell")
+        myRefreshControll.addTarget(self, action: #selector(updateTable(sender:)), for: .valueChanged)
+        tableView.addSubview(myRefreshControll)
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -77,6 +90,11 @@ public class QuotesViewController: UIViewController {
         ])
     }
 
+    @objc private func updateTable(sender _: UIRefreshControl) {
+            fetchData()
+            myRefreshControll.endRefreshing()
+    }
+
     private func setTableViewDelegates() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -85,16 +103,39 @@ public class QuotesViewController: UIViewController {
 
 extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        viewModels.count
+        quotesArray.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuoteCustomCell") as! QuoteCustomCell
-        cell.setData(model: viewModels[indexPath.row])
+        cell.setData(model: quotesArray[indexPath.row])
         return cell
     }
 
     public func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
         didTapButton?("Quote")
+    }
+}
+
+extension QuotesViewController: UISearchBarDelegate {
+    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        //        guard let text = searchBar.text, !text.isEmpty else {
+        //            return
+        //        }
+        //
+        //        client.quoteList(search: .listByName(text)) { [weak self] result in
+        //            switch result {
+        //            case let .success(array):
+        //                self?.quotesArray = array
+        //            case let .failure(error):
+        //                print(error)
+        //            }
+        //             self?.tableView.reloadData()
+        //             self?.animateTableView()
+        //             self?.animationPlayed = false
+        //             self?.searchController.dismiss(animated: true, completion: nil)
+        //        }
+        //
+        //    }
     }
 }
