@@ -1,15 +1,21 @@
 import UIKit
 import DomainModels
-import QuoteClient
 
 public class QuotesViewController: UIViewController {
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
-    private var searchController = UISearchController(searchResultsController: nil)
     private var quotesArray: [Quote] = []
     private lazy var tableView = UITableView()
-    private let myRefreshControll = UIRefreshControl()
-    private let client = QuoteClient()
+    public var client: QuoteListProvider
+
+    public init(client: QuoteListProvider) {
+        self.client = client
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -20,7 +26,6 @@ public class QuotesViewController: UIViewController {
         super.viewDidLoad()
         configureTitle()
         configureTableView()
-        configureSearchbar()
         if animationPlayed {
             tableView.alpha = 0
         }
@@ -39,11 +44,6 @@ public class QuotesViewController: UIViewController {
                 self?.animateTableView()
                 self?.animationPlayed = false
         }
-    }
-
-    private func configureSearchbar() {
-        navigationItem.searchController = searchController
-        searchController.searchBar.delegate = self
     }
 
     private func configureTitle() {
@@ -78,8 +78,6 @@ public class QuotesViewController: UIViewController {
         setTableViewDelegates()
         tableView.rowHeight = 90
         tableView.register(QuoteCustomCell.self, forCellReuseIdentifier: "QuoteCustomCell")
-        myRefreshControll.addTarget(self, action: #selector(updateTable(sender:)), for: .valueChanged)
-        tableView.addSubview(myRefreshControll)
 
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -88,11 +86,6 @@ public class QuotesViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-    }
-
-    @objc private func updateTable(sender _: UIRefreshControl) {
-            fetchData()
-            myRefreshControll.endRefreshing()
     }
 
     private func setTableViewDelegates() {
@@ -114,28 +107,5 @@ extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
 
     public func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
         didTapButton?("Quote")
-    }
-}
-
-extension QuotesViewController: UISearchBarDelegate {
-    public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        //        guard let text = searchBar.text, !text.isEmpty else {
-        //            return
-        //        }
-        //
-        //        client.quoteList(search: .listByName(text)) { [weak self] result in
-        //            switch result {
-        //            case let .success(array):
-        //                self?.quotesArray = array
-        //            case let .failure(error):
-        //                print(error)
-        //            }
-        //             self?.tableView.reloadData()
-        //             self?.animateTableView()
-        //             self?.animationPlayed = false
-        //             self?.searchController.dismiss(animated: true, completion: nil)
-        //        }
-        //
-        //    }
     }
 }

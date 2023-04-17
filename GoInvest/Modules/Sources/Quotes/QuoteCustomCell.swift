@@ -100,7 +100,7 @@ final class QuoteCustomCell: UITableViewCell {
     }
 
     private func configureShortNameLabel() {
-        shortNameLabel.numberOfLines = 0
+        shortNameLabel.numberOfLines = 1
         shortNameLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)
     }
 
@@ -111,7 +111,7 @@ final class QuoteCustomCell: UITableViewCell {
     }
 
     private func configurePriceLabel() {
-        priceLabel.numberOfLines = 0
+        priceLabel.numberOfLines = 1
         priceLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         priceLabel.textAlignment = .right
     }
@@ -146,11 +146,6 @@ final class QuoteCustomCell: UITableViewCell {
 }
 
 extension Decimal {
-    mutating func round(_ scale: Int, _ roundingMode: NSDecimalNumber.RoundingMode) {
-        var localCopy = self
-        NSDecimalRound(&self, &localCopy, scale, roundingMode)
-    }
-
     func rounded(_ scale: Int, _ roundingMode: NSDecimalNumber.RoundingMode) -> Decimal {
         var result = Decimal()
         var localCopy = self

@@ -1,3 +1,4 @@
+import QuoteClient
 import Profile
 import Quotes
 import Theme
@@ -11,14 +12,15 @@ class TabBarCoordinator {
     }
 
     func start() {
-        let quotesVC = QuotesViewController()
+        let quotesVC = QuotesViewController(client: QuoteClient())
         let profileVC = ProfileViewController()
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let profileNC = UINavigationController(rootViewController: profileVC)
 
-        quotesVC.didTapButton = { title in
-            self.showQuoteController(with: title, navigationController: quotesNC)
+        quotesVC.didTapButton = { [weak self] title in
+            self?.showQuoteController(with: title, navigationController: quotesNC)
         }
+        quotesVC.client = QuoteClient()
 
         let controllers = [quotesNC, profileNC]
         controllers.forEach { $0.navigationBar.prefersLargeTitles = true }
