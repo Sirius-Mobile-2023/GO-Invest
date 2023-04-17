@@ -4,13 +4,17 @@ import SkeletonView
 import DomainModels
 
 class QuoteDetailView: UIView {
-    private let buttonView: UIView = {
+    private let graphView: UIView = {
         var view = UIView()
-        view.backgroundColor = .blue
+        view.backgroundColor = .green
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.skeletonCornerRadius = Theme.skeletonCornerRadius
-        view.isSkeletonable = true
         return view
+    }()
+
+    private let buttonView: TimeIntervalsControl = {
+        let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 0)
+        control.translatesAutoresizingMaskIntoConstraints = false
+        return control
     }()
 
     private let lastDateTextLabel = UILabel()
@@ -108,11 +112,13 @@ class QuoteDetailView: UIView {
         setContentHuggingPriorities()
         addSubview(mainStackView)
         NSLayoutConstraint.activate([
-            buttonView.heightAnchor.constraint(equalToConstant: 70),
+            graphView.heightAnchor.constraint(equalToConstant: 300),
+            buttonView.heightAnchor.constraint(equalToConstant: 40),
             addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
-            mainStackView.topAnchor.constraint(equalTo: self.topAnchor),
-            mainStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+            mainStackView.topAnchor.constraint(equalTo: topAnchor),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+
         ])
     }
 
