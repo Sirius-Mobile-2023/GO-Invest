@@ -16,6 +16,7 @@
 		8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */; };
 		8790EA8429E5938A00A9FD42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8329E5938A00A9FD42 /* Assets.xcassets */; };
 		8790EA8729E5938A00A9FD42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8529E5938A00A9FD42 /* LaunchScreen.storyboard */; };
+		971039DB29E95901008C4370 /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 971039DA29E95901008C4370 /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		8790EA8329E5938A00A9FD42 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		8790EA8629E5938A00A9FD42 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		8790EA8829E5938A00A9FD42 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		971039DA29E95901008C4370 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,6 +58,7 @@
 		8790EA6E29E5938800A9FD42 = {
 			isa = PBXGroup;
 			children = (
+				971039DA29E95901008C4370 /* .swiftlint.yml */,
 				8790EA7929E5938800A9FD42 /* GoInvest */,
 				8790EA7829E5938800A9FD42 /* Products */,
 				87C32D0529E5B51A00CC7A4D /* Frameworks */,
@@ -97,10 +100,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8790EA8B29E5938A00A9FD42 /* Build configuration list for PBXNativeTarget "GoInvest" */;
 			buildPhases = (
+				971039D929E88E95008C4370 /* Swift formater */,
+				97AD493329E5C847009B0AE9 /* Swift linter */,
 				8790EA7329E5938800A9FD42 /* Sources */,
 				8790EA7429E5938800A9FD42 /* Frameworks */,
 				8790EA7529E5938800A9FD42 /* Resources */,
-				97AD493329E5C847009B0AE9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -156,6 +160,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				971039DB29E95901008C4370 /* .swiftlint.yml in Resources */,
 				8790EA8729E5938A00A9FD42 /* LaunchScreen.storyboard in Resources */,
 				8790EA8429E5938A00A9FD42 /* Assets.xcassets in Resources */,
 			);
@@ -164,8 +169,9 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		97AD493329E5C847009B0AE9 /* ShellScript */ = {
+		971039D929E88E95008C4370 /* Swift formater */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -173,13 +179,33 @@
 			);
 			inputPaths = (
 			);
+			name = "Swift formater";
 			outputFileListPaths = (
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftformat >/dev/null; then\n  swiftformat --swiftversion 5.5 .\nelse\n  echo \"warning: Swiftformater not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+		97AD493329E5C847009B0AE9 /* Swift linter */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Swift linter";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export PATH=\"$PATH:/opt/homebrew/bin\"\nif which swiftlint >/dev/null; then\n  swiftlint .\n  swiftlint autocorrect .\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -331,6 +357,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V3HW5C4GT9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GoInvest/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -358,6 +385,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = V3HW5C4GT9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = GoInvest/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

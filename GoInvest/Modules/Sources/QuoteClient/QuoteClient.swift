@@ -96,8 +96,8 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
 }
 
 private extension QuoteClient {
-    struct Constants {
-        static let UrlComponentGetListBySearch =  "https://iss.moex.com/iss/securities.json?"
+    enum Constants {
+        static let UrlComponentGetListBySearch = "https://iss.moex.com/iss/securities.json?"
         static let UrlComponentGetDefaultList = "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/tqbr/securities.json"
     }
 }

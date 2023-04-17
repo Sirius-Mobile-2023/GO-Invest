@@ -2,23 +2,22 @@ import UIKit
 import SkeletonView
 
 class AppCoordinator {
-    var navigationController: UINavigationController
+    let tabBarController: UITabBarController
     let window: UIWindow
 
-    init(window: UIWindow, navigationController: UINavigationController) {
+    init(window: UIWindow) {
         self.window = window
-        self.navigationController = navigationController
+        tabBarController = UITabBarController()
     }
 
     func start() {
-        window.rootViewController = navigationController
+        window.rootViewController = tabBarController
         window.makeKeyAndVisible()
-
-        startFirstVC(navigationController)
+        startFirstVC()
     }
 
-    fileprivate func startFirstVC(_ navigationController: UINavigationController) {
-        let firstCoordinator = TabBarCoordinator(navigationController)
+    private func startFirstVC() {
+        let firstCoordinator = TabBarCoordinator(tabBarController)
         firstCoordinator.start()
     }
 }

@@ -4,29 +4,29 @@ import Theme
 import UIKit
 
 class TabBarCoordinator {
-    var navigationController: UINavigationController
     var tabBarController: UITabBarController
 
-    required init(_ navigationController: UINavigationController) {
-        self.navigationController = navigationController
-        tabBarController = .init()
+    required init(_ tabBarController: UITabBarController) {
+        self.tabBarController = tabBarController
     }
 
     func start() {
-        let quotes = QuotesViewController()
-        let profile = ProfileViewController()
-        quotes.didTapButton = { title in
-            self.showQuoteController(with: title)
+        let quotesVC = QuotesViewController()
+        let profileVC = ProfileViewController()
+        let quotesNC = UINavigationController(rootViewController: quotesVC)
+        let profileNC = UINavigationController(rootViewController: profileVC)
+
+        quotesVC.didTapButton = { title in
+            self.showQuoteController(with: title, navigationController: quotesNC)
         }
 
-        let nav1 = UINavigationController(rootViewController: quotes)
-        let nav2 = UINavigationController(rootViewController: profile)
+        quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: UIImage(systemName: "arrow.up.arrow.down"), tag: 0)
+        profileNC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
+        profileNC.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
 
-        nav1.tabBarItem = UITabBarItem(title: "Quotes", image: Theme.quotesTabBarImage, tag: 0)
-        nav2.tabBarItem = UITabBarItem(title: "Profile", image: Theme.profileTabBarImageUnchecked, tag: 1)
-        nav2.tabBarItem.selectedImage = Theme.profileTabBarImageChecked
-        let controllers = [nav1, nav2]
-        styleNavigationController()
+        let controllers = [quotesNC, profileNC]
+        controllers.forEach { $0.navigationBar.prefersLargeTitles = true }
+
         prepareTabBarController(withTabControllers: controllers)
     }
 
@@ -38,11 +38,10 @@ class TabBarCoordinator {
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
         tabBarController.tabBar.isTranslucent = false
         tabBarController.tabBar.backgroundColor = .white
-        navigationController.viewControllers = [tabBarController]
         tabBarController.setViewControllers(tabControllers, animated: true)
     }
 
-    func showQuoteController(with quote: String) {
+    func showQuoteController(with quote: String, navigationController: UINavigationController) {
         let quoteCoordinator = QuoteCoordinator(navigationController: navigationController, title: quote)
         quoteCoordinator.start()
     }

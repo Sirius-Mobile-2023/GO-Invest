@@ -28,7 +28,7 @@ class QuoteCoordinator {
             }
         })
         let viewController = QuoteDetailViewController()
-        viewController.navigationItem.title = navigationTitle
+        viewController.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
     }
     func dateFromString(str: String?) -> Date? {
