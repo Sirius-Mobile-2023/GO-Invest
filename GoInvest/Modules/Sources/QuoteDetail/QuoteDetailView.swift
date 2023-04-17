@@ -46,7 +46,7 @@ class QuoteDetailView: UIView {
         button.titleLabel?.font = Theme.Fonts.button
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.isSkeletonable = true
-        button.skeletonCornerRadius = Theme.skeletonCornerRadius
+        button.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         return button
     }()
 
@@ -161,7 +161,7 @@ private extension QuoteDetailView {
         aligment: UIStackView.Alignment = .fill
     ) {
         stackView.isSkeletonable = true
-        stackView.skeletonCornerRadius = Theme.skeletonCornerRadius
+        stackView.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         stackView.axis = axis
         stackView.spacing = spacing
         stackView.distribution = distribution

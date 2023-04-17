@@ -6,6 +6,7 @@ public enum Theme {
         public static let button = UIFont.systemFont(ofSize: 19, weight: .semibold)
         public static let title = UIFont.systemFont(ofSize: 19, weight: .bold)
         public static let subtitle = UIFont.systemFont(ofSize: 17, weight: .light)
+        public static let error = UIFont.systemFont(ofSize: 20, weight: .medium)
     }
 
     public enum Colors {
@@ -25,6 +26,7 @@ public enum Theme {
     public enum StyleElements {
         public static let imageCornerRadius: CGFloat = 20
         public static let buttonCornerRadius: CGFloat = 10
+        public static let skeletonCornerRadius: Float = 10
     }
 
     public enum Layout {

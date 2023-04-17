@@ -7,8 +7,8 @@ class ErrorView: UIView {
 
     private let errorLabel: UILabel = {
         let label = UILabel()
-        label.font = Theme.Fonts.errorFont
-        label.textColor = Theme.mainTextColor
+        label.font = Theme.Fonts.error
+        label.textColor = Theme.Colors.mainText
         label.text = "Error occured"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -16,11 +16,11 @@ class ErrorView: UIView {
 
     private lazy var tryAgainButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = Theme.buttonColor
-        button.layer.cornerRadius = Theme.buttonCornerRadius
+        button.backgroundColor = Theme.Colors.button
+        button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
         button.setTitle("Try again", for: .normal)
-        button.titleLabel?.font = Theme.Fonts.buttonFont
-        button.setTitleColor(Theme.buttonTextColor, for: .normal)
+        button.titleLabel?.font = Theme.Fonts.button
+        button.setTitleColor(Theme.Colors.button, for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(tryAgainButtonTapped(_:)), for: .touchUpInside)
         return button
@@ -30,13 +30,13 @@ class ErrorView: UIView {
         let stackView = UIStackView()
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = Theme.bigSpacing
+        stackView.spacing = Theme.Layout.bigSpacing
         return stackView
     }()
 
     init() {
         super.init(frame: .zero)
-        self.backgroundColor = Theme.backgroundColor
+        self.backgroundColor = Theme.Colors.background
         self.translatesAutoresizingMaskIntoConstraints = false
         setupLayout()
     }
@@ -50,7 +50,7 @@ class ErrorView: UIView {
         errorStackView.addArrangedSubview(tryAgainButton)
         self.addSubview(errorStackView)
         NSLayoutConstraint.activate([
-            tryAgainButton.heightAnchor.constraint(equalToConstant: Theme.buttonHeight),
+            tryAgainButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             errorStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             errorStackView.centerYAnchor.constraint(equalTo: self.centerYAnchor)
         ])

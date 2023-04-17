@@ -7,7 +7,7 @@ class GraphView: UIView {
 
     init() {
         super.init(frame: .zero)
-        self.skeletonCornerRadius = Theme.skeletonCornerRadius
+        self.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         self.translatesAutoresizingMaskIntoConstraints = false
     }
 

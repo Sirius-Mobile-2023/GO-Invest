@@ -45,7 +45,7 @@ public class QuoteDetailViewController: UIViewController {
     }()
     private lazy var quoteDetailMainStackView: UIStackView = {
         var stack = UIStackView(arrangedSubviews: [graphView, quoteDetailView])
-        stack.spacing = Theme.bigSpacing
+        stack.spacing = Theme.Layout.bigSpacing
         stack.axis = .vertical
         stack.isSkeletonable = true
         return stack
@@ -115,7 +115,7 @@ public class QuoteDetailViewController: UIViewController {
 // MARK: - UI and Layout
 private extension QuoteDetailViewController {
     func setupUI() {
-        view.backgroundColor = Theme.backgroundColor
+        view.backgroundColor = Theme.Colors.background
         view.isSkeletonable = true
         quoteDetailMainStackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(quoteDetailMainStackView)
@@ -124,69 +124,20 @@ private extension QuoteDetailViewController {
     func setupLayout() {
         NSLayoutConstraint.activate([
             graphView.heightAnchor.constraint(equalToConstant: 300),
-            quoteDetailMainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.topOffset),
-            quoteDetailMainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Theme.sideOffset),
-            quoteDetailMainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.sideOffset),
+            quoteDetailMainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.Layout.topOffset),
+            quoteDetailMainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Theme.Layout.sideOffset),
+            quoteDetailMainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.Layout.sideOffset),
             quoteDetailMainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
 
     func layoutErrorView() {
         NSLayoutConstraint.activate([
-            errorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.topOffset),
-            errorView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Theme.sideOffset),
-            errorView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.sideOffset),
+            errorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.Layout.topOffset),
+            errorView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Theme.Layout.sideOffset),
+            errorView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.Layout.sideOffset),
             errorView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
-    }
-}
-
-// MARK: - Work with client
-private extension QuoteDetailViewController {
-    func getQuoteData() {
-        getDataForGraph()
-        getDataForDetails()
-    }
-
-    func getDataForDetails() {
-        detailState = .load
-        #warning("TODO: Paste real id")
-        quoteDetailClient?.quoteDetail(id: "abrd", boardId: "tqbr") { [weak self] result in
-            switch result {
-            case .success(let quoteDetail):
-                self?.detailsData = quoteDetail
-                DispatchQueue.main.async {
-                    self?.detailState = .success
-                }
-            case .failure(let error):
-                print(error)
-                self?.detailState = .error
-            }
-        }
-    }
-
-    func getDataForGraph() {
-        graphState = .load
-        #warning("TODO: Paste real id")
-        chartDataClient?.quoteCharts(id: "ABRD", boardId: "TQBR", fromDate: getDate()) { [weak self] result in
-            switch result {
-            case .success(let graphData):
-                self?.graphData = graphData
-                DispatchQueue.main.async {
-                    self?.graphState = .success
-                }
-            case .failure(let error):
-
-                self?.graphState = .error
-            }
-        }
-    }
-}
-
-private extension QuoteDetailViewController {
-    func getDate() -> Date {
-        let date = Calendar.current.date(byAdding: .year, value: -1, to: .now)
-        return date!
     }
 }
 
