@@ -27,6 +27,7 @@ public enum Theme {
         public static let imageCornerRadius: CGFloat = 20
         public static let buttonCornerRadius: CGFloat = 10
         public static let skeletonCornerRadius: Float = 10
+        public static let skeletonTextCornerRadius: Int = 5
     }
 
     public enum Layout {

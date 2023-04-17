@@ -13,6 +13,8 @@ class QuoteDetailView: UIView {
 
     private let buttonView: TimeIntervalsControl = {
         let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 0)
+        control.isSkeletonable = true
+        control.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         control.translatesAutoresizingMaskIntoConstraints = false
         return control
     }()
@@ -141,6 +143,8 @@ private extension QuoteDetailView {
         for label: UILabel,
         text: String) {
             label.text = text
+            label.isSkeletonable = true
+            label.linesCornerRadius = Theme.StyleElements.skeletonTextCornerRadius
             label.font = Theme.Fonts.subtitle
         }
 
@@ -148,6 +152,8 @@ private extension QuoteDetailView {
         for label: UILabel,
         text: String) {
             label.text = text
+            label.isSkeletonable = true
+            label.linesCornerRadius = Theme.StyleElements.skeletonTextCornerRadius
             label.textAlignment = .right
             label.font = Theme.Fonts.title
         }

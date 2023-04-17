@@ -36,6 +36,7 @@ public class QuoteDetailViewController: UIViewController {
     }()
     private lazy var quoteDetailView: QuoteDetailView = {
         let view = QuoteDetailView()
+        view.isSkeletonable = true
         return view
     }()
     private lazy var graphView: GraphView = {
@@ -175,8 +176,7 @@ private extension QuoteDetailViewController {
                 DispatchQueue.main.async {
                     self?.graphState = .success
                 }
-            case .failure(let error):
-
+            case .failure():
                 self?.graphState = .error
             }
         }
