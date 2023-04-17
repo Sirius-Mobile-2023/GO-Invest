@@ -1,3 +1,4 @@
+import DomainModels
 import UIKit
 
 final class QuoteCustomCell: UITableViewCell {
@@ -12,11 +13,7 @@ final class QuoteCustomCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        contentView.addSubview(shortNameLabel)
-        contentView.addSubview(priceLabel)
-        contentView.addSubview(differencePriceLabel)
-
+        configureStacks()
         configureShortNameLabel()
         configureFullNameLabel()
         configurePriceLabel()
@@ -113,17 +110,10 @@ final class QuoteCustomCell: UITableViewCell {
         fullNameLabel.textColor = .gray
     }
 
-    private func configureCostLabel() {
+    private func configurePriceLabel() {
         priceLabel.numberOfLines = 0
         priceLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         priceLabel.textAlignment = .right
-
-        priceLabel.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            priceLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            priceLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -10),
-            priceLabel.widthAnchor.constraint(lessThanOrEqualTo: contentView.widthAnchor, multiplier: 0.5),
-        ])
     }
 
     private func configureDiffPriceLabel() {
@@ -148,8 +138,9 @@ final class QuoteCustomCell: UITableViewCell {
                 diffPercentLabel.text = "+\(percent.rounded(2, .plain))%"
             }
         } else {
-            differencePriceLabel.textColor = UIColor(red: 23 / 255, green: 143 / 255, blue: 31 / 255, alpha: 1)
-            differencePriceLabel.text = "+\(model.costDifference)%"
+            priceLabel.text = "$---"
+            diffPercentLabel.text = "---"
+            diffPriceLabel.text = "---%"
         }
     }
 }
