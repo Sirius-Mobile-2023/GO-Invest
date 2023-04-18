@@ -3,6 +3,7 @@ import Foundation
 public protocol DetailProvider {
     func quoteDetail(
         id: String,
-        completion: (Result<QuoteDetail, Error>) -> Void
+        boardId: String,
+        completion: @escaping (Result<QuoteDetail, Error>) -> Void
     )
 }
