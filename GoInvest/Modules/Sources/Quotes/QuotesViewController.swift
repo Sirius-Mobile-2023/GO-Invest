@@ -17,6 +17,7 @@ public class QuotesViewController: UIViewController {
     private var quotesArray: [Quote] = [] {
         willSet {
             arrayToShow = newValue
+            tableView.reloadData()
         }
     }
 
@@ -66,7 +67,6 @@ public class QuotesViewController: UIViewController {
                 self?.currentViewState = .success
             case let .failure(error):
                 self?.currentViewState = .error
-                print(error)
             }
                 self?.showFullQuotes()
                 self?.tableView.reloadData()
@@ -79,6 +79,7 @@ public class QuotesViewController: UIViewController {
         title = "Quotes"
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
     }
 
     private func showFullQuotes() {
@@ -128,6 +129,7 @@ public class QuotesViewController: UIViewController {
     }
 
     private func setTableViewDelegates() {
+        searchController.searchBar.delegate = self
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -145,23 +147,26 @@ extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        didTapButton?(quotesArray[indexPath.row])
+        didTapButton?(arrayToShow[indexPath.row])
     }
 }
 
-extension QuotesViewController: UISearchResultsUpdating {
+extension QuotesViewController: UISearchResultsUpdating, UISearchBarDelegate {
     public func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text?.uppercased() else {
             return
         }
+        guard !text.isEmpty else {
+            return
+        }
         let filteredData = quotesArray.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
 
-        if filteredData.isEmpty {
-            arrayToShow = quotesArray
-        } else {
-            arrayToShow = filteredData
-        }
+        arrayToShow = filteredData
         tableView.reloadData()
+    }
 
+    public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        arrayToShow = quotesArray
+        tableView.reloadData()
     }
 }
