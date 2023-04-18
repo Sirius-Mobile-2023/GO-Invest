@@ -22,7 +22,7 @@ struct GraphView: View {
         let max = sampleAnalytics.max { item1, item2 in
             return item2.price > item1.price
         }?.price ?? 0
-        
+
         Chart {
             ForEach(sampleAnalytics) { item in
                 LineMark(
@@ -109,7 +109,7 @@ struct GraphMockModel: Identifiable {
     var id = UUID()
     var day: Date
     var price: Double
-    var animate: Bool = false
+    var animate = false
 }
 
 // TODO: Get data for chart #24

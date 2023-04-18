@@ -20,7 +20,7 @@ enum QuoteDetailViewState {
     case error
     case success
 }
-
+#warning("Add real data to graph")
 public class QuoteDetailViewController: UIViewController {
     private var quoteDetailClient: DetailProvider? = QuoteClient()
     private var chartDataClient: ChartsProvider? = QuoteClient()
@@ -40,13 +40,9 @@ public class QuoteDetailViewController: UIViewController {
         view.isSkeletonable = true
         return view
     }()
-    private lazy var graphView: GraphView = {
-        let view = GraphView()
-        view.isSkeletonable = true
-        return view
-    }()
+    private let graphView = UIHostingController(rootView: GraphView())
     private lazy var quoteDetailMainStackView: UIStackView = {
-        var stack = UIStackView(arrangedSubviews: [graphView, quoteDetailView])
+        var stack = UIStackView(arrangedSubviews: [quoteDetailView])
         stack.spacing = Theme.Layout.bigSpacing
         stack.axis = .vertical
         stack.isSkeletonable = true
@@ -57,16 +53,17 @@ public class QuoteDetailViewController: UIViewController {
         didSet {
             switch viewState {
             case .load:
+                errorView.isHidden = true
                 view.showAnimatedGradientSkeleton()
             case .success:
                 view.hideSkeleton()
                 errorView.isHidden = true
-                graphView.graphData = graphData
                 if let quoteDetailData = detailsData {
                     quoteDetailView.setDetailsData(quoteDetailData: quoteDetailData)
                 }
             case .error:
                 view.addSubview(errorView)
+                errorView.isHidden = false
                 layoutErrorView()
             case .none:
                 break
@@ -106,7 +103,7 @@ public class QuoteDetailViewController: UIViewController {
         }
     }
 
-    private let graphView = UIHostingController(rootView: GraphView())
+//    private let graphView = UIHostingController(rootView: GraphView())
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -130,7 +127,7 @@ private extension QuoteDetailViewController {
 
     func setupLayout() {
         NSLayoutConstraint.activate([
-            graphView.heightAnchor.constraint(equalToConstant: 300),
+//            graphView.heightAnchor.constraint(equalToConstant: 300),
             quoteDetailMainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.Layout.topOffset),
             quoteDetailMainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Theme.Layout.sideOffset),
             quoteDetailMainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.Layout.sideOffset),
@@ -157,14 +154,12 @@ private extension QuoteDetailViewController {
 
     func getDataForDetails() {
         detailState = .load
-        #warning("TODO: Paste real id")
         quoteDetailClient?.quoteDetail(id: quote?.id ?? "", boardId: "tqbr") { [weak self] result in
             switch result {
             case .success(let quoteDetail):
                 self?.detailsData = quoteDetail
                 self?.detailState = .success
             case .failure(let error):
-                print(error)
                 self?.detailState = .error
             }
         }
@@ -172,12 +167,10 @@ private extension QuoteDetailViewController {
 
     func getDataForGraph() {
         graphState = .load
-        #warning("TODO: Paste real id")
         chartDataClient?.quoteCharts(id: quote?.id ?? "",
                                      boardId: "tqbr",
                                      fromDate: getDate(),
                                      completion: { [weak self] result in
-            print(result)
             switch result {
             case .success(let graphData):
                 self?.graphData = graphData
