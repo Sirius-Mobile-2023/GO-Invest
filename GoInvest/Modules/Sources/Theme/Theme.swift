@@ -14,6 +14,11 @@ public enum Theme {
         public static let button = UIColor(named: "BlackColor")
         public static let mainText = UIColor(named: "BlackColor")
         public static let buttonText = UIColor(named: "WhiteColor")
+        public static let redBackground = UIColor(named: "RedColor")
+        public static let greenBackground = UIColor(named: "GreenColor")
+        public static let labelText = UIColor(named: "WhiteColor")
+        public static let subLabelText = UIColor.gray
+
     }
 
     public enum Images {

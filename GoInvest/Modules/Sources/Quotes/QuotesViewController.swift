@@ -4,9 +4,16 @@ import DomainModels
 public class QuotesViewController: UIViewController {
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
-    private var quotesArray: [Quote] = []
+    private var toShowArray: [Quote] = []
     private lazy var tableView = UITableView()
     public var client: QuoteListProvider
+    private let searchController = UISearchController()
+
+    private var quotesArray: [Quote] = [] {
+        willSet {
+            toShowArray = newValue
+        }
+    }
 
     public init(client: QuoteListProvider) {
         self.client = client
@@ -40,6 +47,7 @@ public class QuotesViewController: UIViewController {
             case let .failure(error):
                 print(error)
             }
+                self?.showFullQuotes()
                 self?.tableView.reloadData()
                 self?.animateTableView()
                 self?.animationPlayed = false
@@ -48,6 +56,16 @@ public class QuotesViewController: UIViewController {
 
     private func configureTitle() {
         title = "Quotes"
+        navigationItem.searchController = searchController
+        searchController.searchResultsUpdater = self
+    }
+
+    private func showFullQuotes() {
+        quotesArray = quotesArray.filter { isFull($0) } + quotesArray.filter { !isFull($0) }
+    }
+
+    private func isFull(_ q: Quote) -> Bool {
+        q.openPrice != nil && q.closePrice != nil
     }
 
     private func animateTableView() {
@@ -96,16 +114,33 @@ public class QuotesViewController: UIViewController {
 
 extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        quotesArray.count
+        toShowArray.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuoteCustomCell") as! QuoteCustomCell
-        cell.setData(model: quotesArray[indexPath.row])
+        cell.setData(model: toShowArray[indexPath.row])
         return cell
     }
 
     public func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
         didTapButton?("Quote")
+    }
+}
+
+extension QuotesViewController: UISearchResultsUpdating {
+    public func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text?.uppercased() else {
+            return
+        }
+        let filteredData = quotesArray.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
+
+        if filteredData.isEmpty {
+            toShowArray = quotesArray
+        } else {
+            toShowArray = filteredData
+        }
+        tableView.reloadData()
+
     }
 }
