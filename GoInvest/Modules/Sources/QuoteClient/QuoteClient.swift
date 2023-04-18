@@ -93,9 +93,6 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
                         let points = quotCharts.points
                         var newArray = array
                         newArray.append(contentsOf: points)
-//                        print("point size:\(points.count)")
-//                        print("New Date: \(newDate)")
-//                        print("New array size: \(newArray.count)")
                         if points.count > 1 {
                             self.getHundredtChartsAfterDate(
                                 array: newArray,
@@ -104,7 +101,6 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
                                 callback: callback
                             )
                         } else {
-//                            print("!!!!run LAST")
                             callback(.success(QuoteCharts(points: newArray)))
                         }
                     }

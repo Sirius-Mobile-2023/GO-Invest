@@ -1,5 +1,7 @@
 import Profile
+import QuoteClient
 import Quotes
+import DomainModels
 import Theme
 import UIKit
 
@@ -11,14 +13,16 @@ class TabBarCoordinator {
     }
 
     func start() {
-        let quotesVC = QuotesViewController()
+        let quotesVC = QuotesViewController(client: QuoteClient())
         let profileVC = ProfileViewController()
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let profileNC = UINavigationController(rootViewController: profileVC)
-        quotesVC.didTapButton = { title in
-            self.showQuoteController(with: title, navigationController: quotesNC)
+        quotesVC.didTapButton = { [weak self] quote in
+            self?.showQuoteController(with: quote, navigationController: quotesNC)
         }
-
+        profileVC.didTapButton = { [weak self] quote in
+            self?.showFavsController(with: quote, navigationController: profileNC)
+        }
         quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: UIImage(systemName: "arrow.up.arrow.down"), tag: 0)
         profileNC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
         profileNC.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
@@ -35,8 +39,14 @@ class TabBarCoordinator {
         tabBarController.setViewControllers(tabControllers, animated: true)
     }
 
-    func showQuoteController(with quote: String, navigationController: UINavigationController) {
-        let quoteCoordinator = QuoteCoordinator(navigationController: navigationController, title: quote)
+    func showQuoteController(with quote: Quote, navigationController: UINavigationController) {
+        print("show quote controller")
+        let quoteCoordinator = QuoteCoordinator(navigationController: navigationController, quote: quote)
+        quoteCoordinator.start()
+    }
+
+    func showFavsController(with quote: Quote, navigationController: UINavigationController) {
+        let quoteCoordinator = FavoritesCoordinator(navigationController: navigationController, quote: quote)
         quoteCoordinator.start()
     }
 }

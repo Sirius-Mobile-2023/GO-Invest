@@ -3,7 +3,7 @@ import QuoteClient
 import QuoteDetail
 import UIKit
 
-class QuoteCoordinator {
+class FavoritesCoordinator {
     var navigationController: UINavigationController
     var navigationTitle: String
     var selectedQuote: Quote
@@ -15,7 +15,6 @@ class QuoteCoordinator {
     }
 
     func start() {
-        print("view controller")
         let viewController = QuoteDetailViewController()
         viewController.quote = selectedQuote
         viewController.navigationItem.title = navigationTitle

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4D0E102E29EEBB820061EFE4 /* FavoritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E102D29EEBB820061EFE4 /* FavoritesCoordinator.swift */; };
 		4D26228A29E5DF2800B56C18 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228929E5DF2800B56C18 /* AppCoordinator.swift */; };
 		4D26228C29E5E0C300B56C18 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */; };
 		4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */; };
@@ -16,10 +17,10 @@
 		8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */; };
 		8790EA8429E5938A00A9FD42 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8329E5938A00A9FD42 /* Assets.xcassets */; };
 		8790EA8729E5938A00A9FD42 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8790EA8529E5938A00A9FD42 /* LaunchScreen.storyboard */; };
-		87C32D0729E5B51A00CC7A4D /* Modules in Frameworks */ = {isa = PBXBuildFile; productRef = 87C32D0629E5B51A00CC7A4D /* Modules */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4D0E102D29EEBB820061EFE4 /* FavoritesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCoordinator.swift; sourceTree = "<group>"; };
 		4D26228929E5DF2800B56C18 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 		4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCoordinator.swift; sourceTree = "<group>"; };
@@ -50,6 +51,7 @@
 				4D26228929E5DF2800B56C18 /* AppCoordinator.swift */,
 				4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */,
 				4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */,
+				4D0E102D29EEBB820061EFE4 /* FavoritesCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -193,6 +195,7 @@
 				4D26228A29E5DF2800B56C18 /* AppCoordinator.swift in Sources */,
 				4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */,
 				8790EA7B29E5938800A9FD42 /* AppDelegate.swift in Sources */,
+				4D0E102E29EEBB820061EFE4 /* FavoritesCoordinator.swift in Sources */,
 				8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

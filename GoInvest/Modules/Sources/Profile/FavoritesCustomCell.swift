@@ -1,7 +1,7 @@
 import DomainModels
 import UIKit
 
-final class QuoteCustomCell: UITableViewCell {
+final class FavoritesCustomCell: UITableViewCell {
     private let shortNameLabel = UILabel()
     private let fullNameLabel = UILabel()
     private let priceLabel = UILabel()

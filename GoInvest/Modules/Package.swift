@@ -35,11 +35,11 @@ let package = Package(
         ),
         .target(
             name: "Profile",
-            dependencies: []
+            dependencies: ["DomainModels"]
         ),
         .target(
             name: "QuoteDetail",
-            dependencies: ["Theme"]
+            dependencies: ["Theme", "Profile"]
         ),
         .target(
             name: "Theme",
