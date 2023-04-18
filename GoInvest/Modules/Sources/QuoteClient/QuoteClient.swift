@@ -6,11 +6,12 @@ public enum ClientError: Error {
     case algorithmError
     case decodeJsonError
     case incorrectJsonError
+    case emptGetRequestError
 }
 
 let dateFormatter = DateFormatter()
 
-public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvider {
+public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvider, QuotesStatProvider {
     private let session = URLSession(configuration: URLSessionConfiguration.default)
     private let decoder = JSONDecoder()
     private var urlComponents = URLComponents()
@@ -180,6 +181,57 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
             }
         }
         task.resume()
+    }
+
+    public func quoteStat(
+        lisOfId: [String],
+        listOfBoardId: [String],
+        fromDate: Date,
+        completion: @escaping (Result<[QuoteCharts?], Error>) -> Void
+    ) {
+        toNextId(array: [],
+                 index: 0,
+                 lisOfId: lisOfId,
+                 listOfBoardId: listOfBoardId,
+                 fromDate: fromDate,
+                 completion: completion)
+    }
+
+    private func toNextId(
+        array: [QuoteCharts?],
+        index: Int,
+        lisOfId: [String],
+        listOfBoardId: [String],
+        fromDate: Date,
+        completion: @escaping (Result<[QuoteCharts?], Error>) -> Void
+    ) {
+        if index >= lisOfId.count || index >= listOfBoardId.count {
+            completion(.failure(ClientError.algorithmError))
+        }
+        let id = lisOfId[index]
+        let boardId = listOfBoardId[index]
+        quoteCharts(id: id,
+                    boardId: boardId,
+                    fromDate: fromDate,
+                    completion: { result in
+                        var newArray = array
+                        switch result {
+                        case let .success(quoteCharts):
+                            newArray.append(quoteCharts)
+                        case .failure:
+                            newArray.append(nil)
+                        }
+                        if newArray.count == lisOfId.count {
+                            completion(.success(newArray))
+                        } else {
+                            self.toNextId(array: newArray,
+                                          index: index + 1,
+                                          lisOfId: lisOfId,
+                                          listOfBoardId: listOfBoardId,
+                                          fromDate: fromDate,
+                                          completion: completion)
+                        }
+                    })
     }
 }
 

@@ -35,12 +35,28 @@ class QuoteCoordinator {
                                             switch result {
                                             case let .success(quoteCharts):
                                                 print("✅")
-                                                print(quoteCharts.points)
+//                                                print(quoteCharts.points)
                                             case let .failure(error):
                                                 print("❌")
                                                 print(error)
                                             }
                                         })
+        let data = client.quoteStat(lisOfId: ["ABRD", "CUTR"],
+                                    listOfBoardId: ["TQBR", "TQBR"],
+                                    fromDate: dateFromString(str: "2021-03-14")!,
+                                    completion: { result in
+            switch result {
+            case .success(let list):
+                print("✅")
+                for element in list {
+                    print(element?.points.count)
+                }
+            case .failure(let error):
+                print("❌")
+                print(error)
+            }
+
+        })
         let viewController = QuoteDetailViewController()
         viewController.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
