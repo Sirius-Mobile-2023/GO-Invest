@@ -1,14 +1,19 @@
 import UIKit
+import SwiftUI
 import Theme
 import SkeletonView
 import DomainModels
 
 class QuoteDetailView: UIView {
-    private let graphView: UIView = {
-        var view = UIView()
-        view.backgroundColor = .green
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    typealias AddToFavsandler = () -> Void
+
+    var addToFavsHandler: (AddToFavsandler)?
+
+    private let graphView: UIHostingController<GraphView> = {
+        let graphView = GraphView()
+        let hostingController = UIHostingController(rootView: graphView)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        return hostingController
     }()
 
     private let buttonView: TimeIntervalsControl = {
@@ -116,7 +121,6 @@ class QuoteDetailView: UIView {
         setContentHuggingPriorities()
         addSubview(mainStackView)
         NSLayoutConstraint.activate([
-            graphView.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 40),
             addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: topAnchor),
@@ -193,7 +197,6 @@ extension QuoteDetailView {
 
 extension QuoteDetailView {
     @objc private func addToFavoritesTapped(_ sender: UIButton) {
-        print("Add to favs")
-//        addToFavoritesHandler?()
+        addToFavsHandler?()
     }
 }
