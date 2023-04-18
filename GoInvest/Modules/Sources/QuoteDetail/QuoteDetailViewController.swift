@@ -159,7 +159,7 @@ private extension QuoteDetailViewController {
             case .success(let quoteDetail):
                 self?.detailsData = quoteDetail
                 self?.detailState = .success
-            case .failure(let error):
+            case .failure:
                 self?.detailState = .error
             }
         }
@@ -175,7 +175,7 @@ private extension QuoteDetailViewController {
             case .success(let graphData):
                 self?.graphData = graphData
                 self?.graphState = .success
-            case .failure(let _):
+            case .failure:
                 self?.graphState = .error
             }
         })

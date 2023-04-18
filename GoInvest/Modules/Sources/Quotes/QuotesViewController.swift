@@ -58,7 +58,7 @@ public class QuotesViewController: UIViewController {
             case let .success(array):
                 self?.quotesArray = array
                 self?.currentViewState = .success
-            case let .failure(_):
+            case .failure:
                 self?.currentViewState = .error
             }
                 self?.tableView.reloadData()
