@@ -3,6 +3,7 @@ import SkeletonView
 
 class AppCoordinator {
     let tabBarController: UITabBarController
+    var tabBarCoordinator: TabBarCoordinator?
     let window: UIWindow
 
     init(window: UIWindow) {
@@ -17,7 +18,7 @@ class AppCoordinator {
     }
 
     private func startFirstVC() {
-        let firstCoordinator = TabBarCoordinator(tabBarController)
-        firstCoordinator.start()
+        tabBarCoordinator = TabBarCoordinator(tabBarController)
+        tabBarCoordinator?.start()
     }
 }

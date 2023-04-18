@@ -31,7 +31,7 @@ let package = Package(
         ),
         .target(
             name: "Quotes",
-            dependencies: ["Theme"]
+            dependencies: ["Theme", "DomainModels"]
         ),
         .target(
             name: "Profile",
@@ -44,6 +44,7 @@ let package = Package(
         .target(
             name: "Theme",
             dependencies: []
-        )
+        ),
+
     ]
 )

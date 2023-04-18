@@ -1,5 +1,4 @@
 import UIKit
-import QuoteClient
 import DomainModels
 
 enum QuotesViewState {
@@ -8,12 +7,21 @@ enum QuotesViewState {
     case success
 }
 public class QuotesViewController: UIViewController {
-    private let viewModels = Data.getData()
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
+    private var quotesArray: [Quote] = []
     private lazy var tableView = UITableView()
-    private var quoteClient: QuoteListProvider? = QuoteClient()
-    private var quotes: [Quote] = []
+    public var client: QuoteListProvider
+
+    public init(client: QuoteListProvider) {
+        self.client = client
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     private var currentViewState: QuotesViewState? {
         didSet {
             switch self.currentViewState {
@@ -32,19 +40,29 @@ public class QuotesViewController: UIViewController {
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.alpha = 1
-        if animationPlayed {
-            animateTableView()
-            animationPlayed = false
-        }
     }
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        loadData()
         configureTitle()
         configureTableView()
         if animationPlayed {
             tableView.alpha = 0
+        }
+        fetchData()
+    }
+
+    private func fetchData() {
+        client.quoteList(search: .defaultList) { [weak self] result in
+            switch result {
+            case let .success(array):
+                self?.quotesArray = array
+            case let .failure(error):
+                print(error)
+            }
+                self?.tableView.reloadData()
+                self?.animateTableView()
+                self?.animationPlayed = false
         }
     }
 
@@ -98,12 +116,12 @@ public class QuotesViewController: UIViewController {
 
 extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        viewModels.count
+        quotesArray.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuoteCustomCell") as! QuoteCustomCell
-        cell.setData(model: viewModels[indexPath.row])
+        cell.setData(model: quotesArray[indexPath.row])
         return cell
     }
 

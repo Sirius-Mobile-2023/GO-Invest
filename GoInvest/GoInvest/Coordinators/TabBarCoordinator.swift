@@ -1,3 +1,4 @@
+import QuoteClient
 import Profile
 import Quotes
 import Theme
@@ -11,13 +12,15 @@ class TabBarCoordinator {
     }
 
     func start() {
-        let quotesVC = QuotesViewController()
+        let quotesVC = QuotesViewController(client: QuoteClient())
         let profileVC = ProfileViewController()
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let profileNC = UINavigationController(rootViewController: profileVC)
-        quotesVC.didTapButton = { title in
-            self.showQuoteController(with: title, navigationController: quotesNC)
+
+        quotesVC.didTapButton = { [weak self] title in
+            self?.showQuoteController(with: title, navigationController: quotesNC)
         }
+        quotesVC.client = QuoteClient()
 
         quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: UIImage(systemName: "arrow.up.arrow.down"), tag: 0)
         profileNC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
