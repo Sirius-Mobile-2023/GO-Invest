@@ -45,7 +45,7 @@ let package = Package(
         ),
         .target(
             name: "Strategy",
-            dependencies: []
+            dependencies: ["Theme"]
         ),
         .target(
             name: "Theme",
