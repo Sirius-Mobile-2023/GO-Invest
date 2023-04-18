@@ -3,6 +3,8 @@ import Foundation
 public protocol ChartsProvider {
     func quoteCharts(
         id: String,
-        completion: (Result<QuoteCharts, Error>) -> Void
+        boardId: String,
+        fromDate: Date,
+        completion: @escaping (Result<QuoteCharts, Error>) -> Void
     )
 }

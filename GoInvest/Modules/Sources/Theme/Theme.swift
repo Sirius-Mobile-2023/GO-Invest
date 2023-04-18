@@ -22,10 +22,10 @@ public enum Theme {
     }
 
     public enum Images {
-        public static let quotesTabBar = UIImage(systemName: "arrow.up.arrow.down")
-        public static let profileTabBarUnchecked = UIImage(systemName: "person")
-        public static let profileTabBarChecked = UIImage(systemName: "person.fill")
-        public static let backNavBar = UIImage(systemName: "chevron.left.circle")
+        public static let quotesTabBar = UIImage(systemName: "arrow.up.arrow.down")!
+        public static let profileTabBarUnchecked = UIImage(systemName: "person")!
+        public static let profileTabBarChecked = UIImage(systemName: "person.fill")!
+        public static let backNavBar = UIImage(systemName: "chevron.left.circle")!
     }
     public enum StyleElements {
         public static let imageCornerRadius: CGFloat = 20
