@@ -5,7 +5,7 @@ class StrategyView: UIView {
     
     private let amountView: UIView = {
         let textField = UIView()
-        textField.layer.borderColor = Constants.buttonBackgroundColor?.cgColor
+        textField.layer.borderColor = Constants.buttonBackgroundColor.cgColor
         textField.layer.borderWidth = Constants.defaultBorderWidth
         textField.layer.cornerRadius = Constants.cornerRadius
         textField.translatesAutoresizingMaskIntoConstraints = false

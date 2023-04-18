@@ -23,12 +23,13 @@ class TabBarCoordinator {
             self.showQuoteController(with: title, navigationController: quotesNC)
         }
 
-        quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: UIImage(systemName: "arrow.up.arrow.down"), tag: 0)
-        strategyNC.tabBarItem = UITabBarItem(title: "Strategy", image: UIImage(systemName: "function"), tag: 1)
-        profileNC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 2)
-        profileNC.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
-
+        quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: Theme.Images.quotesTabBar, tag: 0)
+        strategyNC.tabBarItem = UITabBarItem(title: "Strategy", image: Theme.Images.strategyTabBar, tag: 1)
+        profileNC.tabBarItem = UITabBarItem(title: "Profile", image: Theme.Images.profileTabBarUnchecked, tag: 2)
+        profileNC.tabBarItem.selectedImage = Theme.Images.profileTabBarChecked
+        
         let controllers = [quotesNC, strategyNC, profileNC]
+
         controllers.forEach { $0.navigationBar.prefersLargeTitles = true }
 
         prepareTabBarController(withTabControllers: controllers)

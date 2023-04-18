@@ -25,7 +25,7 @@ class SegmentedControl: UIView {
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = Constants.spaspacing
+        stackView.spacing = Constants.spacing
         stackView.alignment = .center
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +64,7 @@ class SegmentedControl: UIView {
                 font: Constants.buttonFont
             )
             
-            if index == self.selectedSegmentIndex {
+            if index == selectedSegmentIndex {
                 button.layer.borderColor = Constants.selectBorderColor.cgColor
                 button.setTitleColor(Constants.selectTitleColor, for: .normal)
                 button.backgroundColor = Constants.selectedBackgroundColor
@@ -142,15 +142,15 @@ private extension SegmentedControl {
         static let selectedBackgroundColor = Theme.Colors.button
         static let defaultBackgroundColor = UIColor.clear
         static let selectTitleColor = Theme.Colors.buttonText
-        static let defaultTitleColor = Theme.Colors.button ?? UIColor.black
-        static let selectBorderColor = Theme.Colors.button ?? UIColor.black
-        static let defaultBorderColor = Theme.Colors.button ?? UIColor.black
+        static let defaultTitleColor = Theme.Colors.button
+        static let selectBorderColor = Theme.Colors.button
+        static let defaultBorderColor = Theme.Colors.button
         static let cornerRadius: CGFloat = Theme.StyleElements.buttonCornerRadius
         static let borderWidth: CGFloat = Theme.StyleElements.buttonBorderWidth
         static let buttonFont = Theme.Fonts.button
         static let titleFont = Theme.Fonts.subtitle
         static let selectSize: CGFloat = Theme.Animation.selectSizeButton
-        static let spaspacing: CGFloat = 20
+        static let spacing: CGFloat = 20
     }
 }
 
