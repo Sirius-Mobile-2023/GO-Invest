@@ -15,7 +15,6 @@ class QuoteCoordinator {
     }
 
     func start() {
-        print("view controller")
         let viewController = QuoteDetailViewController()
         viewController.quote = selectedQuote
         viewController.navigationItem.title = navigationTitle

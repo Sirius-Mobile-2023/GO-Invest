@@ -69,7 +69,6 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         urlComponentGetCharts: String,
         callback: @escaping (_: Result<QuoteCharts, Error>) -> Void
     ) {
-//        print("run get")
         let url = URL(string: urlComponentGetCharts + "from=\(String(date: fromDate))")
         guard let url = url else {
             DispatchQueue.main.async {

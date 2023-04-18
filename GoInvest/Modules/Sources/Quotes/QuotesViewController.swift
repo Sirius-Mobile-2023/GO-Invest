@@ -1,5 +1,6 @@
 import UIKit
 import DomainModels
+import Profile
 
 enum QuotesViewState {
     case load
@@ -44,6 +45,7 @@ public class QuotesViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        Storage.getAllData()
         configureTitle()
         configureTableView()
         if animationPlayed {

@@ -40,7 +40,6 @@ class TabBarCoordinator {
     }
 
     func showQuoteController(with quote: Quote, navigationController: UINavigationController) {
-        print("show quote controller")
         let quoteCoordinator = QuoteCoordinator(navigationController: navigationController, quote: quote)
         quoteCoordinator.start()
     }

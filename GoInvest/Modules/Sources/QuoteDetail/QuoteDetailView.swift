@@ -217,4 +217,8 @@ extension QuoteDetailView {
     func disableButton() {
         addToFavsButton.isEnabled = false
     }
+    
+    func enableButton() {
+        addToFavsButton.isEnabled = true
+    }
 }

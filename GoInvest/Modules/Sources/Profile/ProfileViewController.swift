@@ -19,7 +19,7 @@ public class ProfileViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-//        fetchDataFromStorage()
+        Storage.getAllData()
         configureTitle()
         configureTableView()
         if animationPlayed {
@@ -30,7 +30,6 @@ public class ProfileViewController: UIViewController {
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         fetchDataFromStorage()
-        print(quotesArray)
         tableView.reloadData()
     }
 
@@ -101,7 +100,9 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
         return true
     }
 
-    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView,
+                          commit editingStyle: UITableViewCell.EditingStyle,
+                          forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             removeQuoteFromStorage(at: indexPath.row)
             fetchDataFromStorage()

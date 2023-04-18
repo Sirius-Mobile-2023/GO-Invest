@@ -112,6 +112,12 @@ public class QuoteDetailViewController: UIViewController {
         getQuoteData()
         setupLayout()
     }
+    
+    override public func viewWillAppear(_: Bool) {
+        super.viewWillAppear(true)
+        updateButton()
+    }
+
 }
 
 // MARK: - UI and Layout
@@ -191,6 +197,8 @@ extension QuoteDetailViewController {
     func updateButton() {
         if Storage.isInFavs(quote!) {
             quoteDetailView.disableButton()
+        } else {
+            quoteDetailView.enableButton()
         }
     }
 }
