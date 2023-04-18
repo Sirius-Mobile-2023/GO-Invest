@@ -8,10 +8,16 @@ public enum ClientError: Error {
     case incorrectJsonError
 }
 
+let dateFormatter = DateFormatter()
+
 public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvider {
     private let session = URLSession(configuration: URLSessionConfiguration.default)
     private let decoder = JSONDecoder()
-    public init() {}
+    private var urlComponents = URLComponents()
+    public init() {
+        urlComponents.scheme = "https"
+        urlComponents.host = "iss.moex.com"
+    }
     public func quoteList(search: SearchForList, completion: @escaping (_: Result<[Quote], Error>) -> Void) {
         let url: URL?
         switch search {
@@ -56,21 +62,28 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         fromDate: Date,
         completion: @escaping (_: Result<QuoteCharts, Error>) -> Void
     ) {
-        let urlComponentGetCharts = "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json?"
-        getHundredtChartsAfterDate(array: [],
-                                   fromDate: fromDate,
-                                   urlComponentGetCharts: urlComponentGetCharts,
-                                   callback: completion)
+        var components = urlComponents
+        components.path = "/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json"
+        getChartsAfterDate(array: [],
+                           fromDate: fromDate,
+                           components: components,
+                           start: 0,
+                           callback: completion)
     }
 
-    private func getHundredtChartsAfterDate(
+    private func getChartsAfterDate(
         array: [Point],
         fromDate: Date,
-        urlComponentGetCharts: String,
+        components: URLComponents,
+        start: Int,
         callback: @escaping (_: Result<QuoteCharts, Error>) -> Void
     ) {
-        let url = URL(string: urlComponentGetCharts + "from=\(String(date: fromDate))")
-        guard let url = url else {
+        var componentsForURL = components
+        componentsForURL.queryItems = [
+            URLQueryItem(name: "from", value: "\(String(date: fromDate))"),
+            URLQueryItem(name: "start", value: "\(start)"),
+        ]
+        guard let url = componentsForURL.url else {
             DispatchQueue.main.async {
                 callback(.failure(ClientError.algorithmError))
             }
@@ -79,42 +92,53 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         let task = session.dataTask(with: request) { data, _, _ in
-            guard let data = data else {
-                callback(.failure(ClientError.getRequestError))
-                return
-            }
-            do {
-                let quotChartsResult = try self.decoder.decode(QuoteChartsResult.self, from: data)
-                let result = quotChartsResult.toQuoteCharts()
-                switch result {
-                case let .success(quotCharts):
-                    DispatchQueue.main.async {
-                        let points = quotCharts.points
-                        var newArray = array
-                        newArray.append(contentsOf: points)
-                        if points.count > 1 {
-                            self.getHundredtChartsAfterDate(
-                                array: newArray,
-                                fromDate: points[points.count - 1].date,
-                                urlComponentGetCharts: urlComponentGetCharts,
-                                callback: callback
-                            )
-                        } else {
-                            callback(.success(QuoteCharts(points: newArray)))
-                        }
-                    }
-                case .failure:
-                    DispatchQueue.main.async {
-                        callback(result)
-                    }
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    callback(.failure(ClientError.decodeJsonError))
-                }
+            DispatchQueue.main.async {
+                self.obsereDataByGetChartsRequest(
+                    data: data,
+                    array: array,
+                    components: components,
+                    callback: callback
+                )
             }
         }
         task.resume()
+    }
+
+    private func obsereDataByGetChartsRequest(
+        data: Data?,
+        array: [Point],
+        components: URLComponents,
+        callback: @escaping (_: Result<QuoteCharts, Error>) -> Void
+    ) {
+        guard let data = data else {
+            callback(.failure(ClientError.getRequestError))
+            return
+        }
+        do {
+            let quoteChartsResult = try decoder.decode(QuoteChartsResult.self, from: data)
+            let result = quoteChartsResult.toQuoteCharts()
+            switch result {
+            case let .success(quoteCharts):
+                let points = quoteCharts.points
+                var newArray = array
+                newArray.append(contentsOf: points)
+                if points.count > 1 {
+                    getChartsAfterDate(
+                        array: newArray,
+                        fromDate: points[points.count - 1].date,
+                        components: components,
+                        start: 1,
+                        callback: callback
+                    )
+                } else {
+                    callback(.success(QuoteCharts(points: newArray)))
+                }
+            case .failure:
+                callback(result)
+            }
+        } catch {
+            callback(.failure(ClientError.decodeJsonError))
+        }
     }
 
     public func quoteDetail(
@@ -122,11 +146,12 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         boardId: String,
         completion: @escaping (_: Result<QuoteDetail, Error>) -> Void
     ) {
-        // swiftlint:disable:next line_length
-        let urlComponentGetCharts = "https://iss.moex.com/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json?sort_order=desc"
-
-        let url = URL(string: urlComponentGetCharts)
-        guard let url = url else {
+        var components = urlComponents
+        components.path = "/iss/history/engines/stock/markets/shares/boards/\(boardId)/securities/\(id)/candels.json"
+        components.queryItems = [
+            URLQueryItem(name: "sort_order", value: "desc"),
+        ]
+        guard let url = components.url else {
             DispatchQueue.main.async {
                 completion(.failure(ClientError.algorithmError))
             }
@@ -166,7 +191,6 @@ private extension QuoteClient {
 
 private extension String {
     init(date: Date) {
-        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YY-MM-dd"
         self = dateFormatter.string(from: date)
     }
