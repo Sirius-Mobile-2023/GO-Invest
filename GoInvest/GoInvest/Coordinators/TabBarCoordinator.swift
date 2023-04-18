@@ -19,7 +19,11 @@ class TabBarCoordinator {
         quotesVC.didTapButton = { title in
             self.showQuoteController(with: title, navigationController: quotesNC)
         }
-
+        
+        quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: Theme.Images.quotesTabBar, tag: 0)
+        profileNC.tabBarItem = UITabBarItem(title: "Profile", image: Theme.Images.profileTabBarUnchecked, tag: 2)
+        profileNC.tabBarItem.selectedImage = Theme.Images.profileTabBarChecked
+        
         let controllers = [quotesNC, profileNC]
         controllers.forEach { $0.navigationBar.prefersLargeTitles = true }
 
