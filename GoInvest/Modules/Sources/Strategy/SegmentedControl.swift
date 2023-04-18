@@ -24,7 +24,7 @@ class SegmentedControl: UIView {
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.spacing = 20
+        stackView.spacing = Constants.spaspacing
         stackView.alignment = .center
         stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,7 +67,10 @@ class SegmentedControl: UIView {
                 button.layer.borderColor = Constants.selectBorderColor.cgColor
                 button.setTitleColor(Constants.selectTitleColor, for: .normal)
                 button.backgroundColor = Constants.selectedBackgroundColor
-                button.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                button.transform = CGAffineTransform(
+                    scaleX: Constants.selectSize,
+                    y: Constants.selectSize
+                )
             }
             
             segments.append(button)
@@ -86,6 +89,7 @@ class SegmentedControl: UIView {
         addSubview(stackView)
         NSLayoutConstraint.activate([
             title.topAnchor.constraint(equalTo: topAnchor),
+            title.leadingAnchor.constraint(equalTo: leadingAnchor),
             title.widthAnchor.constraint(equalTo: widthAnchor),
             title.heightAnchor.constraint(equalToConstant: 20),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -110,7 +114,10 @@ class SegmentedControl: UIView {
                 self.segments[oldSelectedSegmentIndex].backgroundColor = Constants.defaultBackgroundColor
                 self.segments[oldSelectedSegmentIndex].layer.borderColor = Constants.defaultBorderColor.cgColor
                 self.segments[oldSelectedSegmentIndex].setTitleColor(Constants.defaultTitleColor, for: .normal)
-                self.segments[selectedSegmentIndex].transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                self.segments[selectedSegmentIndex].transform = CGAffineTransform(
+                    scaleX: Constants.selectSize,
+                    y: Constants.selectSize
+                )
                 self.segments[selectedSegmentIndex].backgroundColor = Constants.selectedBackgroundColor
                 self.segments[selectedSegmentIndex].layer.borderColor = Constants.selectBorderColor.cgColor
                 self.segments[selectedSegmentIndex].setTitleColor(Constants.selectTitleColor, for: .normal)
@@ -140,6 +147,8 @@ private extension SegmentedControl {
         static let cornerRadius: CGFloat = 15
         static let borderWidth: CGFloat = 1
         static let sizeFont: CGFloat = 18
+        static let selectSize: CGFloat = 1.05
+        static let spaspacing: CGFloat = 20
     }
 }
 
