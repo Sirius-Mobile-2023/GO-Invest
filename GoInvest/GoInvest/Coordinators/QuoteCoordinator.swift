@@ -6,10 +6,12 @@ import UIKit
 class QuoteCoordinator {
     var navigationController: UINavigationController
     var navigationTitle: String
+    var selectedQuote: Quote
 
-    init(navigationController: UINavigationController, title: String) {
+    init(navigationController: UINavigationController, quote: Quote) {
         self.navigationController = navigationController
-        navigationTitle = title
+        navigationTitle = quote.name
+        selectedQuote = quote
     }
 
     func start() {
@@ -41,7 +43,7 @@ class QuoteCoordinator {
                                             }
                                         })
         let viewController = QuoteDetailViewController()
-        viewController.quoteId = navigationTitle
+        viewController.quote = selectedQuote
         viewController.navigationItem.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
     }

@@ -7,7 +7,7 @@ enum QuotesViewState {
     case success
 }
 public class QuotesViewController: UIViewController {
-    public var didTapButton: ((String) -> Void)?
+    public var didTapButton: ((Quote) -> Void)?
     private var animationPlayed = true
     private var quotesArray: [Quote] = []
     private lazy var tableView = UITableView()
@@ -57,6 +57,7 @@ public class QuotesViewController: UIViewController {
             switch result {
             case let .success(array):
                 self?.quotesArray = array
+                print(self?.quotesArray)
             case let .failure(error):
                 print(error)
             }
@@ -126,21 +127,6 @@ extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
     }
 
     public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        didTapButton?(viewModels[indexPath.row].shortName)
-    }
-}
-
-extension QuotesViewController {
-    private func loadData() {
-        quoteClient?.quoteList(search: .defaultList) {result in
-            switch result {
-            case .success(let quotesList):
-                self.currentViewState = .success
-                self.quotes = quotesList
-            case .failure(let error):
-                self.currentViewState = .error
-                print(error)
-            }
-        }
+        didTapButton?(quotesArray[indexPath.row])
     }
 }

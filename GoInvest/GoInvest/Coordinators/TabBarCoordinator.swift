@@ -1,4 +1,5 @@
 import QuoteClient
+import DomainModels
 import Profile
 import Quotes
 import Theme
@@ -17,10 +18,9 @@ class TabBarCoordinator {
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let profileNC = UINavigationController(rootViewController: profileVC)
 
-        quotesVC.didTapButton = { [weak self] title in
-            self?.showQuoteController(with: title, navigationController: quotesNC)
+        quotesVC.didTapButton = { [weak self] quote in
+            self?.showQuoteController(with: quote, navigationController: quotesNC)
         }
-        quotesVC.client = QuoteClient()
 
         quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: UIImage(systemName: "arrow.up.arrow.down"), tag: 0)
         profileNC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
@@ -38,8 +38,8 @@ class TabBarCoordinator {
         tabBarController.setViewControllers(tabControllers, animated: true)
     }
 
-    func showQuoteController(with quote: String, navigationController: UINavigationController) {
-        let quoteCoordinator = QuoteCoordinator(navigationController: navigationController, title: quote)
+    func showQuoteController(with quote: Quote, navigationController: UINavigationController) {
+        let quoteCoordinator = QuoteCoordinator(navigationController: navigationController, quote: quote)
         quoteCoordinator.start()
     }
 }

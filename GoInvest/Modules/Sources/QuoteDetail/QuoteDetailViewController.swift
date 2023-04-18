@@ -25,7 +25,7 @@ public class QuoteDetailViewController: UIViewController {
     private var chartDataClient: ChartsProvider? = QuoteClient()
     private var graphData: QuoteCharts?
     private var detailsData: QuoteDetail?
-    public var quoteId: String?
+    public var quote: Quote?
 
     private lazy var errorView: ErrorView = {
         let view = ErrorView()
@@ -152,7 +152,7 @@ private extension QuoteDetailViewController {
     func getDataForDetails() {
         detailState = .load
         #warning("TODO: Paste real id")
-        quoteDetailClient?.quoteDetail(id: "abrd", boardId: "tqbr") { [weak self] result in
+        quoteDetailClient?.quoteDetail(id: quote?.id ?? "", boardId: "tqbr") { [weak self] result in
             switch result {
             case .success(let quoteDetail):
                 self?.detailsData = quoteDetail
@@ -167,10 +167,11 @@ private extension QuoteDetailViewController {
     func getDataForGraph() {
         graphState = .load
         #warning("TODO: Paste real id")
-        chartDataClient?.quoteCharts(id: "abrd",
+        chartDataClient?.quoteCharts(id: quote?.id ?? "",
                                      boardId: "tqbr",
                                      fromDate: getDate(),
                                      completion: { [weak self] result in
+            print(result)
             switch result {
             case .success(let graphData):
                 self?.graphData = graphData

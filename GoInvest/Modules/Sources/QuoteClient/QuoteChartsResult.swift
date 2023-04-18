@@ -3,6 +3,7 @@ import Foundation
 
 struct QuoteChartsResult: Decodable {
     let history: History
+
     struct History: Decodable {
         let columns: [String]
         let data: [[AnyDecodable]]
@@ -19,11 +20,8 @@ struct QuoteChartsResult: Decodable {
 
         for element in history.data {
             if let dateAny = element[safe: dateIndex],
-               let priceAny = element[safe: priceIndex]
-            {
-                if let date = dateFromString(str: dateAny.getStringValue()),
-                   let price = priceAny.getDecimalValue()
-                {
+               let priceAny = element[safe: priceIndex] { if let date = dateFromString(str: dateAny.getStringValue()),
+                   let price = priceAny.getDecimalValue() {
                     poinst.append(Point(date, price))
                 }
             }
@@ -47,15 +45,13 @@ struct QuoteChartsResult: Decodable {
                let openPriceAny = element[safe: openPriceIndex],
                let closePriceAny = element[safe: closePriceIndex],
                let nameAny = element[safe: nameIndex],
-               let idAny = element[safe: idIndex]
-            {
+               let idAny = element[safe: idIndex] {
                 if let id = idAny.getStringValue(),
                    let name = nameAny.getStringValue(),
                    let date = dateFromString(str: dateAny.getStringValue()),
                    let price = priceAny.getDecimalValue(),
                    let openPrice = openPriceAny.getDecimalValue(),
-                   let closePrice = closePriceAny.getDecimalValue()
-                {
+                   let closePrice = closePriceAny.getDecimalValue() {
                     return .success(QuoteDetail(id: id,
                                                 name: name,
                                                 openPrice: openPrice,
