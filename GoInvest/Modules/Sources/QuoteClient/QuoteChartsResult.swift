@@ -20,7 +20,8 @@ struct QuoteChartsResult: Decodable {
 
         for element in history.data {
             if let dateAny = element[safe: dateIndex],
-               let priceAny = element[safe: priceIndex] { if let date = dateFromString(str: dateAny.getStringValue()),
+               let priceAny = element[safe: priceIndex] {
+                if let date = dateFromString(str: dateAny.getStringValue()),
                    let price = priceAny.getDecimalValue() {
                     poinst.append(Point(date, price))
                 }

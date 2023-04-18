@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "container:GoInvest.xcodeproj">
+      location = "group:Modules">
    </FileRef>
    <FileRef
-      location = "group:Modules">
+      location = "container:GoInvest.xcodeproj">
    </FileRef>
 </Workspace>

@@ -10,19 +10,19 @@ public enum Theme {
     }
 
     public enum Colors {
-        public static let background = UIColor(named: "BackgroundColor")
-        public static let yellow = UIColor(named: "YellowColor")
-        public static let button = UIColor(named: "BlackColor")
-        public static let mainText = UIColor(named: "BlackColor")
-        public static let buttonText = UIColor(named: "WhiteColor")
         public static let buttonHighlightedText = UIColor(white: 1, alpha: 0.5)
+        public static let background = UIColor(named: "BackgroundColor")!
+        public static let yellow = UIColor(named: "YellowColor")!
+        public static let button = UIColor(named: "BlackColor")!
+        public static let mainText = UIColor(named: "BlackColor")!
+        public static let buttonText = UIColor(named: "WhiteColor")!
     }
 
     public enum Images {
-        public static let quotesTabBar = UIImage(systemName: "arrow.up.arrow.down")
-        public static let profileTabBarUnchecked = UIImage(systemName: "person")
-        public static let profileTabBarChecked = UIImage(systemName: "person.fill")
-        public static let backNavBar = UIImage(systemName: "chevron.left.circle")
+        public static let quotesTabBar = UIImage(systemName: "arrow.up.arrow.down")!
+        public static let profileTabBarUnchecked = UIImage(systemName: "person")!
+        public static let profileTabBarChecked = UIImage(systemName: "person.fill")!
+        public static let backNavBar = UIImage(systemName: "chevron.left.circle")!
     }
 
     public enum StyleElements {
