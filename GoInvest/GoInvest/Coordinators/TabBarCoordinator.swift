@@ -24,7 +24,7 @@ class TabBarCoordinator {
             self?.showFavsController(with: quote, navigationController: profileNC)
         }
         quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: UIImage(systemName: "arrow.up.arrow.down"), tag: 0)
-        profileNC.tabBarItem = UITabBarItem(title: "Profile", image: UIImage(systemName: "person"), tag: 1)
+        profileNC.tabBarItem = UITabBarItem(title: "Favorites", image: UIImage(systemName: "person"), tag: 1)
         profileNC.tabBarItem.selectedImage = UIImage(systemName: "person.fill")
 
         let controllers = [quotesNC, profileNC]

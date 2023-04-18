@@ -5,8 +5,7 @@ public class Storage {
     public static var sharedQuotes: [Quote] = []
 
     public static func putQuoteToStorage(_ quote: Quote) {
-        let isInStorage = Storage.sharedQuotes.contains(where: {quoteInArray in
-            quoteInArray.id == quote.id})
+        let isInStorage = isInFavs(quote)
         if !isInStorage {
             Storage.sharedQuotes.append(quote)
         }
@@ -18,5 +17,10 @@ public class Storage {
 
     public static func removeFromStorageByIndex(_ index: Int) {
         Storage.sharedQuotes.remove(at: index)
+    }
+    
+    public static func isInFavs(_ quote: Quote) -> Bool {
+        return Storage.sharedQuotes.contains(where: {quoteInArray in
+            quoteInArray.id == quote.id})
     }
 }

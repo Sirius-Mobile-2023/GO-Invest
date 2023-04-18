@@ -120,6 +120,7 @@ private extension QuoteDetailViewController {
         view.backgroundColor = Theme.Colors.background
         view.isSkeletonable = true
         quoteDetailMainStackView.translatesAutoresizingMaskIntoConstraints = false
+        updateButton()
         view.addSubview(quoteDetailMainStackView)
     }
 
@@ -183,5 +184,13 @@ private extension QuoteDetailViewController {
     func getDate() -> Date {
         let date = Calendar.current.date(byAdding: .year, value: -1, to: .now)
         return date!
+    }
+}
+
+extension QuoteDetailViewController {
+    func updateButton() {
+        if Storage.isInFavs(quote!) {
+            quoteDetailView.disableButton()
+        }
     }
 }

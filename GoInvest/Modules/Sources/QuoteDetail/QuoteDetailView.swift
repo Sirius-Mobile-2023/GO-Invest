@@ -43,7 +43,7 @@ class QuoteDetailView: UIView {
     private let closePriceStackView = UIStackView()
     private let averagePriceStackView = UIStackView()
 
-    private let addToPortfolioButton: UIButton = {
+    private let addToFavsButton: UIButton = {
         var button = UIButton()
         button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -51,11 +51,13 @@ class QuoteDetailView: UIView {
         button.setTitle("Add to Favorites", for: .normal)
         button.setTitleColor(Theme.Colors.buttonText, for: .normal)
         button.setTitleColor(Theme.Colors.buttonHighlightedText, for: .highlighted)
+        button.setTitleColor(Theme.Colors.buttonHighlightedText, for: .disabled)
         button.titleLabel?.font = Theme.Fonts.button
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.isSkeletonable = true
         button.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         button.addTarget(self, action: #selector(addToFavoritesTapped(_:)), for: .touchUpInside)
+        button.setTitle("Added to Favorites", for: .disabled)
         return button
     }()
 
@@ -111,9 +113,10 @@ class QuoteDetailView: UIView {
         )
         arrangeStackView(
             for: mainStackView,
-            subviews: [buttonView,
+            subviews: [graphView.view,
+                       buttonView,
                        detailLabelsStackView,
-                       addToPortfolioButton
+                       addToFavsButton
                        ],
             spacing: Theme.Layout.bigSpacing,
             axis: .vertical
@@ -121,8 +124,9 @@ class QuoteDetailView: UIView {
         setContentHuggingPriorities()
         addSubview(mainStackView)
         NSLayoutConstraint.activate([
+            graphView.view.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 40),
-            addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
+            addToFavsButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: topAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -198,5 +202,12 @@ extension QuoteDetailView {
 extension QuoteDetailView {
     @objc private func addToFavoritesTapped(_ sender: UIButton) {
         addToFavsHandler?()
+        disableButton()
+    }
+}
+
+extension QuoteDetailView {
+    func disableButton() {
+        addToFavsButton.isEnabled = false
     }
 }
