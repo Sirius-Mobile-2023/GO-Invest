@@ -1,11 +1,12 @@
 import UIKit
+import Theme
 
 class StrategyView: UIView {
     
     private let amountView: UIView = {
         let textField = UIView()
-        textField.layer.borderColor = UIColor.black.cgColor
-        textField.layer.borderWidth = 1
+        textField.layer.borderColor = Constants.buttonBackgroundColor?.cgColor
+        textField.layer.borderWidth = Constants.defaultBorderWidth
         textField.layer.cornerRadius = Constants.cornerRadius
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -39,11 +40,11 @@ class StrategyView: UIView {
     
     private let computeButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .black
+        button.backgroundColor = Constants.buttonBackgroundColor
         button.layer.cornerRadius = Constants.cornerRadius
         button.setTitle("Compute", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 19, weight: .semibold)
+        button.setTitleColor(Constants.buttonTextColor, for: .normal)
+        button.titleLabel?.font = Constants.buttonFont
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -104,7 +105,7 @@ extension StrategyView: UITextFieldDelegate {
             options: .curveEaseOut,
             animations: {
                 self.amountView.transform = CGAffineTransform(scaleX: Constants.selectSize, y: Constants.selectSize)
-                self.amountView.layer.borderWidth = 2
+                self.amountView.layer.borderWidth = Constants.selectBorderWidth
             }, completion: nil)
     }
     
@@ -115,7 +116,7 @@ extension StrategyView: UITextFieldDelegate {
             options: .curveEaseOut,
             animations: {
                 self.amountView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                self.amountView.layer.borderWidth = 1
+                self.amountView.layer.borderWidth = Constants.defaultBorderWidth
             }, completion: nil)
     }
     
@@ -133,8 +134,13 @@ extension StrategyView: UITextFieldDelegate {
 
 private extension StrategyView {
     struct Constants {
-        static let margin: CGFloat = 30
-        static let cornerRadius: CGFloat = 15
-        static let selectSize: CGFloat = 1.05
+        static let defaultBorderWidth: CGFloat = Theme.StyleElements.buttonBorderWidth
+        static let selectBorderWidth: CGFloat = defaultBorderWidth * 2
+        static let buttonFont = Theme.Fonts.button
+        static let buttonTextColor = Theme.Colors.buttonText
+        static let buttonBackgroundColor = Theme.Colors.button
+        static let margin: CGFloat = Theme.Layout.sideOffset
+        static let cornerRadius: CGFloat = Theme.StyleElements.buttonCornerRadius
+        static let selectSize: CGFloat = Theme.Animation.selectSizeButton
     }
 }

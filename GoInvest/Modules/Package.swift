@@ -5,12 +5,16 @@ import PackageDescription
 
 let package = Package(
     name: "Modules",
+    platforms: [
+            .iOS(.v16)
+        ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "Modules",
-            targets: ["DomainModels", "QuoteClient", "Quotes", "Profile", "QuoteDetail", "Strategy"]
-        ),
+            targets: ["DomainModels", "QuoteClient", "Quotes", "Profile", "QuoteDetail", "Theme", "Strategy"]
+        )
+
     ],
     dependencies: [
         // Dependencies declare other packages that this package depends on.
@@ -29,7 +33,7 @@ let package = Package(
         ),
         .target(
             name: "Quotes",
-            dependencies: []
+            dependencies: ["Theme"]
         ),
         .target(
             name: "Profile",
@@ -37,11 +41,15 @@ let package = Package(
         ),
         .target(
             name: "QuoteDetail",
-            dependencies: []
+            dependencies: ["Theme"]
         ),
         .target(
             name: "Strategy",
             dependencies: []
         ),
+        .target(
+            name: "Theme",
+            dependencies: []
+        )
     ]
 )

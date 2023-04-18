@@ -1,6 +1,7 @@
 import Profile
 import Strategy
 import Quotes
+import Theme
 import UIKit
 
 class TabBarCoordinator {
