@@ -34,6 +34,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        request.timeoutInterval = 20
         let task = session.dataTask(with: request) { data, _, _ in
             guard let data = data else {
                 DispatchQueue.main.async {
@@ -91,6 +92,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         }
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
+        request.timeoutInterval = 20
         let task = session.dataTask(with: request) { data, _, _ in
             DispatchQueue.main.async {
                 self.obsereDataByGetChartsRequest(
@@ -158,6 +160,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
             return
         }
         var request = URLRequest(url: url)
+        request.timeoutInterval = 20
         request.httpMethod = "GET"
         let task = session.dataTask(with: request) { data, _, _ in
             guard let data = data else {

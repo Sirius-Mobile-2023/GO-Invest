@@ -1,7 +1,8 @@
 import UIKit
+import QuoteClient
 import Theme
 
-class ErrorView: UIView {
+class ErrorViewForDetails: UIView {
     typealias RetryHandler = () -> Void
 
     var tryAgainHandler: RetryHandler?
@@ -59,9 +60,22 @@ class ErrorView: UIView {
     }
 }
 
-extension ErrorView {
+extension ErrorViewForDetails {
     @objc
     private func tryAgainButtonTapped(_ sender: UIButton) {
         tryAgainHandler?()
+    }
+
+    public func updateErrorLabel(error: ClientError) {
+        switch error {
+        case .algorithmError:
+            fallthrough
+        case .decodeJsonError:
+            fallthrough
+        case .incorrectJsonError:
+            errorLabel.text = "Data is unreachable"
+        case .getRequestError:
+            errorLabel.text = "No internet connection"
+        }
     }
 }

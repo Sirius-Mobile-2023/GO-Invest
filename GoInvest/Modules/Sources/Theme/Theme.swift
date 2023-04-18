@@ -15,11 +15,6 @@ public enum Theme {
         public static let button = UIColor(named: "BlackColor")
         public static let mainText = UIColor(named: "BlackColor")
         public static let buttonText = UIColor(named: "WhiteColor")
-        public static let background = UIColor(named: "BackgroundColor")!
-        public static let yellow = UIColor(named: "YellowColor")!
-        public static let button = UIColor(named: "BlackColor")!
-        public static let mainText = UIColor(named: "BlackColor")!
-        public static let buttonText = UIColor(named: "WhiteColor")!
         public static let buttonHighlightedText = UIColor(white: 1, alpha: 0.5)
     }
 

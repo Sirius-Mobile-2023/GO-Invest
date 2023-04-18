@@ -28,8 +28,9 @@ public class QuoteDetailViewController: UIViewController {
     private var detailsData: QuoteDetail?
     public var quote: Quote?
 
-    private lazy var errorView: ErrorView = {
-        let view = ErrorView()
+    private lazy var errorView: ErrorViewForDetails = {
+        let view = ErrorViewForDetails()
+        view.isHidden = true
         view.tryAgainHandler = { [weak self] in
             self?.getQuoteData()
         }
@@ -57,16 +58,17 @@ public class QuoteDetailViewController: UIViewController {
         didSet {
             switch viewState {
             case .load:
+                errorView.isHidden = true
                 view.showAnimatedGradientSkeleton()
             case .success:
                 view.hideSkeleton()
                 errorView.isHidden = true
-//                graphView.graphData = graphData
+                #warning("Paste graphView.graphData = graphData")
                 if let quoteDetailData = detailsData {
                     quoteDetailView.setDetailsData(quoteDetailData: quoteDetailData)
                 }
             case .error:
-                view.addSubview(errorView)
+                errorView.isHidden = false
                 layoutErrorView()
             case .none:
                 break
@@ -112,7 +114,7 @@ public class QuoteDetailViewController: UIViewController {
         getQuoteData()
         setupLayout()
     }
-    
+
     override public func viewWillAppear(_: Bool) {
         super.viewWillAppear(true)
         updateButton()
@@ -128,6 +130,7 @@ private extension QuoteDetailViewController {
         quoteDetailMainStackView.translatesAutoresizingMaskIntoConstraints = false
         updateButton()
         view.addSubview(quoteDetailMainStackView)
+        view.addSubview(errorView)
     }
 
     func setupLayout() {
@@ -164,6 +167,8 @@ private extension QuoteDetailViewController {
                 self?.detailsData = quoteDetail
                 self?.detailState = .success
             case .failure(let error):
+                let customError = error as! ClientError
+                self?.errorView.updateErrorLabel(error: customError)
                 self?.detailState = .error
             }
         }
@@ -180,6 +185,8 @@ private extension QuoteDetailViewController {
                 self?.graphData = graphData
                 self?.graphState = .success
             case .failure(let error):
+                let customError = error as! ClientError
+                self?.errorView.updateErrorLabel(error: customError)
                 self?.graphState = .error
             }
         })
