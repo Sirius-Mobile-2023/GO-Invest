@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import Theme
 import QuoteClient
 import DomainModels
@@ -105,11 +106,16 @@ public class QuoteDetailViewController: UIViewController {
         }
     }
 
+    private let graphView = UIHostingController(rootView: GraphView())
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         getQuoteData()
         setupLayout()
+
+        addChild(graphView)
+        graphView.didMove(toParent: self)
     }
 }
 
