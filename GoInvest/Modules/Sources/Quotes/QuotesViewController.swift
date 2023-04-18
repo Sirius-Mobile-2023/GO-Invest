@@ -4,14 +4,14 @@ import DomainModels
 public class QuotesViewController: UIViewController {
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
-    private var toShowArray: [Quote] = []
+    private var arrayToShow: [Quote] = []
     private lazy var tableView = UITableView()
     public var client: QuoteListProvider
     private let searchController = UISearchController()
 
     private var quotesArray: [Quote] = [] {
         willSet {
-            toShowArray = newValue
+            arrayToShow = newValue
         }
     }
 
@@ -114,12 +114,12 @@ public class QuotesViewController: UIViewController {
 
 extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        toShowArray.count
+        arrayToShow.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuoteCustomCell") as! QuoteCustomCell
-        cell.setData(model: toShowArray[indexPath.row])
+        cell.setData(model: arrayToShow[indexPath.row])
         return cell
     }
 
@@ -136,9 +136,9 @@ extension QuotesViewController: UISearchResultsUpdating {
         let filteredData = quotesArray.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
 
         if filteredData.isEmpty {
-            toShowArray = quotesArray
+            arrayToShow = quotesArray
         } else {
-            toShowArray = filteredData
+            arrayToShow = filteredData
         }
         tableView.reloadData()
 
