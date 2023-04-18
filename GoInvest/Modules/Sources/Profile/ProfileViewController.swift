@@ -9,7 +9,7 @@ enum FavoritesViewState {
 public class ProfileViewController: UIViewController {
     public var didTapButton: ((Quote) -> Void)?
     private var animationPlayed = true
-    private var quotesArray: [Quote] = Storage.sharedQuotes
+    private var quotesArray: [Quote] = []
     private lazy var tableView = UITableView()
 
     override public func viewDidLayoutSubviews() {
@@ -19,7 +19,7 @@ public class ProfileViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        fetchDataFromStorage()
+//        fetchDataFromStorage()
         configureTitle()
         configureTableView()
         if animationPlayed {
@@ -29,7 +29,8 @@ public class ProfileViewController: UIViewController {
 
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        quotesArray = Storage.sharedQuotes
+        fetchDataFromStorage()
+        print(quotesArray)
         tableView.reloadData()
     }
 

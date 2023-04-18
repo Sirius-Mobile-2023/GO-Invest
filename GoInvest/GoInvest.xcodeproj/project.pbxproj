@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		4D0E102E29EEBB820061EFE4 /* FavoritesCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D0E102D29EEBB820061EFE4 /* FavoritesCoordinator.swift */; };
+		4D0E103229EED7E30061EFE4 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4D0E103129EED7E30061EFE4 /* GoogleService-Info.plist */; };
+		4D0E103529EED9860061EFE4 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 4D0E103429EED9860061EFE4 /* FirebaseAuth */; };
+		4D0E103729EED9860061EFE4 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 4D0E103629EED9860061EFE4 /* FirebaseFirestore */; };
 		4D26228A29E5DF2800B56C18 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228929E5DF2800B56C18 /* AppCoordinator.swift */; };
 		4D26228C29E5E0C300B56C18 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */; };
 		4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */; };
@@ -21,6 +24,7 @@
 
 /* Begin PBXFileReference section */
 		4D0E102D29EEBB820061EFE4 /* FavoritesCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesCoordinator.swift; sourceTree = "<group>"; };
+		4D0E103129EED7E30061EFE4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "GoInvest/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4D26228929E5DF2800B56C18 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 		4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCoordinator.swift; sourceTree = "<group>"; };
@@ -38,6 +42,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				4D4465A729EB2D3F00CB846C /* SkeletonView in Frameworks */,
+				4D0E103729EED9860061EFE4 /* FirebaseFirestore in Frameworks */,
+				4D0E103529EED9860061EFE4 /* FirebaseAuth in Frameworks */,
 				874BEA4D29E72EE5001383BD /* Modules in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -59,6 +65,7 @@
 		8790EA6E29E5938800A9FD42 = {
 			isa = PBXGroup;
 			children = (
+				4D0E103129EED7E30061EFE4 /* GoogleService-Info.plist */,
 				8790EA7929E5938800A9FD42 /* GoInvest */,
 				8790EA7829E5938800A9FD42 /* Products */,
 				87C32D0529E5B51A00CC7A4D /* Frameworks */,
@@ -113,6 +120,8 @@
 			packageProductDependencies = (
 				874BEA4C29E72EE5001383BD /* Modules */,
 				4D4465A629EB2D3F00CB846C /* SkeletonView */,
+				4D0E103429EED9860061EFE4 /* FirebaseAuth */,
+				4D0E103629EED9860061EFE4 /* FirebaseFirestore */,
 			);
 			productName = GoInvest;
 			productReference = 8790EA7729E5938800A9FD42 /* GoInvest.app */;
@@ -144,6 +153,7 @@
 			mainGroup = 8790EA6E29E5938800A9FD42;
 			packageReferences = (
 				4D4465A529EB2D3F00CB846C /* XCRemoteSwiftPackageReference "SkeletonView" */,
+				4D0E103329EED9860061EFE4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 8790EA7829E5938800A9FD42 /* Products */;
 			projectDirPath = "";
@@ -161,6 +171,7 @@
 			files = (
 				8790EA8729E5938A00A9FD42 /* LaunchScreen.storyboard in Resources */,
 				8790EA8429E5938A00A9FD42 /* Assets.xcassets in Resources */,
+				4D0E103229EED7E30061EFE4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -406,6 +417,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4D0E103329EED9860061EFE4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 		4D4465A529EB2D3F00CB846C /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Juanpe/SkeletonView.git";
@@ -417,6 +436,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		4D0E103429EED9860061EFE4 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4D0E103329EED9860061EFE4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		4D0E103629EED9860061EFE4 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4D0E103329EED9860061EFE4 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
 		4D4465A629EB2D3F00CB846C /* SkeletonView */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 4D4465A529EB2D3F00CB846C /* XCRemoteSwiftPackageReference "SkeletonView" */;

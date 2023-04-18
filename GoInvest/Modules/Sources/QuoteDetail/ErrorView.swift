@@ -9,7 +9,7 @@ class ErrorView: UIView {
     private let errorLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.error
-        label.textColor = Theme.Colors.buttonText
+        label.textColor = Theme.Colors.mainText
         label.text = "Error occured"
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -21,7 +21,8 @@ class ErrorView: UIView {
         button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
         button.setTitle("Try again", for: .normal)
         button.titleLabel?.font = Theme.Fonts.button
-        button.setTitleColor(Theme.Colors.button, for: .normal)
+        button.setTitleColor(Theme.Colors.buttonText, for: .normal)
+        button.setTitleColor(Theme.Colors.buttonHighlightedText, for: .highlighted)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.addTarget(self, action: #selector(tryAgainButtonTapped(_:)), for: .touchUpInside)
         return button

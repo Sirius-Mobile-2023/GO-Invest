@@ -190,12 +190,19 @@ private extension QuoteDetailView {
 
 extension QuoteDetailView {
     func setDetailsData(quoteDetailData: QuoteDetail) {
-        closePriceAmountLabel.text = "\(quoteDetailData.closePrice)"
-        openPriceAmountLabel.text = "\(quoteDetailData.openPrice)"
-        averagePriceAmountLabel.text = "\(quoteDetailData.currentPrice)"
+        closePriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.closePrice))"
+        openPriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.openPrice))"
+        averagePriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.currentPrice))"
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "YYYY-MM-dd"
+        dateFormatter.dateFormat = "dd.MM.YYYY"
         lastDateLabel.text = dateFormatter.string(from: quoteDetailData.date)
+    }
+
+    func getRoundedValue(_ number: Decimal, symbolNumber: Int = 4) -> Decimal {
+        var localCopy = number
+        var rounded = Decimal()
+        NSDecimalRound(&rounded, &localCopy, 4, .plain)
+        return rounded
     }
 }
 
