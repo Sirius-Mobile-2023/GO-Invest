@@ -48,7 +48,7 @@ class QuoteCoordinator {
         viewController.navigationItem.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
     }
-    //TODO: #<26 issue, функция как пример для конвертации данных>
+    // TODO: #<26 issue, функция как пример для конвертации данных>
     func dateFromString(str: String?) -> Date? {
         guard let str = str else {
             return nil

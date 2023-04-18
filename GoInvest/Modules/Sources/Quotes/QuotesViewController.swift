@@ -9,9 +9,16 @@ enum QuotesViewState {
 public class QuotesViewController: UIViewController {
     public var didTapButton: ((Quote) -> Void)?
     private var animationPlayed = true
-    private var quotesArray: [Quote] = []
+    private var arrayToShow: [Quote] = []
     private lazy var tableView = UITableView()
     public var client: QuoteListProvider
+    private let searchController = UISearchController()
+
+    private var quotesArray: [Quote] = [] {
+        willSet {
+            arrayToShow = newValue
+        }
+    }
 
     public init(client: QuoteListProvider) {
         self.client = client
@@ -21,7 +28,6 @@ public class QuotesViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
     private var currentViewState: QuotesViewState? {
         didSet {
             switch self.currentViewState {
@@ -58,9 +64,11 @@ public class QuotesViewController: UIViewController {
             case let .success(array):
                 self?.quotesArray = array
                 self?.currentViewState = .success
-            case .failure:
+            case let .failure(error):
                 self?.currentViewState = .error
+                print(error)
             }
+                self?.showFullQuotes()
                 self?.tableView.reloadData()
                 self?.animateTableView()
                 self?.animationPlayed = false
@@ -69,6 +77,16 @@ public class QuotesViewController: UIViewController {
 
     private func configureTitle() {
         title = "Quotes"
+        navigationItem.searchController = searchController
+        searchController.searchResultsUpdater = self
+    }
+
+    private func showFullQuotes() {
+        quotesArray = quotesArray.filter { isFull($0) } + quotesArray.filter { !isFull($0) }
+    }
+
+    private func isFull(_ q: Quote) -> Bool {
+        q.openPrice != nil && q.closePrice != nil
     }
 
     private func animateTableView() {
@@ -117,16 +135,33 @@ public class QuotesViewController: UIViewController {
 
 extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        quotesArray.count
+        arrayToShow.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuoteCustomCell") as! QuoteCustomCell
-        cell.setData(model: quotesArray[indexPath.row])
+        cell.setData(model: arrayToShow[indexPath.row])
         return cell
     }
 
     public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
         didTapButton?(quotesArray[indexPath.row])
+    }
+}
+
+extension QuotesViewController: UISearchResultsUpdating {
+    public func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text?.uppercased() else {
+            return
+        }
+        let filteredData = quotesArray.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
+
+        if filteredData.isEmpty {
+            arrayToShow = quotesArray
+        } else {
+            arrayToShow = filteredData
+        }
+        tableView.reloadData()
+
     }
 }
