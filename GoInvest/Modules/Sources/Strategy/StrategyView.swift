@@ -2,7 +2,7 @@ import UIKit
 import Theme
 
 class StrategyView: UIView {
-    
+
     private let amountView: UIView = {
         let textField = UIView()
         textField.layer.borderColor = Constants.buttonBackgroundColor.cgColor
@@ -11,7 +11,7 @@ class StrategyView: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
-    
+
     private let amountTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Input Amount"
@@ -19,7 +19,7 @@ class StrategyView: UIView {
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
     }()
-    
+
     private let risksView: SegmentedControl = {
         let view = SegmentedControl(
             title: "Risks",
@@ -28,7 +28,7 @@ class StrategyView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private let strategicsView: SegmentedControl = {
         let view = SegmentedControl(
             title: "Strategics",
@@ -37,7 +37,7 @@ class StrategyView: UIView {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-    
+
     private let computeButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = Constants.buttonBackgroundColor
@@ -55,28 +55,28 @@ class StrategyView: UIView {
         setupUI()
         setupLayout()
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setupUI()
         setupLayout()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setupUI() {
         amountTextField.delegate = self
-        
+
         addSubview(amountView)
         amountView.addSubview(amountTextField)
         addSubview(risksView)
         addSubview(strategicsView)
         addSubview(computeButton)
     }
-    
+
     private func setupLayout() {
         NSLayoutConstraint.activate([
             amountView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
@@ -105,7 +105,7 @@ class StrategyView: UIView {
 }
 
 extension StrategyView: UITextFieldDelegate {
-    
+
     func textFieldDidBeginEditing(_ textField: UITextField) {
         UIView.animate(
             withDuration: 0.2,
@@ -116,7 +116,7 @@ extension StrategyView: UITextFieldDelegate {
                 self.amountView.layer.borderWidth = Constants.selectBorderWidth
             }, completion: nil)
     }
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
         UIView.animate(
             withDuration: 0.2,
@@ -127,12 +127,12 @@ extension StrategyView: UITextFieldDelegate {
                 self.amountView.layer.borderWidth = Constants.defaultBorderWidth
             }, completion: nil)
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.endEditing(true)
         return true
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         amountTextField.endEditing(true)

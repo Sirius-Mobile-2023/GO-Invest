@@ -2,7 +2,7 @@ import UIKit
 import Theme
 
 class SegmentedControl: UIView {
-    
+
     var selectedSegmentIndex: Int {
         didSet {
             updateSegments(
@@ -11,9 +11,9 @@ class SegmentedControl: UIView {
             )
         }
     }
-    
+
     private var segments = [UIButton]()
-    
+
     private let title: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
@@ -21,7 +21,7 @@ class SegmentedControl: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
+
     private let stackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
@@ -46,11 +46,11 @@ class SegmentedControl: UIView {
         setupUI(title: title, segmentsTitle: segmentsTitle)
         setupLayout()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private func setupUI(title: String, segmentsTitle: [String]) {
         self.title.text = title
         for (index, segment) in segmentsTitle.enumerated() {
@@ -63,7 +63,7 @@ class SegmentedControl: UIView {
                 borderWidth: Constants.borderWidth,
                 font: Constants.buttonFont
             )
-            
+
             if index == selectedSegmentIndex {
                 button.layer.borderColor = Constants.selectBorderColor.cgColor
                 button.setTitleColor(Constants.selectTitleColor, for: .normal)
@@ -73,18 +73,18 @@ class SegmentedControl: UIView {
                     y: Constants.selectSize
                 )
             }
-            
+
             segments.append(button)
             stackView.addArrangedSubview(button)
             button.tag = index
             button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
-        
+
             NSLayoutConstraint.activate([
                 button.widthAnchor.constraint(equalTo: stackView.widthAnchor)
             ])
         }
     }
-    
+
     private func setupLayout() {
         addSubview(title)
         addSubview(stackView)
@@ -99,7 +99,7 @@ class SegmentedControl: UIView {
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
-    
+
     private func updateSegments(selectedSegmentIndex: Int, oldSelectedSegmentIndex: Int) {
         segments.forEach { button in
             button.isSelected = false

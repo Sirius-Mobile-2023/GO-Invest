@@ -1,19 +1,32 @@
 import UIKit
-import Theme
+import DomainModels
 
 public class QuotesViewController: UIViewController {
-    private let viewModels = Data.getData()
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
+    private var arrayToShow: [Quote] = []
     private lazy var tableView = UITableView()
+    public var client: QuoteListProvider
+    private let searchController = UISearchController()
+
+    private var quotesArray: [Quote] = [] {
+        willSet {
+            arrayToShow = newValue
+        }
+    }
+
+    public init(client: QuoteListProvider) {
+        self.client = client
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.alpha = 1
-        if animationPlayed {
-            animateTableView()
-            animationPlayed = false
-        }
     }
 
     override public func viewDidLoad() {
@@ -23,10 +36,36 @@ public class QuotesViewController: UIViewController {
         if animationPlayed {
             tableView.alpha = 0
         }
+        fetchData()
+    }
+
+    private func fetchData() {
+        client.quoteList(search: .defaultList) { [weak self] result in
+            switch result {
+            case let .success(array):
+                self?.quotesArray = array
+            case let .failure(error):
+                print(error)
+            }
+                self?.showFullQuotes()
+                self?.tableView.reloadData()
+                self?.animateTableView()
+                self?.animationPlayed = false
+        }
     }
 
     private func configureTitle() {
         title = "Quotes"
+        navigationItem.searchController = searchController
+        searchController.searchResultsUpdater = self
+    }
+
+    private func showFullQuotes() {
+        quotesArray = quotesArray.filter { isFull($0) } + quotesArray.filter { !isFull($0) }
+    }
+
+    private func isFull(_ q: Quote) -> Bool {
+        q.openPrice != nil && q.closePrice != nil
     }
 
     private func animateTableView() {
@@ -75,16 +114,33 @@ public class QuotesViewController: UIViewController {
 
 extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        viewModels.count
+        arrayToShow.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuoteCustomCell") as! QuoteCustomCell
-        cell.setData(model: viewModels[indexPath.row])
+        cell.setData(model: arrayToShow[indexPath.row])
         return cell
     }
 
     public func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
         didTapButton?("Quote")
+    }
+}
+
+extension QuotesViewController: UISearchResultsUpdating {
+    public func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text?.uppercased() else {
+            return
+        }
+        let filteredData = quotesArray.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
+
+        if filteredData.isEmpty {
+            arrayToShow = quotesArray
+        } else {
+            arrayToShow = filteredData
+        }
+        tableView.reloadData()
+
     }
 }

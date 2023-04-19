@@ -14,6 +14,11 @@ public enum Theme {
         public static let button = UIColor(named: "BlackColor")!
         public static let mainText = UIColor(named: "BlackColor")!
         public static let buttonText = UIColor(named: "WhiteColor")!
+        public static let redBackground = UIColor(named: "RedColor")!
+        public static let greenBackground = UIColor(named: "GreenColor")!
+        public static let labelText = UIColor(named: "WhiteColor")!
+        public static let subLabelText = UIColor.gray
+
     }
 
     public enum Images {
@@ -23,7 +28,7 @@ public enum Theme {
         public static let strategyTabBar = UIImage(systemName: "function")!
         public static let backNavBar = UIImage(systemName: "chevron.left.circle")!
     }
-    
+
     public enum StyleElements {
         public static let imageCornerRadius: CGFloat = 20
         public static let buttonCornerRadius: CGFloat = 10
@@ -37,7 +42,7 @@ public enum Theme {
         public static let topOffset: CGFloat = 10
         public static let buttonHeight: CGFloat = 55
     }
-    
+
     public enum Animation {
         public static let selectSizeButton: CGFloat = 1.05
     }

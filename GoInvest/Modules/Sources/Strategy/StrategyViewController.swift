@@ -1,13 +1,13 @@
 import UIKit
 
 public class StrategyViewController: UIViewController {
-    
+
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
-    
+
     private lazy var strategyView: UIView = {
         title = "Strategy"
         let view = StrategyView()
