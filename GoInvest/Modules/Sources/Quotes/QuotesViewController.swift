@@ -14,6 +14,7 @@ public class QuotesViewController: UIViewController {
     private lazy var tableView = UITableView()
     public var client: QuoteListProvider
     private let searchController = UISearchController()
+    private var currentViewState: QuotesViewState?
 
     private var quotesArray: [Quote] = [] {
         willSet {
