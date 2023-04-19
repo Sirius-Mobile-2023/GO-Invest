@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import Theme
 import QuoteClient
 import DomainModels
@@ -48,7 +49,7 @@ public class QuoteDetailViewController: UIViewController {
         return view
     }()
     private lazy var quoteDetailMainStackView: UIStackView = {
-        var stack = UIStackView(arrangedSubviews: [quoteDetailView])
+        var stack = UIStackView(arrangedSubviews: [graphView.view, quoteDetailView])
         stack.spacing = Theme.Layout.bigSpacing
         stack.axis = .vertical
         stack.isSkeletonable = true
@@ -116,19 +117,11 @@ public class QuoteDetailViewController: UIViewController {
         return hostingController
     }()
 
-    private lazy var quoteDetailMainStackView: UIStackView = {
-        var stack = UIStackView(arrangedSubviews: [graphView.view, quoteDetailView])
-        stack.spacing = Theme.Layout.bigSpacing
-        stack.axis = .vertical
-        return stack
-    }()
-
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         getQuoteData()
         setupLayout()
-
         addChild(graphView)
         graphView.didMove(toParent: self)
     }
@@ -141,7 +134,7 @@ public class QuoteDetailViewController: UIViewController {
         view.addSubview(quoteDetailMainStackView)
         view.addSubview(errorView)
     }
-    
+
     private func setupLayout() {
         NSLayoutConstraint.activate([
             graphView.view.heightAnchor.constraint(equalToConstant: 300),

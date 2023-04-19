@@ -1,7 +1,5 @@
 import UIKit
 import SwiftUI
-import UIKit
-import SwiftUI
 import Theme
 import SkeletonView
 import DomainModels
@@ -10,7 +8,7 @@ class QuoteDetailView: UIView {
     typealias AddToFavsandler = () -> Void
 
     var addToFavsHandler: (AddToFavsandler)?
-    
+
     private let buttonView: TimeIntervalsControl = {
         let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 0)
         control.isSkeletonable = true
