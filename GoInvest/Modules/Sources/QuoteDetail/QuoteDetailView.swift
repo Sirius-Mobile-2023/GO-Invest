@@ -1,16 +1,10 @@
 import UIKit
+import SwiftUI
 import Theme
 
 class QuoteDetailView: UIView {
 
-    var data = QuoteDetailModel(id: "ABRD", boardId: "tqbr")
-
-    private let graphView: UIView = {
-        var view = UIView()
-        view.backgroundColor = .green
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+    var data = QuoteDetailModel(id: "ABRD")
 
     private let buttonView: TimeIntervalsControl = {
         let control = TimeIntervalsControl(
@@ -100,25 +94,22 @@ class QuoteDetailView: UIView {
             subviews: [dateStackView,
                        closePriceStackView,
                        openPriceStackView,
-                       averagePriceStackView
-                       ],
+                       averagePriceStackView],
             spacing: Theme.Layout.smallSpacing,
             axis: .vertical
         )
         arrangeStackView(
             for: mainStackView,
-            subviews: [graphView,
+            subviews: [
                        buttonView,
                        detailLabelsStackView,
-                       addToPortfolioButton
-                       ],
+                       addToPortfolioButton],
             spacing: Theme.Layout.bigSpacing,
             axis: .vertical
         )
         setContentHuggingPriorities()
         addSubview(mainStackView)
         NSLayoutConstraint.activate([
-            graphView.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 40),
             addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: topAnchor),
@@ -145,18 +136,20 @@ class QuoteDetailView: UIView {
 private extension QuoteDetailView {
     func applyStyleForLabel(
         for label: UILabel,
-        text: String) {
-            label.text = text
-            label.font = Theme.Fonts.subtitle
-        }
+        text: String
+    ) {
+        label.text = text
+        label.font = Theme.Fonts.subtitle
+    }
 
     func applyStyleForAmountLabel(
         for label: UILabel,
-        text: String) {
-            label.text = text
-            label.textAlignment = .right
-            label.font = Theme.Fonts.title
-        }
+        text: String
+    ) {
+        label.text = text
+        label.textAlignment = .right
+        label.font = Theme.Fonts.title
+    }
 
     func arrangeStackView(
         for stackView: UIStackView,
