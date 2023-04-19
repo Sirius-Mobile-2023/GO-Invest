@@ -1,5 +1,5 @@
-import UIKit
 import Theme
+import UIKit
 
 class QuoteDetailView: UIView {
     private let graphView: UIView = {
@@ -91,8 +91,7 @@ class QuoteDetailView: UIView {
             subviews: [dateStackView,
                        closePriceStackView,
                        openPriceStackView,
-                       averagePriceStackView
-                       ],
+                       averagePriceStackView],
             spacing: Theme.Layout.smallSpacing,
             axis: .vertical
         )
@@ -101,8 +100,7 @@ class QuoteDetailView: UIView {
             subviews: [graphView,
                        buttonView,
                        detailLabelsStackView,
-                       addToPortfolioButton
-                       ],
+                       addToPortfolioButton],
             spacing: Theme.Layout.bigSpacing,
             axis: .vertical
         )
@@ -136,18 +134,20 @@ class QuoteDetailView: UIView {
 private extension QuoteDetailView {
     func applyStyleForLabel(
         for label: UILabel,
-        text: String) {
-            label.text = text
-            label.font = Theme.Fonts.subtitle
-        }
+        text: String
+    ) {
+        label.text = text
+        label.font = Theme.Fonts.subtitle
+    }
 
     func applyStyleForAmountLabel(
         for label: UILabel,
-        text: String) {
-            label.text = text
-            label.textAlignment = .right
-            label.font = Theme.Fonts.title
-        }
+        text: String
+    ) {
+        label.text = text
+        label.textAlignment = .right
+        label.font = Theme.Fonts.title
+    }
 
     func arrangeStackView(
         for stackView: UIStackView,
