@@ -23,7 +23,4 @@ class QuoteCoordinator {
         navigationController.pushViewController(viewController, animated: true)
     }
 
-    deinit {
-        print("deinit")
-    }
 }

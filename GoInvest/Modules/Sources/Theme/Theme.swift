@@ -10,18 +10,24 @@ public enum Theme {
     }
 
     public enum Colors {
-        public static let background = UIColor(named: "BackgroundColor")
-        public static let yellow = UIColor(named: "YellowColor")
-        public static let button = UIColor(named: "BlackColor")
-        public static let mainText = UIColor(named: "BlackColor")
-        public static let buttonText = UIColor(named: "WhiteColor")
+        public static let background = UIColor(named: "BackgroundColor")!
+        public static let yellow = UIColor(named: "YellowColor")!
+        public static let button = UIColor(named: "BlackColor")!
+        public static let mainText = UIColor(named: "BlackColor")!
+        public static let buttonText = UIColor(named: "WhiteColor")!
         public static let buttonHighlightedText = UIColor(white: 1, alpha: 0.5)
+        public static let redBackground = UIColor(named: "RedColor")!
+        public static let greenBackground = UIColor(named: "GreenColor")!
+        public static let labelText = UIColor(named: "WhiteColor")!
+        public static let subLabelText = UIColor.gray
+
     }
 
     public enum Images {
         public static let quotesTabBar = UIImage(systemName: "arrow.up.arrow.down")!
         public static let profileTabBarUnchecked = UIImage(systemName: "person")!
         public static let profileTabBarChecked = UIImage(systemName: "person.fill")!
+        public static let strategyTabBar = UIImage(systemName: "function")!
         public static let backNavBar = UIImage(systemName: "chevron.left.circle")!
     }
 
@@ -30,6 +36,7 @@ public enum Theme {
         public static let buttonCornerRadius: CGFloat = 10
         public static let skeletonCornerRadius: Float = 10
         public static let skeletonTextCornerRadius: Int = 5
+        public static let buttonBorderWidth: CGFloat = 1
     }
 
     public enum Layout {
@@ -38,5 +45,9 @@ public enum Theme {
         public static let sideOffset: CGFloat = 20
         public static let topOffset: CGFloat = 10
         public static let buttonHeight: CGFloat = 55
+    }
+
+    public enum Animation {
+        public static let selectSizeButton: CGFloat = 1.05
     }
 }

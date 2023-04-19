@@ -1,5 +1,6 @@
 import DomainModels
 import UIKit
+import Theme
 
 final class QuoteCustomCell: UITableViewCell {
     private let shortNameLabel = UILabel()
@@ -10,6 +11,7 @@ final class QuoteCustomCell: UITableViewCell {
     private let namesStackView = UIStackView()
     private let leadingStackView = UIStackView()
     private let trailingStackView = UIStackView()
+    private let colorView = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -18,6 +20,7 @@ final class QuoteCustomCell: UITableViewCell {
         configureFullNameLabel()
         configurePriceLabel()
         configureDiffPriceLabel()
+        configurePercentLabel()
     }
 
     @available(*, unavailable)
@@ -48,19 +51,27 @@ final class QuoteCustomCell: UITableViewCell {
         }
 
     private func configureDiffStackView() {
+        colorView.addSubview(diffPercentLabel)
         configureStackView(stackView: trailingStackView,
                            axis: .vertical,
                            aligment: .fill,
                            distribution: .fillEqually,
                            spacing: 10,
-                           viewsArray: [diffPercentLabel, diffPriceLabel],
+                           viewsArray: [colorView, diffPriceLabel],
                            isInContentView: true)
 
         trailingStackView.translatesAutoresizingMaskIntoConstraints = false
+        diffPercentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             trailingStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             trailingStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            trailingStackView.widthAnchor.constraint(equalToConstant: 80),
+            diffPercentLabel.leadingAnchor.constraint(equalTo: colorView.leadingAnchor),
+            diffPercentLabel.trailingAnchor.constraint(equalTo: colorView.trailingAnchor, constant: -8),
+            diffPercentLabel.bottomAnchor.constraint(equalTo: colorView.bottomAnchor),
+            diffPercentLabel.topAnchor.constraint(equalTo: colorView.topAnchor)
         ])
+
     }
 
     private func configureNamesStackView() {
@@ -86,13 +97,12 @@ final class QuoteCustomCell: UITableViewCell {
         NSLayoutConstraint.activate([
             leadingStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             leadingStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            leadingStackView.trailingAnchor.constraint(equalTo: trailingStackView.leadingAnchor,
-                                                       constant: -30),
+            leadingStackView.trailingAnchor.constraint(equalTo: trailingStackView.leadingAnchor, constant: -30)
         ])
-        setPrioriries()
+        setPriorities()
     }
 
-    private func setPrioriries() {
+    private func setPriorities() {
         shortNameLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh,
                                                                for: .horizontal)
         fullNameLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultLow,
@@ -101,24 +111,32 @@ final class QuoteCustomCell: UITableViewCell {
 
     private func configureShortNameLabel() {
         shortNameLabel.numberOfLines = 1
-        shortNameLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+        shortNameLabel.font = Theme.Fonts.title
     }
 
     private func configureFullNameLabel() {
         fullNameLabel.numberOfLines = 1
-        fullNameLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        fullNameLabel.textColor = .gray
+        fullNameLabel.font = Theme.Fonts.title
+        fullNameLabel.textColor = Theme.Colors.subLabelText
     }
 
     private func configurePriceLabel() {
         priceLabel.numberOfLines = 1
-        priceLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+        priceLabel.font = Theme.Fonts.title
         priceLabel.textAlignment = .right
     }
 
+    private func configurePercentLabel() {
+        diffPercentLabel.textAlignment = .right
+        diffPercentLabel.textColor = Theme.Colors.labelText
+        colorView.layer.cornerRadius = 5
+    }
+
     private func configureDiffPriceLabel() {
-        diffPriceLabel.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        diffPriceLabel.font = Theme.Fonts.subtitle
         diffPriceLabel.textAlignment = .right
+        diffPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        diffPriceLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
 
     func setData(model: Quote) {
@@ -126,21 +144,21 @@ final class QuoteCustomCell: UITableViewCell {
         fullNameLabel.text = model.name
         if let openPrice = model.openPrice, let closePrice = model.closePrice {
             let diff = openPrice - closePrice
-            priceLabel.text = "$\(closePrice.rounded(2, .plain))"
-            diffPriceLabel.text = "\(diff.rounded(2, .plain))"
-
+            priceLabel.text = "₽\(closePrice.rounded(2, .plain))"
+            diffPriceLabel.text = "\(diff.rounded(5, .plain))"
             let percent = (diff / openPrice) * 100
             if diff < 0 {
                 diffPercentLabel.text = "\(percent.rounded(2, .plain))%"
-                diffPercentLabel.textColor = .red
+                colorView.backgroundColor = Theme.Colors.redBackground
             } else {
-                diffPercentLabel.textColor = UIColor(red: 23 / 255, green: 143 / 255, blue: 31 / 255, alpha: 1)
                 diffPercentLabel.text = "+\(percent.rounded(2, .plain))%"
+                colorView.backgroundColor = Theme.Colors.greenBackground
             }
         } else {
-            priceLabel.text = "$---"
-            diffPercentLabel.text = "---"
-            diffPriceLabel.text = "---%"
+            colorView.backgroundColor = .gray
+            priceLabel.text = "₽---"
+            diffPercentLabel.text = "---%"
+            diffPriceLabel.text = "---"
         }
     }
 }

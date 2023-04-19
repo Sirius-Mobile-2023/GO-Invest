@@ -12,8 +12,9 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "Modules",
-            targets: ["DomainModels", "QuoteClient", "Quotes", "Profile", "QuoteDetail", "Theme"]
+            targets: ["DomainModels", "QuoteClient", "Quotes", "Profile", "QuoteDetail", "Theme", "Strategy"]
         )
+
     ],
     dependencies: [
       .package(url: "https://github.com/Juanpe/SkeletonView.git", from: "1.7.0")
@@ -31,7 +32,7 @@ let package = Package(
         ),
         .target(
             name: "Quotes",
-            dependencies: ["Theme", "Profile"]
+            dependencies: ["Theme", "DomainModels", "Profile"]
         ),
         .target(
             name: "Profile",
@@ -42,8 +43,13 @@ let package = Package(
             dependencies: ["Theme", "Profile"]
         ),
         .target(
+            name: "Strategy",
+            dependencies: ["Theme"]
+        ),
+        .target(
             name: "Theme",
             dependencies: []
-        )
+        ),
+
     ]
 )
