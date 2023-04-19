@@ -106,8 +106,7 @@ class QuoteDetailView: UIView {
             subviews: [dateStackView,
                        closePriceStackView,
                        openPriceStackView,
-                       averagePriceStackView
-                       ],
+                       averagePriceStackView],
             spacing: Theme.Layout.smallSpacing,
             axis: .vertical
         )

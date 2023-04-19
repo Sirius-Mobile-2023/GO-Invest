@@ -1,5 +1,5 @@
-import UIKit
 import AudioToolbox
+import UIKit
 import Theme
 
 class TimeIntervalsControl: UIView {
@@ -36,7 +36,7 @@ class TimeIntervalsControl: UIView {
         return stackView
     }()
 
-    init (
+    init(
         intervals: [String],
         selectedSegmentIndex: Int = Constants.defaultSelectedSegmentIndex
     ) {
@@ -50,7 +50,8 @@ class TimeIntervalsControl: UIView {
         setupUI(intervals: intervals)
     }
 
-    required init? (coder aDecoder: NSCoder) {
+    @available(*, unavailable)
+    required init? (coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
@@ -85,7 +86,7 @@ class TimeIntervalsControl: UIView {
 
             NSLayoutConstraint.activate([
                 button.heightAnchor.constraint(equalTo: stackView.heightAnchor),
-                button.widthAnchor.constraint(equalTo: stackView.heightAnchor)
+                button.widthAnchor.constraint(equalTo: stackView.heightAnchor),
             ])
         }
 
@@ -98,7 +99,7 @@ class TimeIntervalsControl: UIView {
             selectorView.heightAnchor.constraint(equalTo: segments[selectedSegmentIndex].heightAnchor),
             selectorView.widthAnchor.constraint(equalTo: segments[selectedSegmentIndex].widthAnchor),
             stackView.widthAnchor.constraint(equalTo: widthAnchor),
-            stackView.heightAnchor.constraint(equalTo: heightAnchor)
+            stackView.heightAnchor.constraint(equalTo: heightAnchor),
         ])
     }
 
@@ -112,7 +113,7 @@ class TimeIntervalsControl: UIView {
         selectedSegmentConstraint = selectorView.centerXAnchor.constraint(
             equalTo: segments[selectedSegmentIndex].centerXAnchor
         )
-        self.selectedSegmentConstraint.isActive = true
+        selectedSegmentConstraint.isActive = true
         UIView.animate(
             withDuration: 0.2,
             delay: 0,
@@ -127,7 +128,8 @@ class TimeIntervalsControl: UIView {
                 self.layoutIfNeeded()
             }, completion: { _ in
                 UIImpactFeedbackGenerator(style: .light).impactOccurred()
-            })
+            }
+        )
     }
 }
 
@@ -139,7 +141,7 @@ extension TimeIntervalsControl {
 }
 
 private extension TimeIntervalsControl {
-    struct Constants {
+    enum Constants {
         static let defaultSelectedSegmentIndex = 0
         static let selectedBorderColor = UIColor.black
         static let defaultBorderColor = UIColor.lightGray
@@ -164,13 +166,13 @@ private extension UIButton {
         sizeFont: CGFloat
     ) {
         self.init(frame: .zero)
-        self.setTitle(title, for: .normal)
-        self.setTitleColor(titleColor, for: .normal)
+        setTitle(title, for: .normal)
+        setTitleColor(titleColor, for: .normal)
         self.backgroundColor = backgroundColor
-        self.layer.borderColor = borderColor.cgColor
-        self.layer.borderWidth = borderWidth
-        self.layer.cornerRadius = cornerRadius
-        self.titleLabel?.font = .systemFont(ofSize: sizeFont)
-        self.translatesAutoresizingMaskIntoConstraints = false
+        layer.borderColor = borderColor.cgColor
+        layer.borderWidth = borderWidth
+        layer.cornerRadius = cornerRadius
+        titleLabel?.font = .systemFont(ofSize: sizeFont)
+        translatesAutoresizingMaskIntoConstraints = false
     }
 }
