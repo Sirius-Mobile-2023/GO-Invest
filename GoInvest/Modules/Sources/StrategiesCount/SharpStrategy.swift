@@ -1,12 +1,45 @@
 import Foundation
+import QuoteClient
+import DomainModels
 
-func getSharpStrategy() {
-    // should return close price for stock
-    func getMarketData(tiker: String, time: String) -> [Double] {
-#warning ("add functionality")
-        return [10.0, 10.0]
+public func getSharpStrategy() {
+
+    func getMarketData(tikers: [String]) {
+#warning ("add functionality. should return close price for stock")
+        let quoteClient: QuotesStatProvider = QuoteClient()
+        var allData = [[Double]]()
+
+        quoteClient.quoteStat(listOfId: tikers, listOfBoardId: ["TQBR", "TQBR", "TQBR", "TQBR"], fromDate: Calendar.current.date(byAdding: .year, value: -1, to: .now)!) { result in
+            switch result {
+            case .failure(let error):
+                print(error)
+            case .success(let data):
+                print(data.count)
+                for i in data {
+                    var dataForQuote = [Double]()
+                    print(i!.points.count)
+                    for j in (i!.points) {
+                        dataForQuote.append(Double(j.1.description)!)
+                    }
+                    allData.append(dataForQuote)
+                    print(allData)
+                }
+            }
+            print(allData)
+            var portfolioSharp = [Double](repeating: 0.0, count: tikers.count)
+            let returns = allData
+            print(returns)
+            for i in 0 ..< tikers.count {
+                let sharpCoef = getSharpeCoef(returns: returns[i])
+                print(sharpCoef)
+                portfolioSharp[i] = sharpCoef
+            }
+            print("Доли активов в портфеле:")
+            portfolioSharp = getPortfolioSharp(sharpList: portfolioSharp)
+            print(portfolioSharp)
+        }
     }
-    
+
     // MARK: - func returns sharp coef
     func getSharpeCoef(returns: [Double]) -> Double {
         let length = Double(returns.count - 1)
@@ -20,15 +53,6 @@ func getSharpStrategy() {
         let sumAbsSharpList = absSharpList.reduce(0, +)
         return sharpList.map { $0 / sumAbsSharpList }
     }
-    let tikers = ["AAPL", "MSFT", "KO", "PEP", "TSLA", "META", "GOOG", "NFLX", "AMZN", "GE", "MCD"]
-    let time = "10y"
-    var portfolioSharp = [Double](repeating: 0.0, count: tikers.count)
-    for i in 0 ..< tikers.count {
-        let returns = getMarketData(tiker: tikers[i], time: time)
-        let sharpCoef = getSharpeCoef(returns: returns)
-        portfolioSharp[i] = sharpCoef
-    }
-    print("Доли активов в портфеле:")
-    portfolioSharp = getPortfolioSharp(sharpList: portfolioSharp)
-    print(portfolioSharp)
+
+    getMarketData(tikers: ["ABRD", "AFLT", "AGRO", "ALRS"])
 }

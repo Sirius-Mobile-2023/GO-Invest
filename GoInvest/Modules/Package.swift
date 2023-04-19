@@ -12,7 +12,7 @@ let package = Package(
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "Modules",
-            targets: ["DomainModels", "QuoteClient", "Quotes", "Profile", "QuoteDetail", "Theme", "Strategy"]
+            targets: ["DomainModels", "QuoteClient", "Quotes", "Profile", "QuoteDetail", "Theme", "Strategy", "StrategiesCount"]
         )
 
     ],
@@ -48,6 +48,10 @@ let package = Package(
         ),
         .target(
             name: "Theme",
+            dependencies: []
+        ),
+        .target(
+            name: "StrategiesCount",
             dependencies: []
         ),
 
