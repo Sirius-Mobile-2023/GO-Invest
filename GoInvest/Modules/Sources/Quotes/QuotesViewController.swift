@@ -1,8 +1,14 @@
 import UIKit
 import DomainModels
+import Profile
 
+enum QuotesViewState {
+    case load
+    case error
+    case success
+}
 public class QuotesViewController: UIViewController {
-    public var didTapButton: ((String) -> Void)?
+    public var didTapButton: ((Quote) -> Void)?
     private var animationPlayed = true
     private var arrayToShow: [Quote] = []
     private lazy var tableView = UITableView()
@@ -12,8 +18,23 @@ public class QuotesViewController: UIViewController {
     private var quotesArray: [Quote] = [] {
         willSet {
             arrayToShow = newValue
+            tableView.reloadData()
         }
     }
+    private var currentViewState: QuotesViewState? {
+            didSet {
+                switch self.currentViewState {
+                case .load:
+    #warning("TODO: Add load animation")
+                case .error:
+    #warning("TODO: Add error view")
+                case .success:
+    #warning("TODO: Add table reload")
+                case .none:
+                    break
+                }
+            }
+        }
 
     public init(client: QuoteListProvider) {
         self.client = client
@@ -31,6 +52,7 @@ public class QuotesViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        Storage.getAllData()
         configureTitle()
         configureTableView()
         if animationPlayed {
@@ -44,8 +66,9 @@ public class QuotesViewController: UIViewController {
             switch result {
             case let .success(array):
                 self?.quotesArray = array
-            case let .failure(error):
-                print(error)
+                self?.currentViewState = .success
+            case .failure:
+                self?.currentViewState = .error
             }
                 self?.showFullQuotes()
                 self?.tableView.reloadData()
@@ -58,6 +81,7 @@ public class QuotesViewController: UIViewController {
         title = "Quotes"
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
     }
 
     private func showFullQuotes() {
@@ -109,6 +133,7 @@ public class QuotesViewController: UIViewController {
     private func setTableViewDelegates() {
         tableView.delegate = self
         tableView.dataSource = self
+        searchController.searchBar.delegate = self
     }
 }
 
@@ -123,24 +148,27 @@ extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
-    public func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
-        didTapButton?("Quote")
+    public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+        didTapButton?(arrayToShow[indexPath.row])
     }
 }
 
-extension QuotesViewController: UISearchResultsUpdating {
+extension QuotesViewController: UISearchResultsUpdating, UISearchBarDelegate {
     public func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text?.uppercased() else {
             return
         }
+        guard !text.isEmpty else {
+            return
+        }
         let filteredData = quotesArray.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
 
-        if filteredData.isEmpty {
-            arrayToShow = quotesArray
-        } else {
-            arrayToShow = filteredData
-        }
+        arrayToShow = filteredData
         tableView.reloadData()
+    }
 
+    public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        arrayToShow = quotesArray
+        tableView.reloadData()
     }
 }

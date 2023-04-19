@@ -6,6 +6,7 @@ public enum Theme {
         public static let button = UIFont.systemFont(ofSize: 19, weight: .semibold)
         public static let title = UIFont.systemFont(ofSize: 19, weight: .bold)
         public static let subtitle = UIFont.systemFont(ofSize: 17, weight: .light)
+        public static let error = UIFont.systemFont(ofSize: 20, weight: .medium)
     }
 
     public enum Colors {
@@ -14,6 +15,7 @@ public enum Theme {
         public static let button = UIColor(named: "BlackColor")!
         public static let mainText = UIColor(named: "BlackColor")!
         public static let buttonText = UIColor(named: "WhiteColor")!
+        public static let buttonHighlightedText = UIColor(white: 1, alpha: 0.5)
         public static let redBackground = UIColor(named: "RedColor")!
         public static let greenBackground = UIColor(named: "GreenColor")!
         public static let labelText = UIColor(named: "WhiteColor")!
@@ -32,6 +34,8 @@ public enum Theme {
     public enum StyleElements {
         public static let imageCornerRadius: CGFloat = 20
         public static let buttonCornerRadius: CGFloat = 10
+        public static let skeletonCornerRadius: Float = 10
+        public static let skeletonTextCornerRadius: Int = 5
         public static let buttonBorderWidth: CGFloat = 1
     }
 

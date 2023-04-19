@@ -1,4 +1,5 @@
 import UIKit
+import SkeletonView
 
 class AppCoordinator {
     let tabBarController: UITabBarController
