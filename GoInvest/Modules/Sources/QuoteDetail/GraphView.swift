@@ -7,14 +7,11 @@ struct GraphView: View {
     @State var plotWidth: CGFloat = 0
 
     var body: some View {
-        NavigationStack {
-            VStack {
-                animatedChart()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .padding(.top, 30)
-            .padding(.horizontal, 5)
+        VStack {
+            animatedChart()
         }
+        .padding(.top, 30)
+        .padding(.horizontal, 5)
     }
 
     @ViewBuilder
@@ -22,7 +19,7 @@ struct GraphView: View {
         let max = sampleAnalytics.max { item1, item2 in
             return item2.price > item1.price
         }?.price ?? 0
-        
+
         Chart {
             ForEach(sampleAnalytics) { item in
                 LineMark(
@@ -99,17 +96,11 @@ struct GraphView: View {
     }
 }
 
-struct GraphViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        GraphView()
-    }
-}
-
 struct GraphMockModel: Identifiable {
     var id = UUID()
     var day: Date
     var price: Double
-    var animate: Bool = false
+    var animate = false
 }
 
 // TODO: Get data for chart #24
