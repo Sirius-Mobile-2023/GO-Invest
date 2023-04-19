@@ -6,7 +6,6 @@ public enum ClientError: Error {
     case algorithmError
     case decodeJsonError
     case incorrectJsonError
-    case emptGetRequestError
 }
 
 let dateFormatter = DateFormatter()
@@ -188,18 +187,24 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         listOfBoardId: [String],
         fromDate: Date,
         completion: @escaping (Result<[QuoteCharts?], Error>) -> Void
-    ) {
-        toNextId(array: [],
-                 index: 0,
-                 lisOfId: lisOfId,
-                 listOfBoardId: listOfBoardId,
-                 fromDate: fromDate,
-                 completion: completion)
+    ) -> QuoteStatToken {
+        let quoteStatToken = QuoteStatToken()
+
+        toNextId(
+            array: [],
+            index: 0,
+            quoteStatToken: quoteStatToken,
+            lisOfId: lisOfId,
+            listOfBoardId: listOfBoardId,
+            fromDate: fromDate,
+            completion: completion)
+        return quoteStatToken
     }
 
     private func toNextId(
         array: [QuoteCharts?],
         index: Int,
+        quoteStatToken: QuoteStatToken,
         lisOfId: [String],
         listOfBoardId: [String],
         fromDate: Date,
@@ -210,28 +215,34 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
         }
         let id = lisOfId[index]
         let boardId = listOfBoardId[index]
-        quoteCharts(id: id,
-                    boardId: boardId,
-                    fromDate: fromDate,
-                    completion: { result in
-                        var newArray = array
-                        switch result {
-                        case let .success(quoteCharts):
-                            newArray.append(quoteCharts)
-                        case .failure:
-                            newArray.append(nil)
-                        }
-                        if newArray.count == lisOfId.count {
-                            completion(.success(newArray))
-                        } else {
-                            self.toNextId(array: newArray,
-                                          index: index + 1,
-                                          lisOfId: lisOfId,
-                                          listOfBoardId: listOfBoardId,
-                                          fromDate: fromDate,
-                                          completion: completion)
-                        }
-                    })
+        if quoteStatToken.isCanceled {
+            return
+        }
+        quoteCharts(
+            id: id,
+            boardId: boardId,
+            fromDate: fromDate,
+            completion: {[weak self] result in
+                var newArray = array
+                switch result {
+                case let .success(quoteCharts):
+                    newArray.append(quoteCharts)
+                case .failure:
+                    newArray.append(nil)
+                }
+                if newArray.count == lisOfId.count {
+                    completion(.success(newArray))
+                } else {
+                    self?.toNextId(
+                        array: newArray,
+                        index: index + 1,
+                        quoteStatToken: quoteStatToken,
+                        lisOfId: lisOfId,
+                        listOfBoardId: listOfBoardId,
+                        fromDate: fromDate,
+                        completion: completion)
+                }
+            })
     }
 }
 

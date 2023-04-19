@@ -6,5 +6,13 @@ public protocol QuotesStatProvider {
         listOfBoardId: [String],
         fromDate: Date,
         completion: @escaping (Result<[QuoteCharts?], Error>) -> Void
-    )
+    ) -> QuoteStatToken
+}
+
+public final class QuoteStatToken {
+    public init() {}
+    public private(set) var isCanceled = false
+    public func cancel() {
+        isCanceled = true
+    }
 }

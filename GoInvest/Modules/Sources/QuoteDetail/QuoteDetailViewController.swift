@@ -1,8 +1,7 @@
-import UIKit
 import Theme
+import UIKit
 
 public class QuoteDetailViewController: UIViewController {
-
     private lazy var quoteDetailView: QuoteDetailView = {
         let view = QuoteDetailView()
         return view
@@ -20,7 +19,7 @@ public class QuoteDetailViewController: UIViewController {
             quoteDetailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.Layout.topOffset),
             quoteDetailView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Theme.Layout.sideOffset),
             quoteDetailView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.Layout.sideOffset),
-            quoteDetailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+            quoteDetailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
 }
