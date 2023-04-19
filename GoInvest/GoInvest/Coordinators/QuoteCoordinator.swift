@@ -35,16 +35,14 @@ class QuoteCoordinator {
                                             switch result {
                                             case let .success(quoteCharts):
                                                 print("✅")
-
-//                                                print(quoteCharts.points)
                                                 print(quoteCharts.points)
                                             case let .failure(error):
                                                 print("❌")
                                                 print(error)
                                             }
                                         })
-        let data = client.quoteStat(lisOfId: ["ABRD", "AFLT"],
-                                    listOfBoardId: ["TQBR", "TQBR"],
+        let data = client.quoteStat(lisOfId: ["ABRD", "AFLT", "ALRS", "AQUA", "ASSB", "BSPB", "BLNG", "CBOM"],
+                                    listOfBoardId: ["TQBR", "TQBR", "TQBR", "TQBR", "TQBR", "TQBR", "TQBR", "TQBR"],
                                     fromDate: dateFromString(str: "2021-03-14")!,
                                     completion: { result in
             switch result {
