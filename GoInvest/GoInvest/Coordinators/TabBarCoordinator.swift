@@ -4,6 +4,7 @@ import Strategy
 import Quotes
 import Theme
 import UIKit
+import ModelQuoteList
 
 class TabBarCoordinator {
     var tabBarController: UITabBarController
@@ -15,9 +16,9 @@ class TabBarCoordinator {
     func start() {
 
         let strategyVC = StrategyViewController()
-        let quotesVC = QuotesViewController(client: QuoteClient())
+        let modelQuoteList = QuoteListModel(client: QuoteClient())
+        let quotesVC = QuotesViewController(modelQuoteList: modelQuoteList)
         let profileVC = ProfileViewController()
-
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let strategyNC = UINavigationController(rootViewController: strategyVC)
         let profileNC = UINavigationController(rootViewController: profileVC)

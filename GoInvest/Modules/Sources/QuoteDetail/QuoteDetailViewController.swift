@@ -36,7 +36,7 @@ public class QuoteDetailViewController: UIViewController {
         quoteDetailMainStackView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(quoteDetailMainStackView)
     }
-    
+
     private func setupLayout() {
         NSLayoutConstraint.activate([
             graphView.view.heightAnchor.constraint(equalToConstant: 300),

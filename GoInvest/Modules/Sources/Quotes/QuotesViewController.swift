@@ -1,22 +1,24 @@
 import UIKit
 import DomainModels
+import ModelQuoteList
+import Combine
 
 public class QuotesViewController: UIViewController {
     public var didTapButton: ((String) -> Void)?
     private var animationPlayed = true
     private var arrayToShow: [Quote] = []
+    private var modelQuoteList: QuoteListModel
     private lazy var tableView = UITableView()
-    public var client: QuoteListProvider
     private let searchController = UISearchController()
-
-    private var quotesArray: [Quote] = [] {
-        willSet {
-            arrayToShow = newValue
+    private var state: QuoteListModel.State {
+        didSet {
+            applyData()
         }
     }
-
-    public init(client: QuoteListProvider) {
-        self.client = client
+    private var observations = Set<AnyCancellable>()
+    public init(modelQuoteList: QuoteListModel) {
+        self.modelQuoteList = modelQuoteList
+        state = .loading
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -36,22 +38,17 @@ public class QuotesViewController: UIViewController {
         if animationPlayed {
             tableView.alpha = 0
         }
-        fetchData()
+        self.modelQuoteList.$state.sink(receiveValue: { state in
+            self.state = state
+        })
+        .store(in: &observations)
     }
 
-    private func fetchData() {
-        client.quoteList(search: .defaultList) { [weak self] result in
-            switch result {
-            case let .success(array):
-                self?.quotesArray = array
-            case let .failure(error):
-                print(error)
-            }
-                self?.showFullQuotes()
-                self?.tableView.reloadData()
-                self?.animateTableView()
-                self?.animationPlayed = false
-        }
+    private func applyData() {
+                self.showFullQuotes()
+                self.tableView.reloadData()
+                self.animateTableView()
+                self.animationPlayed = false
     }
 
     private func configureTitle() {
@@ -61,7 +58,20 @@ public class QuotesViewController: UIViewController {
     }
 
     private func showFullQuotes() {
-        quotesArray = quotesArray.filter { isFull($0) } + quotesArray.filter { !isFull($0) }
+        switch state {
+        case .success(let quotes):
+            let filteredData = quotes.filter { isFull($0) } + quotes.filter { !isFull($0) }
+            if filteredData.isEmpty {
+                arrayToShow = quotes
+            } else {
+                arrayToShow = filteredData
+            }
+            print("🈯️ quotes")
+        case .error(let error):
+            print("Error page")
+        case .loading:
+            print("Loading page")
+        }
     }
 
     private func isFull(_ q: Quote) -> Bool {
@@ -133,12 +143,19 @@ extension QuotesViewController: UISearchResultsUpdating {
         guard let text = searchController.searchBar.text?.uppercased() else {
             return
         }
-        let filteredData = quotesArray.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
-
-        if filteredData.isEmpty {
-            arrayToShow = quotesArray
-        } else {
-            arrayToShow = filteredData
+        switch state {
+        case .success(let quotes):
+            let filteredData = quotes.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
+            if filteredData.isEmpty {
+                arrayToShow = quotes
+            } else {
+                arrayToShow = filteredData
+            }
+            print("🈯️ quotes")
+        case .error(let error):
+            print("Error page")
+        case .loading:
+            print("Loading page")
         }
         tableView.reloadData()
 
