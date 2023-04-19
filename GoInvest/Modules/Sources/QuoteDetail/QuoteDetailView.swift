@@ -1,7 +1,7 @@
 import UIKit
 import Theme
 
-class QuoteDetailView: UIView, TimeIntervalControlDelgate {
+class QuoteDetailView: UIView {
 
     var data = QuoteDetailModel(id: "ABRD", boardId: "tqbr")
 
@@ -51,10 +51,6 @@ class QuoteDetailView: UIView, TimeIntervalControlDelgate {
         button.titleLabel?.adjustsFontForContentSizeCategory = true
         return button
     }()
-
-    func timeIntervalControlDidChangeSelected() {
-        data.selectedInterval = QuoteDetailModel.Interval(rawValue: buttonView.selectedSegmentIndex)!
-    }
 
     init() {
         super.init(frame: .zero)
@@ -188,5 +184,11 @@ extension QuoteDetailView {
             result.append(interval.label)
         }
         return result
+    }
+}
+
+extension QuoteDetailView: TimeIntervalControlDelgate {
+    func timeIntervalControlDidChangeSelected() {
+        data.selectedInterval = QuoteDetailModel.Interval(rawValue: buttonView.selectedSegmentIndex)!
     }
 }

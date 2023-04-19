@@ -4,7 +4,11 @@ import DomainModels
 
 final class QuoteDetailModel {
 
+    private var id: String
+    private var boardId: String
     private let client: ChartsProvider = QuoteClient()
+
+    @Published
     private(set) var points = [Point]()
     private var cachePoints = [Point]()
 
@@ -18,9 +22,6 @@ final class QuoteDetailModel {
             self.updatePoints()
         }
     }
-
-    private var id: String
-    private var boardId: String
 
     private static func getDate(byAdding: Calendar.Component, value: Int) -> Date {
         let date = Calendar.current.date(byAdding: byAdding, value: value, to: .now)
