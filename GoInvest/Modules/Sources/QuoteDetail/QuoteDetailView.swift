@@ -1,5 +1,7 @@
 import UIKit
 import SwiftUI
+import UIKit
+import SwiftUI
 import Theme
 import SkeletonView
 import DomainModels
@@ -8,14 +10,7 @@ class QuoteDetailView: UIView {
     typealias AddToFavsandler = () -> Void
 
     var addToFavsHandler: (AddToFavsandler)?
-
-    private let graphView: UIHostingController<GraphView> = {
-        let graphView = GraphView()
-        let hostingController = UIHostingController(rootView: graphView)
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        return hostingController
-    }()
-
+    
     private let buttonView: TimeIntervalsControl = {
         let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 0)
         control.isSkeletonable = true
@@ -112,7 +107,7 @@ class QuoteDetailView: UIView {
         )
         arrangeStackView(
             for: mainStackView,
-            subviews: [graphView.view,
+            subviews: [
                        buttonView,
                        detailLabelsStackView,
                        addToFavsButton
@@ -123,7 +118,6 @@ class QuoteDetailView: UIView {
         setContentHuggingPriorities()
         addSubview(mainStackView)
         NSLayoutConstraint.activate([
-            graphView.view.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 40),
             addToFavsButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: topAnchor),

@@ -7,14 +7,11 @@ struct GraphView: View {
     @State var plotWidth: CGFloat = 0
 
     var body: some View {
-        NavigationStack {
-            VStack {
-                animatedChart()
-            }
-            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
-            .padding(.top, 30)
-            .padding(.horizontal, 5)
+        VStack {
+            animatedChart()
         }
+        .padding(.top, 30)
+        .padding(.horizontal, 5)
     }
 
     @ViewBuilder
@@ -96,12 +93,6 @@ struct GraphView: View {
                 }
             }
         }
-    }
-}
-
-struct GraphViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        GraphView()
     }
 }
 
