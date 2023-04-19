@@ -31,7 +31,7 @@ let package = Package(
         ),
         .target(
             name: "Quotes",
-            dependencies: ["Theme"]
+            dependencies: ["Theme", "Profile"]
         ),
         .target(
             name: "Profile",

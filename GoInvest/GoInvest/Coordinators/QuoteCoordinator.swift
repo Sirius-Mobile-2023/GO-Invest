@@ -7,6 +7,7 @@ class QuoteCoordinator {
     var navigationController: UINavigationController
     var navigationTitle: String
     var selectedQuote: Quote
+    var removeFromMemory: (() -> Void)?
 
     init(navigationController: UINavigationController, quote: Quote) {
         self.navigationController = navigationController
@@ -15,10 +16,16 @@ class QuoteCoordinator {
     }
 
     func start() {
-        let client = QuoteClient()
         let viewController = QuoteDetailViewController()
+        viewController.onViewDidDisappear = { [weak self] in
+            self?.removeFromMemory?()
+        }
         viewController.quote = selectedQuote
         viewController.navigationItem.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
+    }
+
+    deinit {
+        print("deinit")
     }
 }

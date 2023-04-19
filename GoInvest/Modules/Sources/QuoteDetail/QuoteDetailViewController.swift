@@ -27,6 +27,7 @@ public class QuoteDetailViewController: UIViewController {
     private var graphData: QuoteCharts?
     private var detailsData: QuoteDetail?
     public var quote: Quote?
+    public var onViewDidDisappear: (() -> Void)?
 
     private lazy var errorView: ErrorViewForDetails = {
         let view = ErrorViewForDetails()
@@ -207,5 +208,12 @@ extension QuoteDetailViewController {
         } else {
             quoteDetailView.enableButton()
         }
+    }
+}
+
+extension QuoteDetailViewController {
+    public override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onViewDidDisappear?()
     }
 }

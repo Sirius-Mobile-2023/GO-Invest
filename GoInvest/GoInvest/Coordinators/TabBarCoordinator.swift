@@ -7,6 +7,7 @@ import UIKit
 
 class TabBarCoordinator {
     var tabBarController: UITabBarController
+    var childCoordinators = [QuoteCoordinator]()
 
     required init(_ tabBarController: UITabBarController) {
         self.tabBarController = tabBarController
@@ -21,7 +22,7 @@ class TabBarCoordinator {
             self?.showQuoteController(with: quote, navigationController: quotesNC)
         }
         profileVC.didTapButton = { [weak self] quote in
-            self?.showFavsController(with: quote, navigationController: profileNC)
+            self?.showQuoteController(with: quote, navigationController: profileNC)
         }
         quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: Theme.Images.quotesTabBar, tag: 0)
         profileNC.tabBarItem = UITabBarItem(title: "Profile", image: Theme.Images.profileTabBarUnchecked, tag: 2)
@@ -41,11 +42,10 @@ class TabBarCoordinator {
 
     func showQuoteController(with quote: Quote, navigationController: UINavigationController) {
         let quoteCoordinator = QuoteCoordinator(navigationController: navigationController, quote: quote)
-        quoteCoordinator.start()
-    }
-
-    func showFavsController(with quote: Quote, navigationController: UINavigationController) {
-        let quoteCoordinator = FavoritesCoordinator(navigationController: navigationController, quote: quote)
+        childCoordinators.append(quoteCoordinator)
+        quoteCoordinator.removeFromMemory = { [weak self] in
+            self?.childCoordinators.removeLast()
+        }
         quoteCoordinator.start()
     }
 }
