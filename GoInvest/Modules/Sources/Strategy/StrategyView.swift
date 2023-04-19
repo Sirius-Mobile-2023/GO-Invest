@@ -56,6 +56,13 @@ class StrategyView: UIView {
         setupLayout()
     }
     
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        setupUI()
+        setupLayout()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -92,6 +99,7 @@ class StrategyView: UIView {
             computeButton.heightAnchor.constraint(equalToConstant: 60),
             computeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.margin),
             computeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.margin),
+            computeButton.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
