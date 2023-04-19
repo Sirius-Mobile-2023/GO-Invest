@@ -1,14 +1,8 @@
-import Theme
 import UIKit
+import SwiftUI
+import Theme
 
 class QuoteDetailView: UIView {
-    private let graphView: UIView = {
-        var view = UIView()
-        view.backgroundColor = .green
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
     private let buttonView: TimeIntervalsControl = {
         let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 0)
         control.translatesAutoresizingMaskIntoConstraints = false
@@ -97,7 +91,7 @@ class QuoteDetailView: UIView {
         )
         arrangeStackView(
             for: mainStackView,
-            subviews: [graphView,
+            subviews: [
                        buttonView,
                        detailLabelsStackView,
                        addToPortfolioButton],
@@ -107,7 +101,6 @@ class QuoteDetailView: UIView {
         setContentHuggingPriorities()
         addSubview(mainStackView)
         NSLayoutConstraint.activate([
-            graphView.heightAnchor.constraint(equalToConstant: 300),
             buttonView.heightAnchor.constraint(equalToConstant: 40),
             addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: topAnchor),
