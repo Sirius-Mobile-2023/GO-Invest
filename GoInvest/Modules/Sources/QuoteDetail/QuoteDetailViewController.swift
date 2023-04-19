@@ -3,7 +3,6 @@ import SwiftUI
 import Theme
 
 public class QuoteDetailViewController: UIViewController {
-
     private lazy var quoteDetailView: QuoteDetailView = {
         let view = QuoteDetailView()
         return view
