@@ -1,7 +1,10 @@
 import UIKit
 import Theme
 
-class QuoteDetailView: UIView {
+class QuoteDetailView: UIView, TimeIntervalControlDelgate {
+
+    var data = QuoteDetailModel(id: "ABRD", boardId: "tqbr")
+
     private let graphView: UIView = {
         var view = UIView()
         view.backgroundColor = .green
@@ -10,7 +13,10 @@ class QuoteDetailView: UIView {
     }()
 
     private let buttonView: TimeIntervalsControl = {
-        let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 0)
+        let control = TimeIntervalsControl(
+            intervals: labels,
+            selectedSegmentIndex: QuoteDetailModel.defaultInterval.rawValue
+        )
         control.translatesAutoresizingMaskIntoConstraints = false
         return control
     }()
@@ -46,11 +52,18 @@ class QuoteDetailView: UIView {
         return button
     }()
 
+    func timeIntervalControlDidChangeSelected() {
+        data.selectedInterval = QuoteDetailModel.Interval(rawValue: buttonView.selectedSegmentIndex)!
+    }
+
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+
         setupUI()
         setupLayout()
+
+        buttonView.delegate = self
     }
 
     @available(*, unavailable)
@@ -164,5 +177,16 @@ private extension QuoteDetailView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         subviews.forEach { item in stackView.addArrangedSubview(item)
         }
+    }
+}
+
+extension QuoteDetailView {
+
+    static var labels: [String] {
+        var result = [String]()
+        QuoteDetailModel.Interval.allCases.forEach { interval in
+            result.append(interval.label)
+        }
+        return result
     }
 }

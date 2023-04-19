@@ -2,6 +2,9 @@ import UIKit
 import AudioToolbox
 
 class TimeIntervalsControl: UIView {
+
+    weak var delegate: TimeIntervalControlDelgate?
+
     var selectedSegmentIndex: Int {
         didSet {
             updateSegments(
@@ -98,6 +101,7 @@ class TimeIntervalsControl: UIView {
     }
 
     private func updateSegments(selectedSegmentIndex: Int, oldSelectedSegmentIndex: Int) {
+        delegate?.timeIntervalControlDidChangeSelected()
         segments.forEach { button in
             button.isSelected = false
         }
@@ -168,4 +172,8 @@ private extension UIButton {
         self.titleLabel?.font = .systemFont(ofSize: sizeFont)
         self.translatesAutoresizingMaskIntoConstraints = false
     }
+}
+
+protocol TimeIntervalControlDelgate: AnyObject {
+    func timeIntervalControlDidChangeSelected()
 }
