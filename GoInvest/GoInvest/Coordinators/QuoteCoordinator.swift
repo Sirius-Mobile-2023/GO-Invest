@@ -41,7 +41,7 @@ class QuoteCoordinator {
                                                 print(error)
                                             }
                                         })
-        let data = client.quoteStat(lisOfId: ["ABRD", "AFLT", "ALRS", "AQUA", "ASSB", "BSPB", "BLNG", "CBOM"],
+        let data = client.quoteStat(listOfId: ["ABRD", "AFLT", "ALRS", "AQUA", "ASSB", "BSPB", "BLNG", "CBOM"],
                                     listOfBoardId: ["TQBR", "TQBR", "TQBR", "TQBR", "TQBR", "TQBR", "TQBR", "TQBR"],
                                     fromDate: dateFromString(str: "2021-03-14")!,
                                     completion: { result in

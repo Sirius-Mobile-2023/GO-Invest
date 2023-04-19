@@ -183,7 +183,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
     }
 
     public func quoteStat(
-        lisOfId: [String],
+        listOfId: [String],
         listOfBoardId: [String],
         fromDate: Date,
         completion: @escaping (Result<[QuoteCharts?], Error>) -> Void
@@ -194,7 +194,7 @@ public final class QuoteClient: DetailProvider, ChartsProvider, QuoteListProvide
             array: [],
             index: 0,
             quoteStatToken: quoteStatToken,
-            lisOfId: lisOfId,
+            lisOfId: listOfId,
             listOfBoardId: listOfBoardId,
             fromDate: fromDate,
             completion: completion)
