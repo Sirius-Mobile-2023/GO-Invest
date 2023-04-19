@@ -35,13 +35,15 @@ class QuoteCoordinator {
                                             switch result {
                                             case let .success(quoteCharts):
                                                 print("✅")
+
 //                                                print(quoteCharts.points)
+                                                print(quoteCharts.points)
                                             case let .failure(error):
                                                 print("❌")
                                                 print(error)
                                             }
                                         })
-        let data = client.quoteStat(lisOfId: ["ABRD", "CUTR"],
+        let data = client.quoteStat(lisOfId: ["ABRD", "AFLT"],
                                     listOfBoardId: ["TQBR", "TQBR"],
                                     fromDate: dateFromString(str: "2021-03-14")!,
                                     completion: { result in
@@ -61,7 +63,7 @@ class QuoteCoordinator {
         viewController.title = navigationTitle
         navigationController.pushViewController(viewController, animated: true)
     }
-    //TODO: #<26 issue, функция как пример для конвертации данных>
+    // TODO: #<26 issue, функция как пример для конвертации данных>
     func dateFromString(str: String?) -> Date? {
         guard let str = str else {
             return nil

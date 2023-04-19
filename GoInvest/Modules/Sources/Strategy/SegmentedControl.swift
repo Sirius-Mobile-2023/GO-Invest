@@ -1,7 +1,8 @@
 import UIKit
-import AudioToolbox
+import Theme
 
-class TimeIntervalsControl: UIView {
+class SegmentedControl: UIView {
+
     var selectedSegmentIndex: Int {
         didSet {
             updateSegments(
@@ -11,66 +12,66 @@ class TimeIntervalsControl: UIView {
         }
     }
 
-    private var selectedSegmentConstraint: NSLayoutConstraint!
     private var segments = [UIButton]()
 
-    private let selectorView: UIView = {
-        let view = UIView()
-        view.layer.cornerRadius = Constants.cornerRadius
-        view.backgroundColor = Constants.selectedBackgroundColor
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    private let title: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.font = Constants.titleFont
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
-        stackView.axis = .horizontal
+        stackView.axis = .vertical
+        stackView.spacing = Constants.spacing
         stackView.alignment = .center
-        stackView.distribution = .equalCentering
+        stackView.distribution = .fillEqually
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
 
-    init (
-        intervals: [String],
+    init(
+        title: String,
+        segmentsTitle: [String],
         selectedSegmentIndex: Int = Constants.defaultSelectedSegmentIndex
     ) {
-        if selectedSegmentIndex >= intervals.count || selectedSegmentIndex < 0 {
+        if selectedSegmentIndex >= segmentsTitle.count || selectedSegmentIndex < 0 {
             self.selectedSegmentIndex = Constants.defaultSelectedSegmentIndex
         } else {
             self.selectedSegmentIndex = selectedSegmentIndex
         }
         super.init(frame: .zero)
+        setupUI(title: title, segmentsTitle: segmentsTitle)
         setupLayout()
-        setupUI(intervals: intervals)
     }
 
-    required init? (coder aDecoder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func setupLayout() {
-        backgroundColor = .clear
-        addSubview(selectorView)
-        addSubview(stackView)
-    }
-
-    private func setupUI(intervals: [String]) {
-        for (index, interval) in intervals.enumerated() {
+    private func setupUI(title: String, segmentsTitle: [String]) {
+        self.title.text = title
+        for (index, segment) in segmentsTitle.enumerated() {
             let button = UIButton(
-                title: interval,
+                title: segment,
                 titleColor: Constants.defaultTitleColor,
                 backgroundColor: Constants.defaultBackgroundColor,
                 borderColor: Constants.defaultBorderColor,
                 cornerRadius: Constants.cornerRadius,
                 borderWidth: Constants.borderWidth,
-                sizeFont: Constants.sizeFont
+                font: Constants.buttonFont
             )
 
             if index == selectedSegmentIndex {
+                button.layer.borderColor = Constants.selectBorderColor.cgColor
                 button.setTitleColor(Constants.selectTitleColor, for: .normal)
-                button.layer.borderColor = Constants.selectedBorderColor.cgColor
                 button.backgroundColor = Constants.selectedBackgroundColor
+                button.transform = CGAffineTransform(
+                    scaleX: Constants.selectSize,
+                    y: Constants.selectSize
+                )
             }
 
             segments.append(button)
@@ -79,21 +80,23 @@ class TimeIntervalsControl: UIView {
             button.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
 
             NSLayoutConstraint.activate([
-                button.heightAnchor.constraint(equalTo: stackView.heightAnchor),
-                button.widthAnchor.constraint(equalTo: stackView.heightAnchor)
+                button.widthAnchor.constraint(equalTo: stackView.widthAnchor)
             ])
         }
+    }
 
-        selectedSegmentConstraint = selectorView.centerXAnchor.constraint(
-            equalTo: segments[selectedSegmentIndex].centerXAnchor
-        )
+    private func setupLayout() {
+        addSubview(title)
+        addSubview(stackView)
         NSLayoutConstraint.activate([
-            selectorView.centerYAnchor.constraint(equalTo: segments[selectedSegmentIndex].centerYAnchor),
-            selectedSegmentConstraint,
-            selectorView.heightAnchor.constraint(equalTo: segments[selectedSegmentIndex].heightAnchor),
-            selectorView.widthAnchor.constraint(equalTo: segments[selectedSegmentIndex].widthAnchor),
-            stackView.widthAnchor.constraint(equalTo: widthAnchor),
-            stackView.heightAnchor.constraint(equalTo: heightAnchor)
+            title.topAnchor.constraint(equalTo: topAnchor),
+            title.leadingAnchor.constraint(equalTo: leadingAnchor),
+            title.widthAnchor.constraint(equalTo: widthAnchor),
+            title.heightAnchor.constraint(equalToConstant: 20),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: title.bottomAnchor, constant: 10),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 
@@ -103,21 +106,21 @@ class TimeIntervalsControl: UIView {
         }
 
         segments[selectedSegmentIndex].isSelected.toggle()
-        selectedSegmentConstraint.isActive = false
-        selectedSegmentConstraint = selectorView.centerXAnchor.constraint(
-            equalTo: segments[selectedSegmentIndex].centerXAnchor
-        )
-        self.selectedSegmentConstraint.isActive = true
         UIView.animate(
             withDuration: 0.2,
             delay: 0,
             options: .curveEaseOut,
             animations: {
+                self.segments[oldSelectedSegmentIndex].transform = CGAffineTransform(scaleX: 1, y: 1)
                 self.segments[oldSelectedSegmentIndex].backgroundColor = Constants.defaultBackgroundColor
                 self.segments[oldSelectedSegmentIndex].layer.borderColor = Constants.defaultBorderColor.cgColor
                 self.segments[oldSelectedSegmentIndex].setTitleColor(Constants.defaultTitleColor, for: .normal)
+                self.segments[selectedSegmentIndex].transform = CGAffineTransform(
+                    scaleX: Constants.selectSize,
+                    y: Constants.selectSize
+                )
                 self.segments[selectedSegmentIndex].backgroundColor = Constants.selectedBackgroundColor
-                self.segments[selectedSegmentIndex].layer.borderColor = Constants.selectedBorderColor.cgColor
+                self.segments[selectedSegmentIndex].layer.borderColor = Constants.selectBorderColor.cgColor
                 self.segments[selectedSegmentIndex].setTitleColor(Constants.selectTitleColor, for: .normal)
                 self.layoutIfNeeded()
             }, completion: { _ in
@@ -126,25 +129,28 @@ class TimeIntervalsControl: UIView {
     }
 }
 
-extension TimeIntervalsControl {
+extension SegmentedControl {
     @objc
     private func buttonTapped(button: UIButton) {
         selectedSegmentIndex = button.tag
     }
 }
 
-private extension TimeIntervalsControl {
+private extension SegmentedControl {
     struct Constants {
         static let defaultSelectedSegmentIndex = 0
-        static let selectedBorderColor = UIColor.black
-        static let defaultBorderColor = UIColor.lightGray
-        static let selectedBackgroundColor = UIColor.black
+        static let selectedBackgroundColor = Theme.Colors.button
         static let defaultBackgroundColor = UIColor.clear
-        static let selectTitleColor = UIColor.white
-        static let defaultTitleColor = UIColor.black
-        static let cornerRadius: CGFloat = 18
-        static let borderWidth: CGFloat = 0.5
-        static let sizeFont: CGFloat = 13
+        static let selectTitleColor = Theme.Colors.buttonText
+        static let defaultTitleColor = Theme.Colors.button
+        static let selectBorderColor = Theme.Colors.button
+        static let defaultBorderColor = Theme.Colors.button
+        static let cornerRadius: CGFloat = Theme.StyleElements.buttonCornerRadius
+        static let borderWidth: CGFloat = Theme.StyleElements.buttonBorderWidth
+        static let buttonFont = Theme.Fonts.button
+        static let titleFont = Theme.Fonts.subtitle
+        static let selectSize: CGFloat = Theme.Animation.selectSizeButton
+        static let spacing: CGFloat = 20
     }
 }
 
@@ -156,7 +162,7 @@ private extension UIButton {
         borderColor: UIColor,
         cornerRadius: CGFloat,
         borderWidth: CGFloat,
-        sizeFont: CGFloat
+        font: UIFont
     ) {
         self.init(frame: .zero)
         self.setTitle(title, for: .normal)
@@ -165,7 +171,7 @@ private extension UIButton {
         self.layer.borderColor = borderColor.cgColor
         self.layer.borderWidth = borderWidth
         self.layer.cornerRadius = cornerRadius
-        self.titleLabel?.font = .systemFont(ofSize: sizeFont)
+        self.titleLabel?.font = font
         self.translatesAutoresizingMaskIntoConstraints = false
     }
 }

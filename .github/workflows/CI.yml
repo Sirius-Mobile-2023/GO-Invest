@@ -28,6 +28,6 @@ jobs:
     - uses: actions/checkout@v1
       
     - name: Lint code using SwiftLint
-    run: swiftlint lint --reporter github-actions-logging
+      run: swiftlint lint --reporter github-actions-logging
 
 
