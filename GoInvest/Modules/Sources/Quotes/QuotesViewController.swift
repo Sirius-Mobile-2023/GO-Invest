@@ -2,9 +2,10 @@ import UIKit
 import DomainModels
 import ModelQuoteList
 import Combine
+import Profile
 
 public class QuotesViewController: UIViewController {
-    public var didTapButton: ((String) -> Void)?
+    public var didTapButton: ((Quote) -> Void)?
     private var animationPlayed = true
     private var arrayToShow: [Quote] = []
     private var modelQuoteList: QuoteListModel
@@ -33,6 +34,7 @@ public class QuotesViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+        Storage.getAllData()
         configureTitle()
         configureTableView()
         if animationPlayed {
@@ -43,7 +45,6 @@ public class QuotesViewController: UIViewController {
         })
         .store(in: &observations)
     }
-
     private func applyData() {
                 self.showFullQuotes()
                 self.tableView.reloadData()
@@ -55,22 +56,18 @@ public class QuotesViewController: UIViewController {
         title = "Quotes"
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
     }
 
     private func showFullQuotes() {
         switch state {
         case .success(let quotes):
             let filteredData = quotes.filter { isFull($0) } + quotes.filter { !isFull($0) }
-            if filteredData.isEmpty {
-                arrayToShow = quotes
-            } else {
                 arrayToShow = filteredData
-            }
-            print("🈯️ quotes")
-        case .error(let error):
-            print("Error page")
-        case .loading:
-            print("Loading page")
+        case .error: break
+            // MARK: - page with error information/ignore
+        case .loading: break
+            // MARK: - page with error information/ignore
         }
     }
 
@@ -119,6 +116,7 @@ public class QuotesViewController: UIViewController {
     private func setTableViewDelegates() {
         tableView.delegate = self
         tableView.dataSource = self
+        searchController.searchBar.delegate = self
     }
 }
 
@@ -133,31 +131,40 @@ extension QuotesViewController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
-    public func tableView(_: UITableView, didSelectRowAt _: IndexPath) {
-        didTapButton?("Quote")
+    public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
+        didTapButton?(arrayToShow[indexPath.row])
     }
 }
 
-extension QuotesViewController: UISearchResultsUpdating {
+extension QuotesViewController: UISearchResultsUpdating, UISearchBarDelegate {
     public func updateSearchResults(for searchController: UISearchController) {
         guard let text = searchController.searchBar.text?.uppercased() else {
+            return
+        }
+        guard !text.isEmpty else {
             return
         }
         switch state {
         case .success(let quotes):
             let filteredData = quotes.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
-            if filteredData.isEmpty {
-                arrayToShow = quotes
-            } else {
                 arrayToShow = filteredData
-            }
-            print("🈯️ quotes")
-        case .error(let error):
-            print("Error page")
-        case .loading:
-            print("Loading page")
+        case .error: break
+            // MARK: - page with error information/ignore
+        case .loading: break
+            // MARK: - page with error information/ignore
         }
         tableView.reloadData()
-
+    }
+    public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        switch state {
+        case .success(let quotes):
+            let filteredData = quotes.filter { isFull($0) } + quotes.filter { !isFull($0) }
+            arrayToShow = filteredData
+        case .error: break
+            // MARK: - page with error information/ignore
+        case .loading: break
+            // MARK: - page with error information/ignore
+        }
+        tableView.reloadData()
     }
 }

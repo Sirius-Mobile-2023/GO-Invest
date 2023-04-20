@@ -1,10 +1,18 @@
 import UIKit
 import SwiftUI
 import Theme
+import SkeletonView
+import DomainModels
 
 class QuoteDetailView: UIView {
+    typealias AddToFavsandler = () -> Void
+
+    var addToFavsHandler: (AddToFavsandler)?
+
     private let buttonView: TimeIntervalsControl = {
         let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 0)
+        control.isSkeletonable = true
+        control.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         control.translatesAutoresizingMaskIntoConstraints = false
         return control
     }()
@@ -22,21 +30,27 @@ class QuoteDetailView: UIView {
     private let averagePriceAmountLabel = UILabel()
 
     private let mainStackView = UIStackView()
-    private let detailLabelsStackView = UIStackView()
+    let detailLabelsStackView = UIStackView()
     private let dateStackView = UIStackView()
     private let openPriceStackView = UIStackView()
     private let closePriceStackView = UIStackView()
     private let averagePriceStackView = UIStackView()
 
-    private let addToPortfolioButton: UIButton = {
+    private let addToFavsButton: UIButton = {
         var button = UIButton()
         button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
-        button.setTitle("Add to Portfolio", for: .normal)
+        button.setTitle("Add to Favorites", for: .normal)
         button.setTitleColor(Theme.Colors.buttonText, for: .normal)
+        button.setTitleColor(Theme.Colors.buttonHighlightedText, for: .highlighted)
+        button.setTitleColor(Theme.Colors.buttonHighlightedText, for: .disabled)
         button.titleLabel?.font = Theme.Fonts.button
         button.titleLabel?.adjustsFontForContentSizeCategory = true
+        button.isSkeletonable = true
+        button.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
+        button.addTarget(self, action: #selector(addToFavoritesTapped(_:)), for: .touchUpInside)
+        button.setTitle("Added to Favorites", for: .disabled)
         return button
     }()
 
@@ -94,7 +108,8 @@ class QuoteDetailView: UIView {
             subviews: [
                        buttonView,
                        detailLabelsStackView,
-                       addToPortfolioButton],
+                       addToFavsButton
+                       ],
             spacing: Theme.Layout.bigSpacing,
             axis: .vertical
         )
@@ -102,7 +117,7 @@ class QuoteDetailView: UIView {
         addSubview(mainStackView)
         NSLayoutConstraint.activate([
             buttonView.heightAnchor.constraint(equalToConstant: 40),
-            addToPortfolioButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
+            addToFavsButton.heightAnchor.constraint(equalToConstant: Theme.Layout.buttonHeight),
             mainStackView.topAnchor.constraint(equalTo: topAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -127,20 +142,22 @@ class QuoteDetailView: UIView {
 private extension QuoteDetailView {
     func applyStyleForLabel(
         for label: UILabel,
-        text: String
-    ) {
-        label.text = text
-        label.font = Theme.Fonts.subtitle
-    }
+        text: String) {
+            label.text = text
+            label.isSkeletonable = true
+            label.linesCornerRadius = Theme.StyleElements.skeletonTextCornerRadius
+            label.font = Theme.Fonts.subtitle
+        }
 
     func applyStyleForAmountLabel(
         for label: UILabel,
-        text: String
-    ) {
-        label.text = text
-        label.textAlignment = .right
-        label.font = Theme.Fonts.title
-    }
+        text: String) {
+            label.text = text
+            label.isSkeletonable = true
+            label.linesCornerRadius = Theme.StyleElements.skeletonTextCornerRadius
+            label.textAlignment = .right
+            label.font = Theme.Fonts.title
+        }
 
     func arrangeStackView(
         for stackView: UIStackView,
@@ -150,6 +167,8 @@ private extension QuoteDetailView {
         distribution: UIStackView.Distribution = .fill,
         aligment: UIStackView.Alignment = .fill
     ) {
+        stackView.isSkeletonable = true
+        stackView.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         stackView.axis = axis
         stackView.spacing = spacing
         stackView.distribution = distribution
@@ -157,5 +176,40 @@ private extension QuoteDetailView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         subviews.forEach { item in stackView.addArrangedSubview(item)
         }
+    }
+}
+
+extension QuoteDetailView {
+    func setDetailsData(quoteDetailData: QuoteDetail) {
+        closePriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.closePrice))"
+        openPriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.openPrice))"
+        averagePriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.currentPrice))"
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.YYYY"
+        lastDateLabel.text = dateFormatter.string(from: quoteDetailData.date)
+    }
+
+    func getRoundedValue(_ number: Decimal, symbolNumber: Int = 4) -> Decimal {
+        var localCopy = number
+        var rounded = Decimal()
+        NSDecimalRound(&rounded, &localCopy, 4, .plain)
+        return rounded
+    }
+}
+
+extension QuoteDetailView {
+    @objc private func addToFavoritesTapped(_ sender: UIButton) {
+        addToFavsHandler?()
+        disableButton()
+    }
+}
+
+extension QuoteDetailView {
+    func disableButton() {
+        addToFavsButton.isEnabled = false
+    }
+
+    func enableButton() {
+        addToFavsButton.isEnabled = true
     }
 }

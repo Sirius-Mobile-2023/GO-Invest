@@ -1,5 +1,6 @@
 import AudioToolbox
 import UIKit
+import Theme
 
 class TimeIntervalsControl: UIView {
     var selectedSegmentIndex: Int {
@@ -16,6 +17,8 @@ class TimeIntervalsControl: UIView {
 
     private let selectorView: UIView = {
         let view = UIView()
+        view.isSkeletonable = true
+        view.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         view.layer.cornerRadius = Constants.cornerRadius
         view.backgroundColor = Constants.selectedBackgroundColor
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -24,6 +27,8 @@ class TimeIntervalsControl: UIView {
 
     private let stackView: UIStackView = {
         let stackView = UIStackView()
+        stackView.isSkeletonable = true
+        stackView.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         stackView.axis = .horizontal
         stackView.alignment = .center
         stackView.distribution = .equalCentering
