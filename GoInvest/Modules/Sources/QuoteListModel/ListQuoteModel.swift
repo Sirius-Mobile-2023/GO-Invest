@@ -9,10 +9,17 @@ public final class ListQuoteModel {
         case error(error: Error)
     }
     @Published public private(set) var state: State
+    private var client: QuoteListProvider
 
     public init(client: QuoteListProvider) {
         self.state = .loading
-        client.quoteList(
+        self.client = client
+        tryGetCetQuotes()
+    }
+
+    public func tryGetCetQuotes() {
+        self.state = .loading
+        self.client.quoteList(
             search: .defaultList,
             completion: { [weak self] result in
                 switch result {
