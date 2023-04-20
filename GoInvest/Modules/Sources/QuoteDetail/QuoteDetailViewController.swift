@@ -132,7 +132,6 @@ public class QuoteDetailViewController: UIViewController {
 
         self.quoteDetailModel.$points.sink(receiveValue: { points in
             self.graphViewModel.graphData = points.map { GraphModel(point: $0) }
-            print("point at sink: \(self.graphViewModel.graphData.count)")
         })
         .store(in: &observations)
 

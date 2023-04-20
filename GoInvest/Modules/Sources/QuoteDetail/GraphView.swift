@@ -65,15 +65,7 @@ struct GraphView: View {
                 }
             }
         }
-//        .chartXAxis {
-//            AxisMarks(values: .stride(by: .month)) { value in
-//                AxisGridLine()
-//                AxisTick()
-//                AxisValueLabel(format: .dateTime.month())
-//            }
-//        }
         .chartYScale(domain: (min)...(max))
-        // некорректно работает нажатие на экран и детальный просмотр цены (дергается график)
         .chartOverlay(content: { proxy in
             GeometryReader {_ in
                 Rectangle()
