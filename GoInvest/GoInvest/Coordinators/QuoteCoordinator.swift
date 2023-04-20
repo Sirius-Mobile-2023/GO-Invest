@@ -14,12 +14,10 @@ class QuoteCoordinator {
     }
 
     func start() {
-        let viewController = QuoteDetailViewController()
-        // viewController.action = 
+        let viewController = QuoteDetailViewController(quote: selectedQuote)
         viewController.onViewDidDisappear = { [weak self] in
             self?.removeFromMemory?()
         }
-        viewController.quote = selectedQuote
         viewController.navigationItem.title = selectedQuote.name
         navigationController.pushViewController(viewController, animated: true)
     }

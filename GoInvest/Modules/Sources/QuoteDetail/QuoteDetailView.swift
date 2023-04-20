@@ -8,8 +8,6 @@ import Login
 
 class QuoteDetailView: UIView {
 
-    var data = QuoteDetailModel(id: "ABRD")
-
     typealias AddToFavsandler = () -> Void
 
     var addToFavsHandler: (AddToFavsandler)?
@@ -43,6 +41,7 @@ class QuoteDetailView: UIView {
     private let openPriceStackView = UIStackView()
     private let closePriceStackView = UIStackView()
     private let averagePriceStackView = UIStackView()
+    public var timeIntervalSelectionHandler: ((QuoteDetailModel.Interval) -> Void)?
 
     private let addToFavsButton: UIButton = {
         var button = UIButton()
@@ -118,11 +117,9 @@ class QuoteDetailView: UIView {
         )
         arrangeStackView(
             for: mainStackView,
-            subviews: [
-                       buttonView,
+            subviews: [buttonView,
                        detailLabelsStackView,
-                       addToFavsButton
-                       ],
+                       addToFavsButton],
             spacing: Theme.Layout.bigSpacing,
             axis: .vertical
         )
@@ -194,7 +191,10 @@ private extension QuoteDetailView {
 
 extension QuoteDetailView: TimeIntervalControlDelgate {
     func timeIntervalControlDidChangeSelected() {
-        data.selectedInterval = QuoteDetailModel.Interval(rawValue: buttonView.selectedSegmentIndex)!
+        guard let selectionHandel = timeIntervalSelectionHandler else {
+            return
+        }
+        selectionHandel(QuoteDetailModel.Interval(rawValue: buttonView.selectedSegmentIndex)!)
     }
 }
 
@@ -207,7 +207,14 @@ extension QuoteDetailView {
         return result
     }
 
-    func setDetailsData(quoteDetailData: QuoteDetail) {
+    func setDetailsData(quoteDetailData: QuoteDetail?) {
+        guard let quoteDetailData else {
+            closePriceAmountLabel.text = "-"
+            openPriceAmountLabel.text = "-"
+            averagePriceAmountLabel.text = "-"
+            lastDateLabel.text = "-"
+            return
+        }
         closePriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.closePrice))"
         openPriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.openPrice))"
         averagePriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.currentPrice))"
