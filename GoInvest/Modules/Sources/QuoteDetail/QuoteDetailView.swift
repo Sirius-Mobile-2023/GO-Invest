@@ -39,6 +39,7 @@ class QuoteDetailView: UIView {
     private let openPriceStackView = UIStackView()
     private let closePriceStackView = UIStackView()
     private let averagePriceStackView = UIStackView()
+    public var timeIntervalSelectionHandler: ((QuoteDetailModel.Interval) -> Void)?
 
     private let addToFavsButton: UIButton = {
         var button = UIButton()
@@ -186,7 +187,12 @@ private extension QuoteDetailView {
 
 extension QuoteDetailView: TimeIntervalControlDelgate {
     func timeIntervalControlDidChangeSelected() {
-        data.selectedInterval = QuoteDetailModel.Interval(rawValue: buttonView.selectedSegmentIndex)!
+//        QuoteDetailModel.
+//        QuoteDetailModel
+        guard let selectionHandel = timeIntervalSelectionHandler else {
+            return
+        }
+        selectionHandel(QuoteDetailModel.Interval(rawValue: buttonView.selectedSegmentIndex)!)
     }
 }
 

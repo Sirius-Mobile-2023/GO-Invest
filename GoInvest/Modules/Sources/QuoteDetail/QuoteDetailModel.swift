@@ -65,9 +65,10 @@ final class QuoteDetailModel {
                     switch result {
                     case .success(let graphData):
                         self.cachePoints = graphData.points
-                        self.points = self.cachePoints
                         self.updateGraphPoints()
                         self.state = .success
+//                        print(result)
+//                        print(self.points.count)
                     case .failure:
                         self.state = .error
                     }

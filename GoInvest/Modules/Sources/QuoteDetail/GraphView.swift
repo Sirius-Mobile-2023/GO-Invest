@@ -5,16 +5,20 @@ import Combine
 import Foundation
 
 class GraphViewModel: ObservableObject {
-    @Published var graphData: [GraphModel] = []
-
-    func updateGraphData(quoteCharts: QuoteCharts) {
-        let newGraphData = quoteCharts.points.map { point -> GraphModel in
-            return GraphModel(day: point.date, price: point.price, animate: true)
+    @Published var graphData: [GraphModel] = [] {
+        didSet {
+            print("---------------")
         }
-        graphData = newGraphData
-        print("Run graphData = newGraphData")
-        print(graphData)
     }
+
+//    func updateGraphData(quoteCharts: QuoteCharts) {
+//        let newGraphData = quoteCharts.points.map { point -> GraphModel in
+//            return GraphModel(day: point.date, price: point.price, animate: true)
+//        }
+//        graphData = newGraphData
+//        print("Run graphData = newGraphData")
+//        print(graphData)
+//    }
 
 }
 
@@ -121,9 +125,15 @@ struct GraphView: View {
     }
 }
 
-struct GraphModel: Identifiable {
-    var id = UUID()
+public struct GraphModel: Identifiable {
+    public var id = UUID()
     var day: Date
     var price: Decimal
     var animate = false
+
+    init(point: Point) {
+        self.day = point.date
+        self.price = point.price
+    }
+
 }

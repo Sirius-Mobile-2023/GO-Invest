@@ -7,11 +7,6 @@ import SkeletonView
 import Profile
 import Combine
 
-enum GraphState {
-    case loading
-    case error
-    case success
-}
 enum DetailState {
     case loading
     case error
@@ -32,7 +27,7 @@ public class QuoteDetailViewController: UIViewController {
     public var onViewDidDisappear: (() -> Void)?
     private let quoteDetailModel: QuoteDetailModel
     private var observations = Set<AnyCancellable>()
-    
+
     private lazy var errorView: ErrorViewForDetails = {
         let view = ErrorViewForDetails()
         view.isHidden = true
@@ -50,6 +45,10 @@ public class QuoteDetailViewController: UIViewController {
             }
         }
         view.isSkeletonable = true
+        view.timeIntervalSelectionHandler = { interval in
+            self.quoteDetailModel.selectedInterval = interval
+
+        }
         return view
     }()
 
@@ -69,16 +68,18 @@ public class QuoteDetailViewController: UIViewController {
         stack.isSkeletonable = true
         return stack
     }()
-    
-    public init(quote: Quote){
+
+    public init(quote: Quote) {
         self.quote = quote
         quoteDetailModel = QuoteDetailModel(id: quote.id, boardId: "TQBR")
+
+        super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     private var viewState: QuoteDetailViewState? {
         didSet {
             switch viewState {
@@ -89,7 +90,7 @@ public class QuoteDetailViewController: UIViewController {
                 view.hideSkeleton()
                 errorView.isHidden = true
                 #warning("Paste graphView.graphData = graphData")
-                quoteDetailView.setDetailsData(quoteDetailData: quoteDetailData)
+                quoteDetailView.setDetailsData(quoteDetailData: detailsData)
             case .error:
                 errorView.isHidden = false
                 layoutErrorView()
@@ -99,15 +100,9 @@ public class QuoteDetailViewController: UIViewController {
         }
     }
 
-    private var graphState: GraphState? {
-        didSet {
-            updateViewState(graphState: graphState, detailState: detailState)
-        }
-    }
-
     private var detailState: DetailState? {
         didSet {
-            updateViewState(graphState: graphState, detailState: detailState)
+            updateViewState(graphState: quoteDetailModel.state, detailState: detailState)
         }
     }
 
@@ -118,12 +113,18 @@ public class QuoteDetailViewController: UIViewController {
         setupLayout()
         addChild(graphView)
         graphView.didMove(toParent: self)
-        
+
         self.quoteDetailModel.$state.sink(receiveValue: { state in
-            self.state = state
+            self.updateViewState(graphState: state, detailState: self.detailState)
         })
+
+        self.quoteDetailModel.$points.sink(receiveValue: { points in
+            self.graphViewModel.graphData = points.map { GraphModel(point: $0) }
+            print("point at sink: \(self.graphViewModel.graphData.count)")
+        })
+
         .store(in: &observations)
-        
+
     }
 
     func setupUI() {
@@ -144,8 +145,8 @@ public class QuoteDetailViewController: UIViewController {
             quoteDetailMainStackView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
-    
-    private func updateViewState(graphState: GraphState?, detailState: DetailState?) {
+
+    private func updateViewState(graphState: QuoteDetailModel.State, detailState: DetailState?) {
         switch (graphState, detailState) {
         case (.success, .success):
             viewState = .success
@@ -169,13 +170,12 @@ public class QuoteDetailViewController: UIViewController {
 // MARK: - Work with client
 private extension QuoteDetailViewController {
     func getQuoteData() {
-        
         getDataForDetails()
     }
 
     func getDataForDetails() {
         detailState = .loading
-        quoteDetailClient?.quoteDetail(id: quote?.id ?? "", boardId: "tqbr") { [weak self] result in
+        quoteDetailClient?.quoteDetail(id: quote.id ?? "", boardId: "tqbr") { [weak self] result in
             switch result {
             case .success(let quoteDetail):
                 self?.detailsData = quoteDetail
@@ -199,7 +199,7 @@ private extension QuoteDetailViewController {
 
 extension QuoteDetailViewController {
     func updateButton() {
-        if Storage.isInFavs(quote!) {
+        if Storage.isInFavs(quote) {
             quoteDetailView.disableButton()
         } else {
             quoteDetailView.enableButton()
