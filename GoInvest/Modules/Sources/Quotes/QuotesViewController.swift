@@ -1,6 +1,6 @@
 import UIKit
 import DomainModels
-import ModelQuoteList
+import QuoteListModel
 import Combine
 import Profile
 
@@ -146,9 +146,10 @@ extension QuotesViewController: UISearchResultsUpdating, UISearchBarDelegate {
         }
         switch state {
         case .success(let quotes):
-            let filteredData = quotes.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
-                arrayToShow = filteredData
-        case .error: brea
+            var filteredData = quotes.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
+            filteredData = filteredData.filter { isFull($0) } + filteredData.filter { !isFull($0) }
+            arrayToShow = filteredData
+        case .error: break
             // MARK: - page with error information/ignore
         case .loading: break
             // MARK: - page with error information/ignore
