@@ -51,6 +51,5 @@ let package = Package(
             name: "Theme",
             dependencies: []
         ),
-
     ]
 )
