@@ -32,7 +32,7 @@ let package = Package(
         ),
         .target(
             name: "Quotes",
-            dependencies: ["Theme", "DomainModels", "QuoteListModel", "Profile"]
+            dependencies: ["Theme", "DomainModels", "QuoteListModel", "Profile", "QuoteDetail"]
         ),
         .target(
             name: "Profile",
