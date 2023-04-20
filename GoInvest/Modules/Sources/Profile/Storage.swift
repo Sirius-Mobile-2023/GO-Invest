@@ -8,7 +8,7 @@ public class Storage {
     private static let dbName = "quoteIds"
     private static let targetField = "id"
 
-    public static func getAllData() {
+    public static func fetchDataFromStorage() {
         database.collection(dbName).addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {
                 return
