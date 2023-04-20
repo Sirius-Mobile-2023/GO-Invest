@@ -8,7 +8,7 @@ public class QuotesViewController: UIViewController {
     public var didTapButton: ((Quote) -> Void)?
     private var animationPlayed = true
     private var arrayToShow: [Quote] = []
-    private var modelQuoteList: ListQuoteModel
+    private let modelQuoteList: ListQuoteModel
     private lazy var tableView = UITableView()
     private let searchController = UISearchController()
     private var state: ListQuoteModel.State {

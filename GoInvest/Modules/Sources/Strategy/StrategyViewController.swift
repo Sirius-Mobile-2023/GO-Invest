@@ -2,7 +2,7 @@ import UIKit
 import QuoteListModel
 
 public class StrategyViewController: UIViewController {
-    private var modelQuoteList: ListQuoteModel
+    private let modelQuoteList: ListQuoteModel
 
     public init(modelQuoteList: ListQuoteModel) {
         self.modelQuoteList = modelQuoteList
