@@ -12,14 +12,17 @@ enum StrategyViewState {
 public class StrategyViewController: UIViewController {
     private let modelQuoteList: ListQuoteModel
     public var performToResultsSegue: (([Quote]) -> Void)?
-    
+    var spinner = UIActivityIndicatorView(style: .large)
+    private lazy var blurEffect = UIBlurEffect(style: UIBlurEffect.Style.systemMaterial)
+    private lazy var blurEffectView = UIVisualEffectView(effect: blurEffect)
+
     private var viewState: StrategyViewState? {
         didSet {
             switch viewState {
             case .load:
-                print("loading")
+                configureLoadView()
             case .success:
-                print("success")
+                removeLoadView()
             case .error:
                 print("error occured")
             case .none:
@@ -90,8 +93,9 @@ extension StrategyViewController {
         viewState = .load
         strategyCounter.getVector(completion: { [weak self] res in
             print("end comletiona at StrategyViewController")
-//            print(res)
+            print(res)
             self?.showResults(res)
+            self?.viewState = .success
         })
     }
     #warning("Paste real suggested quotes")
@@ -100,5 +104,23 @@ extension StrategyViewController {
             Quote(id: "ABRD", name: "Абрау Дюрсо", openPrice: Decimal(1000), closePrice: Decimal(1200)),
             Quote(id: "AFLT", name: "Аэрофлот", openPrice: Decimal(100), closePrice: Decimal(100))
         ])
+    }
+}
+
+private extension StrategyViewController {
+    func configureLoadView() {
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(blurEffectView)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.startAnimating()
+        view.addSubview(spinner)
+        spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+
+    func removeLoadView() {
+        blurEffectView.removeFromSuperview()
+        spinner.removeFromSuperview()
     }
 }
