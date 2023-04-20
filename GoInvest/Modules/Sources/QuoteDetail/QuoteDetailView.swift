@@ -6,8 +6,6 @@ import DomainModels
 
 class QuoteDetailView: UIView {
 
-    var data = QuoteDetailModel(id: "ABRD")
-
     typealias AddToFavsandler = () -> Void
 
     var addToFavsHandler: (AddToFavsandler)?
@@ -201,7 +199,14 @@ extension QuoteDetailView {
         return result
     }
 
-    func setDetailsData(quoteDetailData: QuoteDetail) {
+    func setDetailsData(quoteDetailData: QuoteDetail?) {
+        guard let quoteDetailData else {
+            closePriceAmountLabel.text = "-"
+            openPriceAmountLabel.text = "-"
+            averagePriceAmountLabel.text = "-"
+            lastDateLabel.text = "-"
+            return
+        }
         closePriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.closePrice))"
         openPriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.openPrice))"
         averagePriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.currentPrice))"

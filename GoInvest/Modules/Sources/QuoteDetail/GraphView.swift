@@ -12,7 +12,10 @@ class GraphViewModel: ObservableObject {
             return GraphModel(day: point.date, price: point.price, animate: true)
         }
         graphData = newGraphData
+        print("Run graphData = newGraphData")
+        print(graphData)
     }
+
 }
 
 struct GraphView: View {
