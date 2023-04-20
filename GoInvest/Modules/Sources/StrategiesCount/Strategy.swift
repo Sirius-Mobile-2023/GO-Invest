@@ -218,10 +218,15 @@ private extension StrategyCounter {
     }
 }
 
-extension Sequence where Iterator.Element == Double {
+extension Sequence where Iterator.Element == Double, Self: Collection {
     func standardDeviation() -> Double {
-        let mean = self.reduce(0, +) / Double(self.count)
-        let variance = self.map { pow($0 - mean, 2.0) }.reduce(0, +) / Double(self.count)
-        return sqrt(variance)
+        let mean = self.reduce(0.0, +) / Double(self.count)
+        let sumOfSquaredDifferences = self.reduce(0.0) { total, value in
+            let difference = value - mean
+            return total + difference * difference
+        }
+        let standardDeviation = sqrt(sumOfSquaredDifferences / Double(self.count))
+        return standardDeviation
     }
 }
+
