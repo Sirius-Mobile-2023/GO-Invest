@@ -187,8 +187,6 @@ private extension QuoteDetailView {
 
 extension QuoteDetailView: TimeIntervalControlDelgate {
     func timeIntervalControlDidChangeSelected() {
-//        QuoteDetailModel.
-//        QuoteDetailModel
         guard let selectionHandel = timeIntervalSelectionHandler else {
             return
         }
