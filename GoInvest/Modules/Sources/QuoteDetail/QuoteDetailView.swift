@@ -39,15 +39,15 @@ class QuoteDetailView: UIView {
     private let openPriceStackView = UIStackView()
     private let closePriceStackView = UIStackView()
     private let averagePriceStackView = UIStackView()
-    public var timeIntervalSelectionHandler: ((QuoteDetailModel.Interval) -> Void)?
+    var timeIntervalSelectionHandler: ((QuoteDetailModel.Interval) -> Void)?
 
     private let addToFavsButton: UIButton = {
         var button = UIButton()
-        button.backgroundColor = Theme.Colors.button
+        button.backgroundColor = Theme.Colors.yellow
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
         button.setTitle("Add to Favorites", for: .normal)
-        button.setTitleColor(Theme.Colors.buttonText, for: .normal)
+        button.setTitleColor(Theme.Colors.blackColor, for: .normal)
         button.setTitleColor(Theme.Colors.buttonHighlightedText, for: .highlighted)
         button.setTitleColor(Theme.Colors.buttonHighlightedText, for: .disabled)
         button.titleLabel?.font = Theme.Fonts.button

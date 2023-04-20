@@ -43,7 +43,8 @@ class TabBarCoordinator {
 
     private func prepareTabBarController(withTabControllers tabControllers: [UIViewController]) {
         tabBarController.tabBar.isTranslucent = false
-        tabBarController.tabBar.backgroundColor = .white
+        tabBarController.tabBar.tintColor = Theme.Colors.tabBarItemColor
+        tabBarController.tabBar.backgroundColor = Theme.Colors.background
         tabBarController.setViewControllers(tabControllers, animated: true)
     }
 

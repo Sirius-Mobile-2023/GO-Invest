@@ -2,8 +2,13 @@
   "colors" : [
     {
       "color" : {
-        "platform" : "tvos",
-        "reference" : "systemYellowColor"
+        "color-space" : "extended-srgb",
+        "components" : {
+          "alpha" : "1.000",
+          "blue" : "0.000",
+          "green" : "0.721",
+          "red" : "1.000"
+        }
       },
       "idiom" : "universal"
     }

@@ -1,5 +1,6 @@
 import UIKit
 import QuoteListModel
+import Theme
 
 public class StrategyViewController: UIViewController {
     private let modelQuoteList: ListQuoteModel
@@ -30,6 +31,7 @@ public class StrategyViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         view.addSubview(scrollView)
+        view.backgroundColor = Theme.Colors.background
 
         scrollView.addSubview(strategyView)
         setupLayout()
