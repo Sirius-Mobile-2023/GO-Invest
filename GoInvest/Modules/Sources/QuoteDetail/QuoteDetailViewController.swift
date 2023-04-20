@@ -61,11 +61,21 @@ public class QuoteDetailViewController: UIViewController {
         return hostingController
     }()
 
+    private var graphLoadingIndicator: UIActivityIndicatorView?
+
     private lazy var quoteDetailMainStackView: UIStackView = {
         var stack = UIStackView(arrangedSubviews: [graphView.view, quoteDetailView])
         stack.spacing = Theme.Layout.bigSpacing
         stack.axis = .vertical
         stack.isSkeletonable = true
+        let graphLoadingIndicator = UIActivityIndicatorView(style: .large)
+        graphLoadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        graphView.view.addSubview(graphLoadingIndicator)
+        self.graphLoadingIndicator = graphLoadingIndicator
+        NSLayoutConstraint.activate([
+            graphView.view.centerXAnchor.constraint(equalTo: graphLoadingIndicator.centerXAnchor),
+            graphView.view.centerYAnchor.constraint(equalTo: graphLoadingIndicator.centerYAnchor),
+        ])
         return stack
     }()
 
@@ -116,6 +126,7 @@ public class QuoteDetailViewController: UIViewController {
 
         self.quoteDetailModel.$state.sink(receiveValue: { state in
             self.updateViewState(graphState: state, detailState: self.detailState)
+            self.updateGraphLoadingState(isLoading: state == .loading)
         })
         .store(in: &observations)
 
@@ -146,8 +157,17 @@ public class QuoteDetailViewController: UIViewController {
         ])
     }
 
+    private func updateGraphLoadingState(isLoading: Bool) {
+        if isLoading {
+            graphLoadingIndicator?.startAnimating()
+        } else {
+            graphLoadingIndicator?.stopAnimating()
+        }
+        graphLoadingIndicator?.isHidden = !isLoading
+    }
+
     private func updateViewState(graphState: QuoteDetailModel.State, detailState: DetailState?) {
-        switch (detailState) {
+        switch detailState {
         case (.loading):
             viewState = .loading
         case .error:
