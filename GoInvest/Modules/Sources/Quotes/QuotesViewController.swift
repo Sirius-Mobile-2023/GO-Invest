@@ -34,7 +34,7 @@ public class QuotesViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        Storage.getAllData()
+        Storage.fetchDataFromStorage()
         configureTitle()
         configureTableView()
         if animationPlayed {
