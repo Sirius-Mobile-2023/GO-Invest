@@ -3,6 +3,7 @@ import StrategiesCount
 import DomainModels
 
 public class StrategyViewController: UIViewController {
+    public var performToResultsSegue: (([Quote]) -> Void)?
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -13,6 +14,11 @@ public class StrategyViewController: UIViewController {
     private lazy var strategyView: UIView = {
         title = "Strategy"
         let view = StrategyView()
+        view.actionForCompute = { [weak self] amount, risk, strategy in
+            let riskEnum = RiskLevel(rawValue: risk)
+            let strategyEnum = Strategy(rawValue: strategy)
+            self?.computeStrategy(amount: amount, risk: riskEnum!, strategy: strategyEnum!)
+        }
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -24,14 +30,6 @@ public class StrategyViewController: UIViewController {
 
         scrollView.addSubview(strategyView)
         setupLayout()
-
-        let listForTest: [Quote] = [
-            Quote(id: "ABRD", name: "TQBR", openPrice: nil, closePrice: nil),
-            Quote(id: "AFLT", name: "TQBR", openPrice: nil, closePrice: nil)
-        ]
-        let strategyCounter = StrategyCounter(quotes: listForTest, riskLevel: .low, strategy: .sharpe)
-        strategyCounter.getVector(completion: { _ in print("end comletiona at StrategyViewController") })
-
     }
 
     private func setupLayout() {
@@ -44,6 +42,26 @@ public class StrategyViewController: UIViewController {
             strategyView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
             strategyView.trailingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.trailingAnchor),
             strategyView.leadingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.leadingAnchor),
+        ])
+    }
+}
+
+extension StrategyViewController {
+    func computeStrategy(amount: Double, risk: RiskLevel, strategy: Strategy) {
+        let listForTest: [Quote] = [
+            Quote(id: "ABRD", name: "TQBR", openPrice: nil, closePrice: nil),
+            Quote(id: "AFLT", name: "TQBR", openPrice: nil, closePrice: nil)
+        ]
+
+        let strategyCounter = StrategyCounter(quotes: listForTest, riskLevel: risk, strategy: strategy)
+        strategyCounter.getVector(completion: { _ in print("end comletiona at StrategyViewController") })
+        showResults()
+    }
+
+    func showResults() {
+        performToResultsSegue?([
+            Quote(id: "ABRD", name: "TQBR", openPrice: nil, closePrice: nil),
+            Quote(id: "AFLT", name: "TQBR", openPrice: nil, closePrice: nil)
         ])
     }
 }

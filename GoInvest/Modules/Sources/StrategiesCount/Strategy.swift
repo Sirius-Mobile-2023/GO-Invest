@@ -15,14 +15,14 @@ import DomainModels
 //        }
 //    }
 // }
-public enum RiskLevel: Double {
-    case low = 0.2
-    case lowMedium = 0.4
-    case upperMedium = 0.6
-    case high = 0.8
+public enum RiskLevel: Int {
+    case low
+    case lowMedium
+    case upperMedium
+    case high
 }
 
-public enum Strategy {
+public enum Strategy: Int {
     case sharpe
     case rogersSatchell
     case yangZhang

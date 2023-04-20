@@ -1,7 +1,7 @@
 import UIKit
 import Theme
 
-class StrategyView: UIView {
+class StrategyView: UIView {var actionForCompute: ((_ amount: Double, _ risk: Int, _ strategy: Int) -> Void)?
 
     private let amountView: UIView = {
         let textField = UIView()
@@ -40,6 +40,7 @@ class StrategyView: UIView {
 
     private let computeButton: UIButton = {
         let button = UIButton()
+        button.addTarget(self, action: #selector(computeStrategiesButtonTapped(button: )), for: .touchUpInside)
         button.backgroundColor = Constants.buttonBackgroundColor
         button.layer.cornerRadius = Constants.cornerRadius
         button.setTitle("Compute", for: .normal)
@@ -137,6 +138,13 @@ extension StrategyView: UITextFieldDelegate {
         super.touchesBegan(touches, with: event)
         amountTextField.endEditing(true)
 
+    }
+}
+
+extension StrategyView {
+    @objc
+    private func computeStrategiesButtonTapped(button: UIButton) {
+        actionForCompute?(Double(self.amountTextField.text ?? "0") ?? 0.0, self.risksView.selectedSegmentIndex, self.strategicsView.selectedSegmentIndex)
     }
 }
 
