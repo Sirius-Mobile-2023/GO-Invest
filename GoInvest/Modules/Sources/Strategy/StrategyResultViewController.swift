@@ -8,9 +8,14 @@ public class StrategyResultsViewController: UIViewController {
     public var toQuoteTapped: ToQuoteHandler?
 
     private lazy var tableView = UITableView()
-    private var label: UILabel = {
+    private lazy var textLabel: UILabel = {
         var label = UILabel()
-        label.text = "We suggest you to buy"
+        label.text = "Go-invest suggests you to buy these quotes"
+        label.font = Theme.Fonts.title
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        label.textColor = Theme.Colors.mainText
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     private var animationPlayed = true
@@ -18,11 +23,12 @@ public class StrategyResultsViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.Colors.background
+        view.addSubview(textLabel)
+        setupLayout()
         configureTableView()
         if animationPlayed {
             tableView.alpha = 0
         }
-        setupLayout()
         view.isOpaque = false
     }
 
@@ -33,7 +39,10 @@ public class StrategyResultsViewController: UIViewController {
 
     private func setupLayout() {
         NSLayoutConstraint.activate([
-
+            textLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            textLabel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 100),
+            textLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            textLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
 }
@@ -76,7 +85,7 @@ private extension StrategyResultsViewController {
         tableView.register(SuggestedQuoteCustomCell.self, forCellReuseIdentifier: "SuggestedQuoteCustomCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 10),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
