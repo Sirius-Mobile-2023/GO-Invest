@@ -5,12 +5,18 @@ import SkeletonView
 import DomainModels
 
 class QuoteDetailView: UIView {
+
+    var data = QuoteDetailModel(id: "ABRD")
+
     typealias AddToFavsandler = () -> Void
 
     var addToFavsHandler: (AddToFavsandler)?
 
     private let buttonView: TimeIntervalsControl = {
-        let control = TimeIntervalsControl(intervals: ["1D", "7D", "1M", "3M", "1Y"], selectedSegmentIndex: 0)
+        let control = TimeIntervalsControl(
+            intervals: labels,
+            selectedSegmentIndex: QuoteDetailModel.defaultInterval.rawValue
+            )
         control.isSkeletonable = true
         control.skeletonCornerRadius = Theme.StyleElements.skeletonCornerRadius
         control.translatesAutoresizingMaskIntoConstraints = false
@@ -57,8 +63,11 @@ class QuoteDetailView: UIView {
     init() {
         super.init(frame: .zero)
         translatesAutoresizingMaskIntoConstraints = false
+
         setupUI()
         setupLayout()
+
+        buttonView.delegate = self
     }
 
     @available(*, unavailable)
@@ -179,7 +188,21 @@ private extension QuoteDetailView {
     }
 }
 
+extension QuoteDetailView: TimeIntervalControlDelgate {
+    func timeIntervalControlDidChangeSelected() {
+        data.selectedInterval = QuoteDetailModel.Interval(rawValue: buttonView.selectedSegmentIndex)!
+    }
+}
+
 extension QuoteDetailView {
+    static var labels: [String] {
+        var result = [String]()
+        QuoteDetailModel.Interval.allCases.forEach { interval in
+            result.append(interval.label)
+        }
+        return result
+    }
+
     func setDetailsData(quoteDetailData: QuoteDetail) {
         closePriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.closePrice))"
         openPriceAmountLabel.text = "\(getRoundedValue(quoteDetailData.openPrice))"
