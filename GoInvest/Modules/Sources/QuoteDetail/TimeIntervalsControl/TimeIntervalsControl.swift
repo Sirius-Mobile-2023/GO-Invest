@@ -147,13 +147,13 @@ extension TimeIntervalsControl {
 private extension TimeIntervalsControl {
     enum Constants {
         static let defaultSelectedSegmentIndex = 0
-        static let selectedBorderColor = UIColor.black
-        static let defaultBorderColor = UIColor.lightGray
-        static let selectedBackgroundColor = UIColor.black
+        static let selectedBorderColor = Theme.Colors.button
+        static let defaultBorderColor = Theme.Colors.borderColor
+        static let selectedBackgroundColor = Theme.Colors.button
         static let defaultBackgroundColor = UIColor.clear
-        static let selectTitleColor = UIColor.white
-        static let defaultTitleColor = UIColor.black
-        static let cornerRadius: CGFloat = 18
+        static let selectTitleColor = Theme.Colors.buttonText
+        static let defaultTitleColor = Theme.Colors.button
+        static let cornerRadius: CGFloat = Theme.StyleElements.timeIntervalButtonCornerRadius
         static let borderWidth: CGFloat = 0.5
         static let sizeFont: CGFloat = 13
     }
