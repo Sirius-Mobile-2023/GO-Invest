@@ -2,6 +2,7 @@ import UIKit
 import StrategiesCount
 import DomainModels
 import QuoteListModel
+import Theme
 
 enum StrategyViewState {
     case load
@@ -12,8 +13,8 @@ enum StrategyViewState {
 public class StrategyViewController: UIViewController {
     private let modelQuoteList: ListQuoteModel
     public var performToResultsSegue: (([Quote]) -> Void)?
-    var spinner = UIActivityIndicatorView(style: .large)
-    private lazy var blurEffect = UIBlurEffect(style: UIBlurEffect.Style.systemMaterial)
+    private lazy var spinner = UIActivityIndicatorView(style: .large)
+    private lazy var blurEffect = Theme.StyleElements.blurEffect
     private lazy var blurEffectView = UIVisualEffectView(effect: blurEffect)
 
     private var viewState: StrategyViewState? {
