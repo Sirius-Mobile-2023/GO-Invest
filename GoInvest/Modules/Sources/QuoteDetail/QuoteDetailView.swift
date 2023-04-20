@@ -114,11 +114,9 @@ class QuoteDetailView: UIView {
         )
         arrangeStackView(
             for: mainStackView,
-            subviews: [
-                       buttonView,
+            subviews: [buttonView,
                        detailLabelsStackView,
-                       addToFavsButton
-                       ],
+                       addToFavsButton],
             spacing: Theme.Layout.bigSpacing,
             axis: .vertical
         )

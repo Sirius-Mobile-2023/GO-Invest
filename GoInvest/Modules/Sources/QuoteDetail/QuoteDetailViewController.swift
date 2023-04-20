@@ -38,6 +38,7 @@ public class QuoteDetailViewController: UIViewController {
         }
         return view
     }()
+
     private lazy var quoteDetailView: QuoteDetailView = {
         let view = QuoteDetailView()
         view.addToFavsHandler = { [weak self] in
@@ -48,6 +49,16 @@ public class QuoteDetailViewController: UIViewController {
         view.isSkeletonable = true
         return view
     }()
+
+    private let graphViewModel = GraphViewModel()
+
+    private lazy var graphView: UIHostingController<GraphView> = {
+        let graphView = GraphView(viewModel: graphViewModel)
+        let hostingController = UIHostingController(rootView: graphView)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        return hostingController
+    }()
+
     private lazy var quoteDetailMainStackView: UIStackView = {
         var stack = UIStackView(arrangedSubviews: [graphView.view, quoteDetailView])
         stack.spacing = Theme.Layout.bigSpacing
@@ -77,6 +88,7 @@ public class QuoteDetailViewController: UIViewController {
             }
         }
     }
+
     private var graphState: GraphState? {
         didSet {
             switch graphState {
@@ -93,6 +105,7 @@ public class QuoteDetailViewController: UIViewController {
             }
         }
     }
+
     private var detailState: DetailState? {
         didSet {
             switch detailState {
@@ -109,13 +122,6 @@ public class QuoteDetailViewController: UIViewController {
             }
         }
     }
-
-    private let graphView: UIHostingController<GraphView> = {
-        let graphView = GraphView()
-        let hostingController = UIHostingController(rootView: graphView)
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        return hostingController
-    }()
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -187,6 +193,7 @@ private extension QuoteDetailViewController {
             case .success(let graphData):
                 self?.graphData = graphData
                 self?.graphState = .success
+                self?.graphViewModel.updateGraphData(quoteCharts: graphData)
             case .failure(let error):
                 let customError = error as! ClientError
                 self?.errorView.updateErrorLabel(error: customError)
