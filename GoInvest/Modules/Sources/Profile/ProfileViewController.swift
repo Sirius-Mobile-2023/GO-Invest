@@ -9,6 +9,7 @@ enum FavoritesViewState {
 }
 public class ProfileViewController: UIViewController {
     public var didTapButton: ((Quote) -> Void)?
+    public var handleAuth: (() -> Void)?
     private var quotesArrayToShow: [Quote] = []
     private var allQuotesArray: [Quote] = []
     private lazy var tableView = UITableView()
@@ -50,6 +51,11 @@ public class ProfileViewController: UIViewController {
         Storage.fetchDataFromStorage()
         configureTitle()
         configureTableView()
+    }
+
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        handleAuth?()
     }
 
     override public func viewDidAppear(_ animated: Bool) {

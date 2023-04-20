@@ -33,6 +33,12 @@ public class StrategyResultsViewController: UIViewController {
         view.isOpaque = false
     }
 
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        configureTableView()
+        tableView.reloadData()
+    }
+
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.alpha = 1
