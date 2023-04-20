@@ -83,13 +83,6 @@ public class StrategyViewController: UIViewController {
 }
 
 extension StrategyViewController {
-    #warning("Paste real suggested quotes")
-    func showResults(_ quotesSuggested: [Any]) {
-        performToResultsSegue?([
-            Quote(id: "ABRD", name: "Абрау Дюрсо", openPrice: Decimal(1000), closePrice: Decimal(1200)),
-            Quote(id: "AFLT", name: "Аэрофлот", openPrice: Decimal(100), closePrice: Decimal(100))
-        ], [0.0, 1000.0])
-    }
     func computeStrategy(amount: Double, risk: RiskLevel, strategy: Strategy) {
         print("load started")
         viewState = .load
@@ -106,7 +99,6 @@ extension StrategyViewController {
             print(error)
         }
     }
-    #warning("Paste real suggested quotes")
     func showResults(_ quotesSuggested: [(Quote, Double)]) {
         let quotes = quotesSuggested.map { $0.0 }
         let numbers = quotesSuggested.map { $0.1 }
