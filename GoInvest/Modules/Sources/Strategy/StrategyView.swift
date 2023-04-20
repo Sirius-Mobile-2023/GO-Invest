@@ -23,7 +23,7 @@ class StrategyView: UIView {
     private let risksView: SegmentedControl = {
         let view = SegmentedControl(
             title: "Risks",
-            segmentsTitle: ["😀 Ligth", "🥰 Medium", "😁 Normal", "😎 Hard"]
+            segmentsTitle: ["😀 Light", "🥰 Medium", "😁 Normal", "😎 Hard"]
         )
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -31,8 +31,8 @@ class StrategyView: UIView {
 
     private let strategicsView: SegmentedControl = {
         let view = SegmentedControl(
-            title: "Strategics",
-            segmentsTitle: ["Name strategy 1", "Name strategy 2", "Name strategy 3"]
+            title: "Strategies",
+            segmentsTitle: ["Sharp", "Rogers-Satchell", "Yang-Zhang"]
         )
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
