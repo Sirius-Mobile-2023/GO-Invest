@@ -32,8 +32,9 @@ class TabBarCoordinator {
         let strategyResultsVC = StrategyResultsViewController()
         let resultsNC = UINavigationController(rootViewController: strategyResultsVC)
 
-        strategyVC.performToResultsSegue = { [weak self] quotes in
+        strategyVC.performToResultsSegue = { [weak self] quotes, amounts in
             strategyResultsVC.quotesSuggested = quotes
+            strategyResultsVC.amountsToSpendSuggested = amounts
             strategyResultsVC.modalPresentationStyle = .popover
             strategyVC.present(resultsNC, animated: true, completion: nil)
         }

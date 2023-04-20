@@ -5,6 +5,7 @@ import DomainModels
 public class StrategyResultsViewController: UIViewController {
     public typealias ToQuoteHandler = (Quote) -> Void
     public var quotesSuggested: [Quote] = []
+    public var amountsToSpendSuggested: [Double] = []
     public var toQuoteTapped: ToQuoteHandler?
 
     private lazy var tableView = UITableView()
@@ -105,7 +106,7 @@ extension StrategyResultsViewController: UITableViewDataSource, UITableViewDeleg
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SuggestedQuoteCustomCell") as! SuggestedQuoteCustomCell
-        cell.setData(model: quotesSuggested[indexPath.row])
+        cell.setData(model: quotesSuggested[indexPath.row], amount: amountsToSpendSuggested[indexPath.row])
         return cell
     }
 

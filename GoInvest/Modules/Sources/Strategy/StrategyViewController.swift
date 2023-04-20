@@ -12,7 +12,7 @@ enum StrategyViewState {
 
 public class StrategyViewController: UIViewController {
     private let modelQuoteList: ListQuoteModel
-    public var performToResultsSegue: (([Quote]) -> Void)?
+    public var performToResultsSegue: (([Quote], [Double]) -> Void)?
     private lazy var spinner = UIActivityIndicatorView(style: .large)
     private lazy var blurEffect = Theme.StyleElements.blurEffect
     private lazy var blurEffectView = UIVisualEffectView(effect: blurEffect)
@@ -104,7 +104,7 @@ extension StrategyViewController {
         performToResultsSegue?([
             Quote(id: "ABRD", name: "Абрау Дюрсо", openPrice: Decimal(1000), closePrice: Decimal(1200)),
             Quote(id: "AFLT", name: "Аэрофлот", openPrice: Decimal(100), closePrice: Decimal(100))
-        ])
+        ], [0.0, 1000.0])
     }
 }
 

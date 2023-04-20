@@ -97,11 +97,10 @@ final class SuggestedQuoteCustomCell: UITableViewCell {
         priceLabel.textAlignment = .right
     }
 
-    func setData(model: Quote) {
+    func setData(model: Quote, amount: Double) {
         shortNameLabel.text = model.id
         fullNameLabel.text = model.name
-        #warning("paste real data")
-        priceLabel.text = "1000"
+        priceLabel.text = String(amount) + "₽"
     }
 }
 
