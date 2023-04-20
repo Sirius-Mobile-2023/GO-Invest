@@ -46,10 +46,10 @@ public class QuotesViewController: UIViewController {
         .store(in: &observations)
     }
     private func applyData() {
-                self.showFullQuotes()
-                self.tableView.reloadData()
-                self.animateTableView()
-                self.animationPlayed = false
+        self.showFullQuotes()
+        self.tableView.reloadData()
+        self.animateTableView()
+        self.animationPlayed = false
     }
 
     private func configureTitle() {

@@ -3,9 +3,30 @@ import StrategiesCount
 import DomainModels
 import QuoteListModel
 
+enum StrategyViewState {
+    case load
+    case success
+    case error
+}
+
 public class StrategyViewController: UIViewController {
     private let modelQuoteList: ListQuoteModel
     public var performToResultsSegue: (([Quote]) -> Void)?
+    
+    private var viewState: StrategyViewState? {
+        didSet {
+            switch viewState {
+            case .load:
+                print("loading")
+            case .success:
+                print("success")
+            case .error:
+                print("error occured")
+            case .none:
+                break
+            }
+        }
+    }
 
     public init(modelQuoteList: ListQuoteModel) {
         self.modelQuoteList = modelQuoteList
@@ -65,14 +86,19 @@ extension StrategyViewController {
         ]
 
         let strategyCounter = StrategyCounter(quotes: listForTest, riskLevel: risk, strategy: strategy)
-        strategyCounter.getVector(completion: { _ in print("end comletiona at StrategyViewController") })
-        showResults()
+        print("load started")
+        viewState = .load
+        strategyCounter.getVector(completion: { [weak self] res in
+            print("end comletiona at StrategyViewController")
+//            print(res)
+            self?.showResults(res)
+        })
     }
-
-    func showResults() {
+    #warning("Paste real suggested quotes")
+    func showResults(_ quotesSuggested: [Any]) {
         performToResultsSegue?([
-            Quote(id: "ABRD", name: "TQBR", openPrice: nil, closePrice: nil),
-            Quote(id: "AFLT", name: "TQBR", openPrice: nil, closePrice: nil)
+            Quote(id: "ABRD", name: "Абрау Дюрсо", openPrice: Decimal(1000), closePrice: Decimal(1200)),
+            Quote(id: "AFLT", name: "Аэрофлот", openPrice: Decimal(100), closePrice: Decimal(100))
         ])
     }
 }
