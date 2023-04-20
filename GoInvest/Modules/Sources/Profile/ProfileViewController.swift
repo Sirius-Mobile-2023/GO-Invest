@@ -12,9 +12,12 @@ public class ProfileViewController: UIViewController {
     private var allQuotesArray: [Quote] = []
     private lazy var tableView = UITableView()
     public var client: QuoteListProvider?
+    public var toLogin: (() -> Void)?
+    private var welcomeView = WelcomeToLoginView()
 
     public init(client: QuoteListProvider) {
         self.client = client
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -28,9 +31,12 @@ public class ProfileViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+
+        welcomeView.loginButtonHandler = toLogin
         Storage.fetchDataFromStorage()
         configureTitle()
         configureTableView()
+        configureWelcomeView()
     }
 
     override public func viewDidAppear(_ animated: Bool) {
@@ -42,6 +48,11 @@ public class ProfileViewController: UIViewController {
 
     private func configureTitle() {
         title = "Favorites"
+    }
+
+    private func configureWelcomeView() {
+        view.addSubview(welcomeView)
+        welcomeView.layoutWelcomView(superView: view)
     }
 
     private func configureTableView() {

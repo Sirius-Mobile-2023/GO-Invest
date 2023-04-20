@@ -6,6 +6,8 @@ import DomainModels
 import Theme
 import UIKit
 import QuoteListModel
+import Login
+import FirebaseAuth
 
 class TabBarCoordinator {
     var tabBarController: UITabBarController
@@ -20,12 +22,33 @@ class TabBarCoordinator {
         let strategyVC = StrategyViewController(modelQuoteList: modelQuoteList)
         let quotesVC = QuotesViewController(modelQuoteList: modelQuoteList)
         let profileVC = ProfileViewController(client: QuoteClient())
+
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let strategyNC = UINavigationController(rootViewController: strategyVC)
         let profileNC = UINavigationController(rootViewController: profileVC)
         quotesVC.didTapButton = { [weak self] quote in
             self?.showQuoteController(with: quote, navigationController: quotesNC)
         }
+        let loginVC = LoginViewController()
+
+        profileVC.toLogin = {
+            loginVC.modalPresentationStyle = .popover
+            loginVC.loginButtonHandler = { [weak self] email, password in
+                Auth.auth().signIn(withEmail: email, password: password) { [weak self] authResult, error in
+                  guard let strongSelf = self else { return }
+                    if authResult != nil {
+                        loginVC.dismiss(animated: true)
+                        // call data from firebase
+                        print("remove login vc")
+                    } else {
+                        loginVC.wrongDataAnimate()
+                    }
+                    print(error)
+                }
+            }
+            profileVC.present(loginVC, animated: true, completion: nil)
+        }
+
         profileVC.didTapButton = { [weak self] quote in
             self?.showQuoteController(with: quote, navigationController: profileNC)
         }
@@ -55,4 +78,13 @@ class TabBarCoordinator {
         }
         quoteCoordinator.start()
     }
+
+//    func showLoginController(navigationController: UINavigationController) {
+//        let quoteCoordinator = QuoteCoordinator(navigationController: navigationController, quote: quote)
+//        childCoordinators.append(quoteCoordinator)
+//        quoteCoordinator.removeFromMemory = { [weak self] in
+//            self?.childCoordinators.removeLast()
+//        }
+//        quoteCoordinator.start()
+//    }
 }

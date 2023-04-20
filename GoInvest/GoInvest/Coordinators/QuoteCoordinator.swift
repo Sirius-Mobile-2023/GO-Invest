@@ -15,6 +15,7 @@ class QuoteCoordinator {
 
     func start() {
         let viewController = QuoteDetailViewController()
+        // viewController.action = 
         viewController.onViewDidDisappear = { [weak self] in
             self?.removeFromMemory?()
         }

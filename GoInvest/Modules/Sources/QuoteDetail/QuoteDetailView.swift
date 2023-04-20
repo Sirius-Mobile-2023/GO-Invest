@@ -3,6 +3,8 @@ import SwiftUI
 import Theme
 import SkeletonView
 import DomainModels
+import AppState
+import Login
 
 class QuoteDetailView: UIView {
 
@@ -44,6 +46,8 @@ class QuoteDetailView: UIView {
 
     private let addToFavsButton: UIButton = {
         var button = UIButton()
+        button.isEnabled = AppState.isAuth
+        button.layer.opacity = AppState.isAuth ? 1 : 0.5
         button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
@@ -222,6 +226,8 @@ extension QuoteDetailView {
 
 extension QuoteDetailView {
     @objc private func addToFavoritesTapped(_ sender: UIButton) {
+        guard AppState.isAuth else { return }
+        // addToFavsButton.layer.opacity = 1
         addToFavsHandler?()
         disableButton()
     }
