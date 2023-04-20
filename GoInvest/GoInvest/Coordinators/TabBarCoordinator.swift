@@ -19,7 +19,7 @@ class TabBarCoordinator {
         let modelQuoteList = ListQuoteModel(client: QuoteClient())
         let strategyVC = StrategyViewController(modelQuoteList: modelQuoteList)
         let quotesVC = QuotesViewController(modelQuoteList: modelQuoteList)
-        let profileVC = ProfileViewController()
+        let profileVC = ProfileViewController(client: QuoteClient())
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let strategyNC = UINavigationController(rootViewController: strategyVC)
         let profileNC = UINavigationController(rootViewController: profileVC)
