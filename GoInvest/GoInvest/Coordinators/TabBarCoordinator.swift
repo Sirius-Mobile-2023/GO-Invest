@@ -18,7 +18,7 @@ class TabBarCoordinator {
 
         let strategyVC = StrategyViewController()
         let quotesVC = QuotesViewController(client: QuoteClient())
-        let profileVC = ProfileViewController()
+        let profileVC = ProfileViewController(client: QuoteClient())
 
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let strategyNC = UINavigationController(rootViewController: strategyVC)
@@ -31,7 +31,7 @@ class TabBarCoordinator {
         }
         quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: Theme.Images.quotesTabBar, tag: 0)
         strategyNC.tabBarItem = UITabBarItem(title: "Strategy", image: Theme.Images.strategyTabBar, tag: 1)
-        profileNC.tabBarItem = UITabBarItem(title: "Profile", image: Theme.Images.profileTabBarUnchecked, tag: 2)
+        profileNC.tabBarItem = UITabBarItem(title: "Favorites", image: Theme.Images.profileTabBarUnchecked, tag: 2)
         profileNC.tabBarItem.selectedImage = Theme.Images.profileTabBarChecked
 
         let controllers = [quotesNC, strategyNC, profileNC]

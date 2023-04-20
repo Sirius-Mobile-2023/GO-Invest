@@ -3,22 +3,20 @@ import DomainModels
 import FirebaseFirestore
 
 public class Storage {
-    public static var sharedQuotes: [Quote] = []
+    public static var sharedQuotesIds: [String] = []
     private static let database = Firestore.firestore()
+    private static let dbName = "quoteIds"
+    private static let targetField = "id"
 
     public static func getAllData() {
-        database.collection("quotes").addSnapshotListener { querySnapshot, error in
+        database.collection(dbName).addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {
                 return
             }
-            Storage.sharedQuotes = documents.map { queryDocumentSnapshot -> Quote in
+            Storage.sharedQuotesIds = documents.map { queryDocumentSnapshot -> String in
                 let data = queryDocumentSnapshot.data()
-                let id = data["id"] as? String ?? ""
-                let name = data["name"] as? String ?? ""
-                let openPrice = data["open price"] as? Double ?? 0.0
-                let closePrice = data["close price"] as? Double ?? 0.0
-                return Quote(id: id, name: name, openPrice: Decimal(openPrice),
-                             closePrice: Decimal(closePrice))
+                let id = data[targetField] as? String ?? ""
+                return id
             }
         }
     }
@@ -26,22 +24,18 @@ public class Storage {
     public static func putQuoteToStorage(_ quote: Quote) {
         let isInStorage = isInFavs(quote)
         if !isInStorage {
-            database.collection("quotes").addDocument(data: [
-                "id": quote.id,
-                "name": quote.name,
-                "close price": quote.closePrice!,
-                "open price": quote.openPrice!
+            database.collection(dbName).addDocument(data: [
+                targetField: quote.id
             ])
         }
     }
 
-    public static func getFavQuotesFromStorage() -> [Quote] {
-        return sharedQuotes
+    public static func getFavQuotesFromStorage() -> [String] {
+        return sharedQuotesIds
     }
 
     public static func removeFromStorageByIndex(_ index: Int) {
-        // swiftlint:disable:next line_length
-        database.collection("quotes").whereField("id", isEqualTo: Storage.sharedQuotes[index].id).getDocuments { querySnapshot, err in
+        database.collection(dbName).whereField(targetField, isEqualTo: Storage.sharedQuotesIds[index]).getDocuments { querySnapshot, err in
             if err != nil {
                 return
             } else {
@@ -50,11 +44,11 @@ public class Storage {
                 }
             }
         }
-        Storage.sharedQuotes.remove(at: index)
+        Storage.sharedQuotesIds.remove(at: index)
     }
 
     public static func isInFavs(_ quote: Quote) -> Bool {
-        return Storage.sharedQuotes.contains(where: {quoteInArray in
-            quoteInArray.id == quote.id})
+        return Storage.sharedQuotesIds.contains(where: {quoteId in
+            quoteId == quote.id})
     }
 }
