@@ -148,7 +148,7 @@ extension QuotesViewController: UISearchResultsUpdating, UISearchBarDelegate {
         case .success(let quotes):
             let filteredData = quotes.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
                 arrayToShow = filteredData
-        case .error: break
+        case .error: brea
             // MARK: - page with error information/ignore
         case .loading: break
             // MARK: - page with error information/ignore
