@@ -1,4 +1,6 @@
 import UIKit
+import StrategiesCount
+import DomainModels
 
 public class StrategyViewController: UIViewController {
 
@@ -22,6 +24,14 @@ public class StrategyViewController: UIViewController {
 
         scrollView.addSubview(strategyView)
         setupLayout()
+
+        let listForTest: [Quote] = [
+            Quote(id: "ABRD", name: "TQBR", openPrice: nil, closePrice: nil),
+            Quote(id: "AFLT", name: "TQBR", openPrice: nil, closePrice: nil)
+        ]
+        let strategyCounter = StrategyCounter(quotes: listForTest, riskLevel: .low, strategy: .sharpe)
+        strategyCounter.getVector(completion: { _ in print("end comletiona at StrategyViewController") })
+
     }
 
     private func setupLayout() {
