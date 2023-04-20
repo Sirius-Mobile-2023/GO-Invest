@@ -7,19 +7,8 @@ import Foundation
 class GraphViewModel: ObservableObject {
     @Published var graphData: [GraphModel] = [] {
         didSet {
-            print("---------------")
         }
     }
-
-//    func updateGraphData(quoteCharts: QuoteCharts) {
-//        let newGraphData = quoteCharts.points.map { point -> GraphModel in
-//            return GraphModel(day: point.date, price: point.price, animate: true)
-//        }
-//        graphData = newGraphData
-//        print("Run graphData = newGraphData")
-//        print(graphData)
-//    }
-
 }
 
 struct GraphView: View {
@@ -135,5 +124,4 @@ public struct GraphModel: Identifiable {
         self.day = point.date
         self.price = point.price
     }
-
 }

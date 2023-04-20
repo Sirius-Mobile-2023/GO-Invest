@@ -117,12 +117,12 @@ public class QuoteDetailViewController: UIViewController {
         self.quoteDetailModel.$state.sink(receiveValue: { state in
             self.updateViewState(graphState: state, detailState: self.detailState)
         })
+        .store(in: &observations)
 
         self.quoteDetailModel.$points.sink(receiveValue: { points in
             self.graphViewModel.graphData = points.map { GraphModel(point: $0) }
             print("point at sink: \(self.graphViewModel.graphData.count)")
         })
-
         .store(in: &observations)
 
     }
@@ -147,13 +147,13 @@ public class QuoteDetailViewController: UIViewController {
     }
 
     private func updateViewState(graphState: QuoteDetailModel.State, detailState: DetailState?) {
-        switch (graphState, detailState) {
-        case (.success, .success):
-            viewState = .success
-        case (.error, _), (_, .error):
+        switch (detailState) {
+        case (.loading):
+            viewState = .loading
+        case .error:
             viewState = .error
         default:
-            viewState = .loading
+            viewState = .success
         }
     }
 
