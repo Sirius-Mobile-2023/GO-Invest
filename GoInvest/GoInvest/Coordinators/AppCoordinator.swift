@@ -15,7 +15,6 @@ class AppCoordinator {
     func start() {
         window.rootViewController = tabBarController
         window.makeKeyAndVisible()
-        getSharpStrategy()
         startFirstVC()
     }
 

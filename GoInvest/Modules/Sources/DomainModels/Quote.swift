@@ -1,6 +1,6 @@
 import Foundation
 
-public struct Quote: Codable {
+public struct Quote {
     public let id: String
     public let name: String
     public let openPrice: Decimal?
