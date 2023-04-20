@@ -2,10 +2,10 @@ import UIKit
 import QuoteClient
 import Theme
 
-class ErrorViewForDetails: UIView {
-    typealias RetryHandler = () -> Void
+public class ErrorViewForDetails: UIView {
+    public typealias RetryHandler = () -> Void
 
-    var tryAgainHandler: RetryHandler?
+    public var tryAgainHandler: RetryHandler?
 
     private let errorLabel: UILabel = {
         let label = UILabel()
@@ -15,6 +15,17 @@ class ErrorViewForDetails: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+
+    public func layoutErrorView(superView: UIView) {
+        superView.addSubview(self)
+        self.backgroundColor = .systemBackground
+        NSLayoutConstraint.activate([
+            self.topAnchor.constraint(equalTo: superView.safeAreaLayoutGuide.topAnchor, constant: Theme.Layout.topOffset),
+            self.leadingAnchor.constraint(equalTo: superView.safeAreaLayoutGuide.leadingAnchor, constant: Theme.Layout.sideOffset),
+            self.trailingAnchor.constraint(equalTo: superView.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.Layout.sideOffset),
+            self.bottomAnchor.constraint(equalTo: superView.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
 
     private lazy var tryAgainButton: UIButton = {
         let button = UIButton()
@@ -37,7 +48,7 @@ class ErrorViewForDetails: UIView {
         return stackView
     }()
 
-    init() {
+    public init() {
         super.init(frame: .zero)
         self.backgroundColor = Theme.Colors.background
         self.translatesAutoresizingMaskIntoConstraints = false
