@@ -1,43 +1,25 @@
 import UIKit
 import DomainModels
+import QuoteListModel
+import Combine
 import Profile
 
-enum QuotesViewState {
-    case load
-    case error
-    case success
-}
 public class QuotesViewController: UIViewController {
     public var didTapButton: ((Quote) -> Void)?
     private var animationPlayed = true
     private var arrayToShow: [Quote] = []
+    private let modelQuoteList: ListQuoteModel
     private lazy var tableView = UITableView()
-    public var client: QuoteListProvider
     private let searchController = UISearchController()
-
-    private var quotesArray: [Quote] = [] {
-        willSet {
-            arrayToShow = newValue
-            tableView.reloadData()
+    private var state: ListQuoteModel.State {
+        didSet {
+            applyData()
         }
     }
-    private var currentViewState: QuotesViewState? {
-            didSet {
-                switch self.currentViewState {
-                case .load:
-    #warning("TODO: Add load animation")
-                case .error:
-    #warning("TODO: Add error view")
-                case .success:
-    #warning("TODO: Add table reload")
-                case .none:
-                    break
-                }
-            }
-        }
-
-    public init(client: QuoteListProvider) {
-        self.client = client
+    private var observations = Set<AnyCancellable>()
+    public init(modelQuoteList: ListQuoteModel) {
+        self.modelQuoteList = modelQuoteList
+        state = .loading
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -52,29 +34,22 @@ public class QuotesViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        Storage.getAllData()
+        Storage.fetchDataFromStorage()
         configureTitle()
         configureTableView()
         if animationPlayed {
             tableView.alpha = 0
         }
-        fetchData()
+        self.modelQuoteList.$state.sink(receiveValue: { state in
+            self.state = state
+        })
+        .store(in: &observations)
     }
-
-    private func fetchData() {
-        client.quoteList(search: .defaultList) { [weak self] result in
-            switch result {
-            case let .success(array):
-                self?.quotesArray = array
-                self?.currentViewState = .success
-            case .failure:
-                self?.currentViewState = .error
-            }
-                self?.showFullQuotes()
-                self?.tableView.reloadData()
-                self?.animateTableView()
-                self?.animationPlayed = false
-        }
+    private func applyData() {
+                self.showFullQuotes()
+                self.tableView.reloadData()
+                self.animateTableView()
+                self.animationPlayed = false
     }
 
     private func configureTitle() {
@@ -85,7 +60,15 @@ public class QuotesViewController: UIViewController {
     }
 
     private func showFullQuotes() {
-        quotesArray = quotesArray.filter { isFull($0) } + quotesArray.filter { !isFull($0) }
+        switch state {
+        case .success(let quotes):
+            let filteredData = quotes.filter { isFull($0) } + quotes.filter { !isFull($0) }
+                arrayToShow = filteredData
+        case .error: break
+            // MARK: - page with error information/ignore
+        case .loading: break
+            // MARK: - page with error information/ignore
+        }
     }
 
     private func isFull(_ q: Quote) -> Bool {
@@ -161,14 +144,28 @@ extension QuotesViewController: UISearchResultsUpdating, UISearchBarDelegate {
         guard !text.isEmpty else {
             return
         }
-        let filteredData = quotesArray.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
-
-        arrayToShow = filteredData
+        switch state {
+        case .success(let quotes):
+            var filteredData = quotes.filter { $0.name.uppercased().contains(text) || $0.id.uppercased().contains(text) }
+            filteredData = filteredData.filter { isFull($0) } + filteredData.filter { !isFull($0) }
+            arrayToShow = filteredData
+        case .error: break
+            // MARK: - page with error information/ignore
+        case .loading: break
+            // MARK: - page with error information/ignore
+        }
         tableView.reloadData()
     }
-
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        arrayToShow = quotesArray
+        switch state {
+        case .success(let quotes):
+            let filteredData = quotes.filter { isFull($0) } + quotes.filter { !isFull($0) }
+            arrayToShow = filteredData
+        case .error: break
+            // MARK: - page with error information/ignore
+        case .loading: break
+            // MARK: - page with error information/ignore
+        }
         tableView.reloadData()
     }
 }

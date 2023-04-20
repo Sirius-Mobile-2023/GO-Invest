@@ -5,6 +5,7 @@ import Quotes
 import DomainModels
 import Theme
 import UIKit
+import QuoteListModel
 
 class TabBarCoordinator {
     var tabBarController: UITabBarController
@@ -15,11 +16,10 @@ class TabBarCoordinator {
     }
 
     func start() {
-
-        let strategyVC = StrategyViewController()
-        let quotesVC = QuotesViewController(client: QuoteClient())
-        let profileVC = ProfileViewController()
-
+        let modelQuoteList = ListQuoteModel(client: QuoteClient())
+        let strategyVC = StrategyViewController(modelQuoteList: modelQuoteList)
+        let quotesVC = QuotesViewController(modelQuoteList: modelQuoteList)
+        let profileVC = ProfileViewController(client: QuoteClient())
         let quotesNC = UINavigationController(rootViewController: quotesVC)
         let strategyNC = UINavigationController(rootViewController: strategyVC)
         let profileNC = UINavigationController(rootViewController: profileVC)
@@ -43,7 +43,7 @@ class TabBarCoordinator {
 
         quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: Theme.Images.quotesTabBar, tag: 0)
         strategyNC.tabBarItem = UITabBarItem(title: "Strategy", image: Theme.Images.strategyTabBar, tag: 1)
-        profileNC.tabBarItem = UITabBarItem(title: "Profile", image: Theme.Images.profileTabBarUnchecked, tag: 2)
+        profileNC.tabBarItem = UITabBarItem(title: "Favorites", image: Theme.Images.profileTabBarUnchecked, tag: 2)
         profileNC.tabBarItem.selectedImage = Theme.Images.profileTabBarChecked
 
         let controllers = [quotesNC, strategyNC, profileNC]

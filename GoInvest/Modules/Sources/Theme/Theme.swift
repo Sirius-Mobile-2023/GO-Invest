@@ -20,7 +20,7 @@ public enum Theme {
         public static let greenBackground = UIColor(named: "GreenColor")!
         public static let labelText = UIColor(named: "WhiteColor")!
         public static let subLabelText = UIColor.gray
-
+        public static let borderColor = UIColor.lightGray
     }
 
     public enum Images {
@@ -34,6 +34,7 @@ public enum Theme {
     public enum StyleElements {
         public static let imageCornerRadius: CGFloat = 20
         public static let buttonCornerRadius: CGFloat = 10
+        public static let timeIntervalButtonCornerRadius: CGFloat = 18
         public static let skeletonCornerRadius: Float = 10
         public static let skeletonTextCornerRadius: Int = 5
         public static let buttonBorderWidth: CGFloat = 1

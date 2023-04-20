@@ -1,9 +1,20 @@
 import UIKit
 import StrategiesCount
 import DomainModels
+import QuoteListModel
 
 public class StrategyViewController: UIViewController {
+    private let modelQuoteList: ListQuoteModel
     public var performToResultsSegue: (([Quote]) -> Void)?
+
+    public init(modelQuoteList: ListQuoteModel) {
+        self.modelQuoteList = modelQuoteList
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()

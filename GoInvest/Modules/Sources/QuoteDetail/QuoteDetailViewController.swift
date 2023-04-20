@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 import Theme
 import QuoteClient
 import DomainModels
@@ -48,7 +49,7 @@ public class QuoteDetailViewController: UIViewController {
         return view
     }()
     private lazy var quoteDetailMainStackView: UIStackView = {
-        var stack = UIStackView(arrangedSubviews: [quoteDetailView])
+        var stack = UIStackView(arrangedSubviews: [graphView.view, quoteDetailView])
         stack.spacing = Theme.Layout.bigSpacing
         stack.axis = .vertical
         stack.isSkeletonable = true
@@ -109,22 +110,22 @@ public class QuoteDetailViewController: UIViewController {
         }
     }
 
+    private let graphView: UIHostingController<GraphView> = {
+        let graphView = GraphView()
+        let hostingController = UIHostingController(rootView: graphView)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        return hostingController
+    }()
+
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         getQuoteData()
         setupLayout()
+        addChild(graphView)
+        graphView.didMove(toParent: self)
     }
 
-    override public func viewWillAppear(_: Bool) {
-        super.viewWillAppear(true)
-        updateButton()
-    }
-
-}
-
-// MARK: - UI and Layout
-private extension QuoteDetailViewController {
     func setupUI() {
         view.backgroundColor = Theme.Colors.background
         view.isSkeletonable = true
@@ -134,8 +135,9 @@ private extension QuoteDetailViewController {
         view.addSubview(errorView)
     }
 
-    func setupLayout() {
+    private func setupLayout() {
         NSLayoutConstraint.activate([
+            graphView.view.heightAnchor.constraint(equalToConstant: 300),
             quoteDetailMainStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.Layout.topOffset),
             quoteDetailMainStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: Theme.Layout.sideOffset),
             quoteDetailMainStackView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Theme.Layout.sideOffset),
