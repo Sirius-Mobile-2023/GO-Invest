@@ -6,7 +6,7 @@ import DomainModels
 //    case sharpe
 //    case rogersSatchell
 //    case yangZhang
-//    
+//
 //    func getVector() -> [Double]{
 //        switch self {
 //        case .rogersSatchell:
@@ -71,7 +71,7 @@ public class StrategyCounter {
                     vector = countRogersSatchellStrategy(data: data)
                 case.yangZhang:
                     print("Run countYangZhangStrategy")
-                    vector = countYangZhangStrategy()
+                    vector = countYangZhangStrategy(data: data)
                 }
                 completion(vector)
             }
@@ -90,7 +90,6 @@ private extension StrategyCounter {
     func countSharpeStrategy(data: [QuoteCharts?]) -> [(Quote, Double)] {
         var allData = [[Double]]()
         var portfolioSharp = [Double](repeating: 0.0, count: tickers.count)
-
         for i in data {
             var dataForQuote = [Double]()
             if let quoteCharts = i {
@@ -105,11 +104,13 @@ private extension StrategyCounter {
             let sharpCoef = self.getSharpeCoef(returns: getReturn(dataClose: returns[i]))
             portfolioSharp[i] = sharpCoef
         }
+        portfolioSharp = portfolioSharp.map { $0.isNaN ? 0 : $0 }
         portfolioSharp = getPortfolioSharp(sharpList: portfolioSharp)
         var result = Array(zip(quotes, portfolioSharp))
-        result.sort { $0.1 < $1.1 }
-//        print(Array(result[0..<min(5, result.count)]))
-        return Array(result[0..<min(5, result.count)])
+        result.sort { $0.1 > $1.1 }
+        var nilResult = result.map { $0.0.openPrice == nil ? nil : $0 }
+        result = nilResult.compactMap { $0 }
+        return Array(result[0..<min(6, result.count)])
     }
 
     // MARK: - func returns sharp coef
@@ -152,7 +153,6 @@ private extension StrategyCounter {
             var dataForQuote = [Double]()
             if let quoteCharts = i {
                 for point in quoteCharts.points {
-//                    print(point.price)
                     dataForQuote.append(Double(point.1.description)!)
                 }
             }
@@ -165,8 +165,9 @@ private extension StrategyCounter {
         portfolioRS = getPortfolioRS(rsList: portfolioRS)
         var result = Array(zip(quotes, portfolioRS))
         result.sort { $0.1 > $1.1 }
-//        print(Array(result[0..<min(5, result.count)]))
-        return Array(result[0..<min(5, result.count)])
+        var nilResult = result.map { $0.0.openPrice == nil ? nil : $0 }
+        result = nilResult.compactMap { $0 }
+        return Array(result[0..<min(6, result.count)])
     }
 
     func getRSVolatility(dataOpen: [Double], dataClose: [Double], dataHigh: [Double], dataLow: [Double]) -> Double {
@@ -175,9 +176,7 @@ private extension StrategyCounter {
         let thirdZip = zip(dataLow, dataClose).map { $0.0 * 1.4 / $0.1 }
         let fourthZip = zip(dataLow, dataOpen).map { $0.0 * 1.5 / $0.1 }
         let intermediateArray = zip(zip(firstZip, secondZip), zip(thirdZip, fourthZip))
-//        print(intermediateArray)
         let logData = intermediateArray.map { log($0.0.0) * log($0.0.1) * log($0.1.0) * log($0.1.1) }
-//        print(logData)
         return sqrt(logData.reduce(0, +) / Double(dataOpen.count))
     }
 
@@ -191,17 +190,29 @@ private extension StrategyCounter {
 
 // MARK: - Yang Zhang Strategy
 private extension StrategyCounter {
-    func countYangZhangStrategy() -> [(Quote, Double)] {
+    func countYangZhangStrategy(data: [QuoteCharts?]) -> [(Quote, Double)] {
+        var allData = [[Double]]()
         var portfolioYZ = [Double](repeating: 0, count: tickers.count)
+        for i in data {
+            var dataForQuote = [Double]()
+            if let quoteCharts = i {
+                for point in quoteCharts.points {
+                    dataForQuote.append(Double(point.1.description)!)
+                }
+            }
+            allData.append(dataForQuote)
+        }
+        let returns = allData
         for i in 0 ..< tickers.count {
-//            let dataOpen = getMarketData(tiсkers[i], time).Open
-//            let dataClose = getMarketData(tiсkers[i], time).Close
-//            let dataHigh = getMarketData(tiсkers[i], time).High
-//            let dataLow = getMarketData(tiсkers[i], time).Low
-//            portfolioYZ[i] = -getYZVolatility(dataOpen: dataOpen, dataClose: dataClose, dataHigh: dataHigh, dataLow: dataLow)
+            portfolioYZ[i] = -getYZVolatility(dataOpen: returns[i], dataClose: returns[i], dataHigh: returns[i], dataLow: returns[i])
         }
         portfolioYZ = getPortfolioYZ(yzList: portfolioYZ)
-        return Array(zip(quotes, portfolioYZ))
+        var result = Array(zip(quotes, portfolioYZ))
+        result.sort { $0.1 > $1.1 }
+        var nilResult = result.map { $0.0.openPrice == nil ? nil : $0 }
+        result = nilResult.compactMap { $0 }
+        return Array(result[0..<min(6, result.count)])
+
     }
 
     func sigmaOpen(dataOpen: [Double], dataClose: [Double]) -> Double {

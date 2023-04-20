@@ -83,28 +83,34 @@ public class StrategyViewController: UIViewController {
 }
 
 extension StrategyViewController {
-    func computeStrategy(amount: Double, risk: RiskLevel, strategy: Strategy) {
-        let listForTest: [Quote] = [
-            Quote(id: "ABRD", name: "TQBR", openPrice: nil, closePrice: nil),
-            Quote(id: "AFLT", name: "TQBR", openPrice: nil, closePrice: nil)
-        ]
-
-        let strategyCounter = StrategyCounter(quotes: listForTest, riskLevel: risk, strategy: strategy)
-        print("load started")
-        viewState = .load
-        strategyCounter.getVector(completion: { [weak self] res in
-            print("end comletiona at StrategyViewController")
-            print(res)
-            self?.showResults(res)
-            self?.viewState = .success
-        })
-    }
     #warning("Paste real suggested quotes")
     func showResults(_ quotesSuggested: [Any]) {
         performToResultsSegue?([
             Quote(id: "ABRD", name: "Абрау Дюрсо", openPrice: Decimal(1000), closePrice: Decimal(1200)),
             Quote(id: "AFLT", name: "Аэрофлот", openPrice: Decimal(100), closePrice: Decimal(100))
         ], [0.0, 1000.0])
+    }
+    func computeStrategy(amount: Double, risk: RiskLevel, strategy: Strategy) {
+        print("load started")
+        viewState = .load
+        switch modelQuoteList.state {
+        case .success(let quotes):
+            let strategyCounter = StrategyCounter(quotes: Array(quotes[0..<20]), riskLevel: risk, strategy: strategy)
+            strategyCounter.getVector(completion: { [weak self] res in
+                self?.showResults(res)
+                self?.viewState = .success
+            })
+        case .loading:
+            print("Подождите, данные для листа еще не загружены!!")
+        case .error(let error):
+            print(error)
+        }
+    }
+    #warning("Paste real suggested quotes")
+    func showResults(_ quotesSuggested: [(Quote, Double)]) {
+        let quotes = quotesSuggested.map { $0.0 }
+        let numbers = quotesSuggested.map { $0.1 }
+        performToResultsSegue?(quotes, numbers)
     }
 }
 
