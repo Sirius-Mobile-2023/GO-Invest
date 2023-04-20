@@ -129,7 +129,7 @@ public struct GraphModel: Identifiable {
     public var id = UUID()
     var day: Date
     var price: Decimal
-    var animate = false
+    var animate = true
 
     init(point: Point) {
         self.day = point.date
