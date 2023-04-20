@@ -5,19 +5,15 @@ import QuoteClient
 import DomainModels
 import SkeletonView
 import Profile
+import Combine
 
-enum GraphState {
-    case load
-    case error
-    case success
-}
 enum DetailState {
-    case load
+    case loading
     case error
     case success
 }
 enum QuoteDetailViewState {
-    case load
+    case loading
     case error
     case success
 }
@@ -27,8 +23,10 @@ public class QuoteDetailViewController: UIViewController {
     private var chartDataClient: ChartsProvider? = QuoteClient()
     private var graphData: QuoteCharts?
     private var detailsData: QuoteDetail?
-    public var quote: Quote?
+    private let quote: Quote
     public var onViewDidDisappear: (() -> Void)?
+    private let quoteDetailModel: QuoteDetailModel
+    private var observations = Set<AnyCancellable>()
 
     private lazy var errorView: ErrorViewForDetails = {
         let view = ErrorViewForDetails()
@@ -38,6 +36,7 @@ public class QuoteDetailViewController: UIViewController {
         }
         return view
     }()
+
     private lazy var quoteDetailView: QuoteDetailView = {
         let view = QuoteDetailView()
         view.addToFavsHandler = { [weak self] in
@@ -46,76 +45,76 @@ public class QuoteDetailViewController: UIViewController {
             }
         }
         view.isSkeletonable = true
+        view.timeIntervalSelectionHandler = { interval in
+            self.quoteDetailModel.selectedInterval = interval
+
+        }
         return view
     }()
+
+    private let graphViewModel = GraphViewModel()
+
+    private lazy var graphView: UIHostingController<GraphView> = {
+        let graphView = GraphView(viewModel: graphViewModel)
+        let hostingController = UIHostingController(rootView: graphView)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        return hostingController
+    }()
+
+    private var graphLoadingIndicator: UIActivityIndicatorView?
+
     private lazy var quoteDetailMainStackView: UIStackView = {
         var stack = UIStackView(arrangedSubviews: [graphView.view, quoteDetailView])
         stack.spacing = Theme.Layout.bigSpacing
         stack.axis = .vertical
         stack.isSkeletonable = true
+        let graphLoadingIndicator = UIActivityIndicatorView(style: .large)
+        graphLoadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        graphView.view.addSubview(graphLoadingIndicator)
+        self.graphLoadingIndicator = graphLoadingIndicator
+        NSLayoutConstraint.activate([
+            graphView.view.centerXAnchor.constraint(equalTo: graphLoadingIndicator.centerXAnchor),
+            graphView.view.centerYAnchor.constraint(equalTo: graphLoadingIndicator.centerYAnchor),
+        ])
         return stack
     }()
+
+    public init(quote: Quote) {
+        self.quote = quote
+        quoteDetailModel = QuoteDetailModel(id: quote.id, boardId: "TQBR")
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     private var viewState: QuoteDetailViewState? {
         didSet {
             switch viewState {
-            case .load:
+            case .loading:
                 errorView.isHidden = true
                 view.showAnimatedGradientSkeleton()
             case .success:
                 view.hideSkeleton()
                 errorView.isHidden = true
                 #warning("Paste graphView.graphData = graphData")
-                if let quoteDetailData = detailsData {
-                    quoteDetailView.setDetailsData(quoteDetailData: quoteDetailData)
-                }
+                quoteDetailView.setDetailsData(quoteDetailData: detailsData)
             case .error:
                 errorView.isHidden = false
-                layoutErrorView()
-            case .none:
-                break
-            }
-        }
-    }
-    private var graphState: GraphState? {
-        didSet {
-            switch graphState {
-            case .load:
-                viewState = .load
-            case .error:
-                viewState = .error
-            case .success:
-                if detailState == .success {
-                    viewState = .success
-                }
-            case .none:
-                break
-            }
-        }
-    }
-    private var detailState: DetailState? {
-        didSet {
-            switch detailState {
-            case .load:
-                viewState = .load
-            case .error:
-                viewState = .error
-            case .success:
-                if graphState == .success {
-                    viewState = .success
-                }
+                errorView.layoutErrorView(superView: view)
             case .none:
                 break
             }
         }
     }
 
-    private let graphView: UIHostingController<GraphView> = {
-        let graphView = GraphView()
-        let hostingController = UIHostingController(rootView: graphView)
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        return hostingController
-    }()
+    private var detailState: DetailState? {
+        didSet {
+            updateViewState(graphState: quoteDetailModel.state, detailState: detailState)
+        }
+    }
 
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -124,6 +123,18 @@ public class QuoteDetailViewController: UIViewController {
         setupLayout()
         addChild(graphView)
         graphView.didMove(toParent: self)
+
+        self.quoteDetailModel.$state.sink(receiveValue: { state in
+            self.updateViewState(graphState: state, detailState: self.detailState)
+            self.updateGraphLoadingState(isLoading: state == .loading)
+        })
+        .store(in: &observations)
+
+        self.quoteDetailModel.$points.sink(receiveValue: { points in
+            self.graphViewModel.graphData = points.map { GraphModel(point: $0) }
+        })
+        .store(in: &observations)
+
     }
 
     func setupUI() {
@@ -145,6 +156,26 @@ public class QuoteDetailViewController: UIViewController {
         ])
     }
 
+    private func updateGraphLoadingState(isLoading: Bool) {
+        if isLoading {
+            graphLoadingIndicator?.startAnimating()
+        } else {
+            graphLoadingIndicator?.stopAnimating()
+        }
+        graphLoadingIndicator?.isHidden = !isLoading
+    }
+
+    private func updateViewState(graphState: QuoteDetailModel.State, detailState: DetailState?) {
+        switch detailState {
+        case (.loading):
+            viewState = .loading
+        case .error:
+            viewState = .error
+        default:
+            viewState = .success
+        }
+    }
+
     func layoutErrorView() {
         NSLayoutConstraint.activate([
             errorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.Layout.topOffset),
@@ -158,13 +189,12 @@ public class QuoteDetailViewController: UIViewController {
 // MARK: - Work with client
 private extension QuoteDetailViewController {
     func getQuoteData() {
-        getDataForGraph()
         getDataForDetails()
     }
 
     func getDataForDetails() {
-        detailState = .load
-        quoteDetailClient?.quoteDetail(id: quote?.id ?? "", boardId: "tqbr") { [weak self] result in
+        detailState = .loading
+        quoteDetailClient?.quoteDetail(id: quote.id ?? "", boardId: "tqbr") { [weak self] result in
             switch result {
             case .success(let quoteDetail):
                 self?.detailsData = quoteDetail
@@ -177,23 +207,6 @@ private extension QuoteDetailViewController {
         }
     }
 
-    func getDataForGraph() {
-        graphState = .load
-        chartDataClient?.quoteCharts(id: quote?.id ?? "",
-                                     boardId: "tqbr",
-                                     fromDate: getDate(),
-                                     completion: { [weak self] result in
-            switch result {
-            case .success(let graphData):
-                self?.graphData = graphData
-                self?.graphState = .success
-            case .failure(let error):
-                let customError = error as! ClientError
-                self?.errorView.updateErrorLabel(error: customError)
-                self?.graphState = .error
-            }
-        })
-    }
 }
 
 private extension QuoteDetailViewController {
@@ -205,7 +218,7 @@ private extension QuoteDetailViewController {
 
 extension QuoteDetailViewController {
     func updateButton() {
-        if Storage.isInFavs(quote!) {
+        if Storage.isInFavs(quote) {
             quoteDetailView.disableButton()
         } else {
             quoteDetailView.enableButton()

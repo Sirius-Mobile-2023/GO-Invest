@@ -5,18 +5,26 @@ import FirebaseFirestore
 public class Storage {
     public static var sharedQuotesIds: [String] = []
     private static let database = Firestore.firestore()
-    private static let dbName = "quoteIds"
+    private static let dbName = "quotes"
     private static let targetField = "id"
+    private static let emailField = "owner"
+    public static var currentUserEmail: String = "c@b.com"
 
     public static func fetchDataFromStorage() {
         database.collection(dbName).addSnapshotListener { querySnapshot, error in
             guard let documents = querySnapshot?.documents else {
                 return
             }
-            Storage.sharedQuotesIds = documents.map { queryDocumentSnapshot -> String in
-                let data = queryDocumentSnapshot.data()
-                let id = data[targetField] as? String ?? ""
-                return id
+            for doc in documents {
+                let data = doc.data()
+                if let sender = data[emailField] as? String,
+                   let id = data[targetField] as? String {
+                    if sender == currentUserEmail {
+                        if !isIdInFavs(id) {
+                            Storage.sharedQuotesIds.append(id)
+                        }
+                    }
+                }
             }
         }
     }
@@ -25,7 +33,8 @@ public class Storage {
         let isInStorage = isInFavs(quote)
         if !isInStorage {
             database.collection(dbName).addDocument(data: [
-                targetField: quote.id
+                targetField: quote.id,
+                emailField: currentUserEmail
             ])
         }
     }
@@ -35,7 +44,7 @@ public class Storage {
     }
 
     public static func removeFromStorageByIndex(_ index: Int) {
-        database.collection(dbName).whereField(targetField, isEqualTo: Storage.sharedQuotesIds[index]).getDocuments { querySnapshot, err in
+        database.collection(dbName).whereField(targetField, isEqualTo: Storage.sharedQuotesIds[index]).whereField(emailField, isEqualTo: currentUserEmail).getDocuments { querySnapshot, err in
             if err != nil {
                 return
             } else {
@@ -50,5 +59,9 @@ public class Storage {
     public static func isInFavs(_ quote: Quote) -> Bool {
         return Storage.sharedQuotesIds.contains(where: {quoteId in
             quoteId == quote.id})
+    }
+
+    public static func isIdInFavs(_ id: String) -> Bool {
+        return Storage.sharedQuotesIds.contains(id)
     }
 }

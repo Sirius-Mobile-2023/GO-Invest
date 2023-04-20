@@ -11,7 +11,6 @@ final class QuoteCustomCell: UITableViewCell {
     private let namesStackView = UIStackView()
     private let leadingStackView = UIStackView()
     private let trailingStackView = UIStackView()
-    private let colorView = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -21,6 +20,7 @@ final class QuoteCustomCell: UITableViewCell {
         configurePriceLabel()
         configureDiffPriceLabel()
         configurePercentLabel()
+        self.selectionStyle = .none
     }
 
     @available(*, unavailable)
@@ -51,13 +51,12 @@ final class QuoteCustomCell: UITableViewCell {
         }
 
     private func configureDiffStackView() {
-        colorView.addSubview(diffPercentLabel)
         configureStackView(stackView: trailingStackView,
                            axis: .vertical,
                            aligment: .fill,
                            distribution: .fillEqually,
                            spacing: 10,
-                           viewsArray: [colorView, diffPriceLabel],
+                           viewsArray: [diffPercentLabel, diffPriceLabel],
                            isInContentView: true)
 
         trailingStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,10 +65,6 @@ final class QuoteCustomCell: UITableViewCell {
             trailingStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             trailingStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             trailingStackView.widthAnchor.constraint(equalToConstant: 80),
-            diffPercentLabel.leadingAnchor.constraint(equalTo: colorView.leadingAnchor),
-            diffPercentLabel.trailingAnchor.constraint(equalTo: colorView.trailingAnchor, constant: -8),
-            diffPercentLabel.bottomAnchor.constraint(equalTo: colorView.bottomAnchor),
-            diffPercentLabel.topAnchor.constraint(equalTo: colorView.topAnchor)
         ])
 
     }
@@ -116,7 +111,7 @@ final class QuoteCustomCell: UITableViewCell {
 
     private func configureFullNameLabel() {
         fullNameLabel.numberOfLines = 1
-        fullNameLabel.font = Theme.Fonts.title
+        fullNameLabel.font = Theme.Fonts.subtitle
         fullNameLabel.textColor = Theme.Colors.subLabelText
     }
 
@@ -129,7 +124,6 @@ final class QuoteCustomCell: UITableViewCell {
     private func configurePercentLabel() {
         diffPercentLabel.textAlignment = .right
         diffPercentLabel.textColor = Theme.Colors.labelText
-        colorView.layer.cornerRadius = 5
     }
 
     private func configureDiffPriceLabel() {
@@ -149,13 +143,15 @@ final class QuoteCustomCell: UITableViewCell {
             let percent = (diff / openPrice) * 100
             if diff < 0 {
                 diffPercentLabel.text = "\(percent.rounded(2, .plain))%"
-                colorView.backgroundColor = Theme.Colors.redBackground
+                diffPercentLabel.textColor = Theme.Colors.redBackground
             } else {
                 diffPercentLabel.text = "+\(percent.rounded(2, .plain))%"
-                colorView.backgroundColor = Theme.Colors.greenBackground
+                diffPercentLabel.textColor = Theme.Colors.greenBackground
             }
         } else {
-            colorView.backgroundColor = .gray
+            priceLabel.textColor = Theme.Colors.mainText
+            diffPercentLabel.textColor = Theme.Colors.mainText
+            diffPriceLabel.textColor = Theme.Colors.mainText
             priceLabel.text = "₽---"
             diffPercentLabel.text = "---%"
             diffPriceLabel.text = "---"

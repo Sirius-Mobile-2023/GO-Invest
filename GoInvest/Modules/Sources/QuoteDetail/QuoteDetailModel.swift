@@ -15,7 +15,7 @@ final class QuoteDetailModel {
     @Published
     private(set) var state: State
 
-    static let defaultInterval: Interval = .oneDay
+    static let defaultInterval: Interval = .threeMounts
     private var cachedInterval: Interval?
     var selectedInterval: Interval {
         didSet {
@@ -65,10 +65,11 @@ final class QuoteDetailModel {
                     switch result {
                     case .success(let graphData):
                         self.cachePoints = graphData.points
-                        self.points = self.cachePoints
                         self.updateGraphPoints()
                         self.state = .success
                     case .failure:
+                        self.cachePoints = []
+                        self.updateGraphPoints()
                         self.state = .error
                     }
                 }
@@ -85,16 +86,14 @@ final class QuoteDetailModel {
 
 extension QuoteDetailModel {
     enum Interval: Int, CaseIterable {
-        case oneDay
         case sevenDays
         case oneMounth
         case threeMounts
         case oneYear
+        case twoYear
 
         var fromDate: Date {
             switch self {
-            case .oneDay:
-                return getDate(byAdding: .day, value: -1)
             case .sevenDays:
                 return getDate(byAdding: .day, value: -7)
             case .oneMounth:
@@ -103,13 +102,13 @@ extension QuoteDetailModel {
                 return getDate(byAdding: .month, value: -3)
             case .oneYear:
                 return getDate(byAdding: .year, value: -1)
+            case .twoYear:
+                return getDate(byAdding: .year, value: -2)
             }
         }
 
         var label: String {
             switch self {
-            case .oneDay:
-                return "1D"
             case .sevenDays:
                 return "7D"
             case .oneMounth:
@@ -118,6 +117,8 @@ extension QuoteDetailModel {
                 return "3M"
             case .oneYear:
                 return "1Y"
+            case .twoYear:
+                return "2Y"
             }
         }
 
