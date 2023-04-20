@@ -5,7 +5,7 @@ import Quotes
 import DomainModels
 import Theme
 import UIKit
-import ModelQuoteList
+import QuoteListModel
 
 class TabBarCoordinator {
     var tabBarController: UITabBarController
@@ -16,9 +16,8 @@ class TabBarCoordinator {
     }
 
     func start() {
-
+        let modelQuoteList = ListQuoteModel(client: QuoteClient())
         let strategyVC = StrategyViewController(modelQuoteList: modelQuoteList)
-        let modelQuoteList = QuoteListModel(client: QuoteClient())
         let quotesVC = QuotesViewController(modelQuoteList: modelQuoteList)
         let profileVC = ProfileViewController()
         let quotesNC = UINavigationController(rootViewController: quotesVC)

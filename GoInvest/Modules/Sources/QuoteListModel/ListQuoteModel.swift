@@ -2,7 +2,7 @@ import Foundation
 import DomainModels
 import Combine
 
-public final class QuoteListModel {
+public final class ListQuoteModel {
     public enum State {
         case success(quote: [Quote])
         case loading

@@ -8,16 +8,16 @@ public class QuotesViewController: UIViewController {
     public var didTapButton: ((Quote) -> Void)?
     private var animationPlayed = true
     private var arrayToShow: [Quote] = []
-    private var modelQuoteList: QuoteListModel
+    private var modelQuoteList: ListQuoteModel
     private lazy var tableView = UITableView()
     private let searchController = UISearchController()
-    private var state: QuoteListModel.State {
+    private var state: ListQuoteModel.State {
         didSet {
             applyData()
         }
     }
     private var observations = Set<AnyCancellable>()
-    public init(modelQuoteList: QuoteListModel) {
+    public init(modelQuoteList: ListQuoteModel) {
         self.modelQuoteList = modelQuoteList
         state = .loading
         super.init(nibName: nil, bundle: nil)
