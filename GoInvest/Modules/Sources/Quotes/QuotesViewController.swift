@@ -3,6 +3,7 @@ import DomainModels
 import QuoteListModel
 import Combine
 import Profile
+import QuoteDetail
 
 public class QuotesViewController: UIViewController {
     public var didTapButton: ((Quote) -> Void)?
@@ -16,6 +17,15 @@ public class QuotesViewController: UIViewController {
             applyData()
         }
     }
+
+    private lazy var errorView: ErrorViewForDetails = {
+        let view = ErrorViewForDetails()
+        view.tryAgainHandler = { [weak self] in
+            self?.modelQuoteList.tryGetCetQuotes()
+        }
+        return view
+    }()
+
     private var observations = Set<AnyCancellable>()
     public init(modelQuoteList: ListQuoteModel) {
         self.modelQuoteList = modelQuoteList
@@ -62,12 +72,13 @@ public class QuotesViewController: UIViewController {
     private func showFullQuotes() {
         switch state {
         case .success(let quotes):
+            errorView.removeFromSuperview()
             let filteredData = quotes.filter { isFull($0) } + quotes.filter { !isFull($0) }
                 arrayToShow = filteredData
-        case .error: break
+        case .error:
+            errorView.layoutErrorView(superView: view)
             // MARK: - page with error information/ignore
         case .loading: break
-            // MARK: - page with error information/ignore
         }
     }
 

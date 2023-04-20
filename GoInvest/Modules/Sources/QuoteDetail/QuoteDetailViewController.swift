@@ -103,7 +103,7 @@ public class QuoteDetailViewController: UIViewController {
                 quoteDetailView.setDetailsData(quoteDetailData: detailsData)
             case .error:
                 errorView.isHidden = false
-                layoutErrorView()
+                errorView.layoutErrorView(superView: view)
             case .none:
                 break
             }
