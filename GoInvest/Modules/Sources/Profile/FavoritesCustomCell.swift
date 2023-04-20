@@ -1,4 +1,5 @@
 import DomainModels
+import Theme
 import UIKit
 
 final class FavoritesCustomCell: UITableViewCell {
@@ -18,6 +19,8 @@ final class FavoritesCustomCell: UITableViewCell {
         configureFullNameLabel()
         configurePriceLabel()
         configureDiffPriceLabel()
+        configurePercentLabel()
+        self.selectionStyle = .none
     }
 
     @available(*, unavailable)
@@ -57,10 +60,13 @@ final class FavoritesCustomCell: UITableViewCell {
                            isInContentView: true)
 
         trailingStackView.translatesAutoresizingMaskIntoConstraints = false
+        diffPercentLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             trailingStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             trailingStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            trailingStackView.widthAnchor.constraint(equalToConstant: 80),
         ])
+
     }
 
     private func configureNamesStackView() {
@@ -86,13 +92,12 @@ final class FavoritesCustomCell: UITableViewCell {
         NSLayoutConstraint.activate([
             leadingStackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             leadingStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            leadingStackView.trailingAnchor.constraint(equalTo: trailingStackView.leadingAnchor,
-                                                       constant: -30),
+            leadingStackView.trailingAnchor.constraint(equalTo: trailingStackView.leadingAnchor, constant: -30)
         ])
-        setPrioriries()
+        setPriorities()
     }
 
-    private func setPrioriries() {
+    private func setPriorities() {
         shortNameLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh,
                                                                for: .horizontal)
         fullNameLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultLow,
@@ -101,24 +106,31 @@ final class FavoritesCustomCell: UITableViewCell {
 
     private func configureShortNameLabel() {
         shortNameLabel.numberOfLines = 1
-        shortNameLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+        shortNameLabel.font = Theme.Fonts.title
     }
 
     private func configureFullNameLabel() {
         fullNameLabel.numberOfLines = 1
-        fullNameLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
-        fullNameLabel.textColor = .gray
+        fullNameLabel.font = Theme.Fonts.subtitle
+        fullNameLabel.textColor = Theme.Colors.subLabelText
     }
 
     private func configurePriceLabel() {
         priceLabel.numberOfLines = 1
-        priceLabel.font = UIFont.systemFont(ofSize: 19, weight: .bold)
+        priceLabel.font = Theme.Fonts.title
         priceLabel.textAlignment = .right
     }
 
+    private func configurePercentLabel() {
+        diffPercentLabel.textAlignment = .right
+        diffPercentLabel.textColor = Theme.Colors.labelText
+    }
+
     private func configureDiffPriceLabel() {
-        diffPriceLabel.font = UIFont.systemFont(ofSize: 17, weight: .light)
+        diffPriceLabel.font = Theme.Fonts.subtitle
         diffPriceLabel.textAlignment = .right
+        diffPriceLabel.translatesAutoresizingMaskIntoConstraints = false
+        diffPriceLabel.heightAnchor.constraint(equalToConstant: 30).isActive = true
     }
 
     func setData(model: Quote) {
@@ -126,23 +138,26 @@ final class FavoritesCustomCell: UITableViewCell {
         fullNameLabel.text = model.name
         if let openPrice = model.openPrice, let closePrice = model.closePrice {
             let diff = openPrice - closePrice
-            priceLabel.text = "$\(closePrice.rounded(2, .plain))"
-            diffPriceLabel.text = "\(diff.rounded(2, .plain))"
-
+            priceLabel.text = "₽\(closePrice.rounded(2, .plain))"
+            diffPriceLabel.text = "\(diff.rounded(5, .plain))"
             let percent = (diff / openPrice) * 100
             if diff < 0 {
                 diffPercentLabel.text = "\(percent.rounded(2, .plain))%"
-                diffPercentLabel.textColor = .red
+                diffPercentLabel.textColor = Theme.Colors.redBackground
             } else {
-                diffPercentLabel.textColor = UIColor(red: 23 / 255, green: 143 / 255, blue: 31 / 255, alpha: 1)
                 diffPercentLabel.text = "+\(percent.rounded(2, .plain))%"
+                diffPercentLabel.textColor = Theme.Colors.greenBackground
             }
         } else {
-            priceLabel.text = "$---"
-            diffPercentLabel.text = "---"
-            diffPriceLabel.text = "---%"
+            priceLabel.textColor = Theme.Colors.mainText
+            diffPercentLabel.textColor = Theme.Colors.mainText
+            diffPriceLabel.textColor = Theme.Colors.mainText
+            priceLabel.text = "₽---"
+            diffPercentLabel.text = "---%"
+            diffPriceLabel.text = "---"
         }
     }
+
 }
 
 extension Decimal {
