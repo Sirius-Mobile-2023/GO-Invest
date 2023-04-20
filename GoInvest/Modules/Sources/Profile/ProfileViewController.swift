@@ -8,8 +8,19 @@ enum FavoritesViewState {
 }
 public class ProfileViewController: UIViewController {
     public var didTapButton: ((Quote) -> Void)?
-    private var quotesArray: [Quote] = []
+    private var quotesArrayToShow: [Quote] = []
+    private var allQuotesArray: [Quote] = []
     private lazy var tableView = UITableView()
+    public var client: QuoteListProvider?
+
+    public init(client: QuoteListProvider) {
+        self.client = client
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -17,42 +28,20 @@ public class ProfileViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
-        Storage.getAllData()
+        Storage.fetchDataFromStorage()
         configureTitle()
         configureTableView()
     }
 
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
+        fetchDataFromNetwork()
         fetchDataFromStorage()
         tableView.reloadData()
     }
 
     private func configureTitle() {
         title = "Favorites"
-    }
-
-    private func animateTableView() {
-        tableView.reloadData()
-
-        let cells = tableView.visibleCells
-
-        let tableViewHeight = tableView.bounds.size.height
-
-        for cell in cells {
-            cell.transform = CGAffineTransform(translationX: 0, y: tableViewHeight)
-        }
-
-        var delayCounter = 0
-        for cell in cells {
-            UIView.animate(withDuration: 1.75,
-                           delay: Double(delayCounter) * 0.05,
-                           usingSpringWithDamping: 0.8,
-                           initialSpringVelocity: 0,
-                           options: .curveEaseOut,
-                           animations: { cell.transform = CGAffineTransform.identity }, completion: nil)
-            delayCounter += 1
-        }
     }
 
     private func configureTableView() {
@@ -78,17 +67,17 @@ public class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
     public func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        quotesArray.count
+        quotesArrayToShow.count
     }
 
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FavoritesCustomCell") as! FavoritesCustomCell
-        cell.setData(model: quotesArray[indexPath.row])
+        cell.setData(model: quotesArrayToShow[indexPath.row])
         return cell
     }
 
     public func tableView(_: UITableView, didSelectRowAt indexPath: IndexPath) {
-        didTapButton?(quotesArray[indexPath.row])
+        didTapButton?(quotesArrayToShow[indexPath.row])
     }
 
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -108,10 +97,28 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
 
 private extension ProfileViewController {
     func fetchDataFromStorage() {
-        quotesArray = Storage.getFavQuotesFromStorage()
+        let favIds = Storage.getFavQuotesFromStorage()
+        quotesArrayToShow = allQuotesArray.filter({ quote in
+            favIds.contains(quote.id)
+        })
     }
 
     func removeQuoteFromStorage(at index: Int) {
         Storage.removeFromStorageByIndex(index)
+    }
+}
+
+extension ProfileViewController {
+    private func fetchDataFromNetwork() {
+        client?.quoteList(search: .defaultList) { [weak self] result in
+            switch result {
+            case let .success(array):
+                self?.allQuotesArray = array
+            case .failure:
+                return
+            }
+            self?.fetchDataFromStorage()
+            self?.tableView.reloadData()
+        }
     }
 }
