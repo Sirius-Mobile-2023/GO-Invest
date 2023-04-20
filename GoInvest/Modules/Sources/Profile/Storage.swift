@@ -19,11 +19,9 @@ public class Storage {
                 let data = doc.data()
                 if let sender = data[emailField] as? String,
                    let id = data[targetField] as? String {
-                    print(sender, id)
                     if sender == currentUserEmail {
                         if !isIdInFavs(id) {
                             Storage.sharedQuotesIds.append(id)
-                            print(Storage.sharedQuotesIds)
                         }
                     }
                 }
