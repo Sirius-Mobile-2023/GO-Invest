@@ -10,19 +10,24 @@ struct QuoteChartsResult: Decodable {
 
     func toQuoteCharts() -> Result<QuoteCharts, Error> {
         var poinst: [Point] = []
-        guard let dateIndex = history.columns.firstIndex(of: QuoteChartsResult.Constants.dateJsonName) else {
-            return .failure(ClientError.incorrectJsonError)
-        }
-        guard let priceIndex = history.columns.firstIndex(of: QuoteChartsResult.Constants.priceJsonName) else {
+        guard let dateIndex = history.columns.firstIndex(of: QuoteChartsResult.Constants.dateJsonName),
+              let priceIndex = history.columns.firstIndex(of: QuoteChartsResult.Constants.priceJsonName),
+              let openPriceIndex = history.columns.firstIndex(of: QuoteChartsResult.Constants.openJsonName),
+              let closePriceIndex = history.columns.firstIndex(of: QuoteChartsResult.Constants.closeJsonName)
+        else {
             return .failure(ClientError.incorrectJsonError)
         }
 
         for element in history.data {
             if let dateAny = element[safe: dateIndex],
-               let priceAny = element[safe: priceIndex] {
+               let priceAny = element[safe: priceIndex],
+               let openPriceAny = element[safe: openPriceIndex],
+               let closePriceAny = element[safe: closePriceIndex] {
                 if let date = dateFromString(str: dateAny.getStringValue()),
-                   let price = priceAny.getDecimalValue() {
-                    poinst.append(Point(date, price))
+                   let price = priceAny.getDecimalValue(),
+                   let openPrice = openPriceAny.getDecimalValue(),
+                   let closePrice = closePriceAny.getDecimalValue() {
+                    poinst.append(Point(date, price, openPrice, closePrice))
                 }
             }
         }

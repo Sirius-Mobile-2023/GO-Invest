@@ -14,6 +14,7 @@
 		4D26228C29E5E0C300B56C18 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */; };
 		4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */; };
 		4D4465A729EB2D3F00CB846C /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = 4D4465A629EB2D3F00CB846C /* SkeletonView */; };
+		4D54005229F15D6100D87508 /* StrategyResultsCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D54005129F15D6100D87508 /* StrategyResultsCoordinator.swift */; };
 		874BEA4D29E72EE5001383BD /* Modules in Frameworks */ = {isa = PBXBuildFile; productRef = 874BEA4C29E72EE5001383BD /* Modules */; };
 		8790EA7B29E5938800A9FD42 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7A29E5938800A9FD42 /* AppDelegate.swift */; };
 		8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */; };
@@ -26,6 +27,7 @@
 		4D26228929E5DF2800B56C18 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 		4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCoordinator.swift; sourceTree = "<group>"; };
+		4D54005129F15D6100D87508 /* StrategyResultsCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StrategyResultsCoordinator.swift; sourceTree = "<group>"; };
 		8790EA7729E5938800A9FD42 /* GoInvest.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GoInvest.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8790EA7A29E5938800A9FD42 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8790EA7C29E5938800A9FD42 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -55,6 +57,7 @@
 				4D26228929E5DF2800B56C18 /* AppCoordinator.swift */,
 				4D26228B29E5E0C300B56C18 /* TabBarCoordinator.swift */,
 				4D26229429E5EA3800B56C18 /* QuoteCoordinator.swift */,
+				4D54005129F15D6100D87508 /* StrategyResultsCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -203,6 +206,7 @@
 				4D26228A29E5DF2800B56C18 /* AppCoordinator.swift in Sources */,
 				4D26229529E5EA3800B56C18 /* QuoteCoordinator.swift in Sources */,
 				8790EA7B29E5938800A9FD42 /* AppDelegate.swift in Sources */,
+				4D54005229F15D6100D87508 /* StrategyResultsCoordinator.swift in Sources */,
 				8790EA7D29E5938800A9FD42 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

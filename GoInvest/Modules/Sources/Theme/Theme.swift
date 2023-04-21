@@ -38,6 +38,7 @@ public enum Theme {
         public static let skeletonCornerRadius: Float = 10
         public static let skeletonTextCornerRadius: Int = 5
         public static let buttonBorderWidth: CGFloat = 1
+        public static let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.systemMaterial)
     }
 
     public enum Layout {

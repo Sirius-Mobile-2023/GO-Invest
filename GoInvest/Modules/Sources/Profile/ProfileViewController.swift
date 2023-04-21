@@ -1,6 +1,7 @@
 import UIKit
 import AppState
 import DomainModels
+import Theme
 
 enum FavoritesViewState {
     case load
@@ -9,13 +10,32 @@ enum FavoritesViewState {
 }
 public class ProfileViewController: UIViewController {
     public var didTapButton: ((Quote) -> Void)?
+    public var handleAuth: (() -> Void)?
     private var quotesArrayToShow: [Quote] = []
     private var allQuotesArray: [Quote] = []
     private lazy var tableView = UITableView()
+    private lazy var spinner = UIActivityIndicatorView(style: .large)
+    private lazy var blurEffect = Theme.StyleElements.blurEffect
+    private lazy var blurEffectView = UIVisualEffectView(effect: blurEffect)
     public var client: QuoteListProvider?
     public var toLogin: (() -> Void)?
     public var toReg: (() -> Void)?
     private var welcomeView = WelcomeToLoginView()
+
+    private var viewState: FavoritesViewState? {
+        didSet {
+            switch viewState {
+            case .load:
+                configureLoadView()
+            case .success:
+                removeLoadView()
+            case .error:
+                print("error occured")
+            case .none:
+                break
+            }
+        }
+    }
 
     public init(client: QuoteListProvider) {
         self.client = client
@@ -40,6 +60,11 @@ public class ProfileViewController: UIViewController {
         configureTitle()
         configureTableView()
         configureWelcomeView()
+    }
+
+    override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        handleAuth?()
     }
 
     override public func viewDidAppear(_ animated: Bool) {
@@ -139,9 +164,11 @@ private extension ProfileViewController {
 
 extension ProfileViewController {
     private func fetchDataFromNetwork() {
+        viewState = .load
         client?.quoteList(search: .defaultList) { [weak self] result in
             switch result {
             case let .success(array):
+                self?.viewState = .success
                 self?.allQuotesArray = array
 
             case .failure:
@@ -150,5 +177,23 @@ extension ProfileViewController {
             self?.fetchDataFromStorage()
             self?.tableView.reloadData()
         }
+    }
+}
+
+private extension ProfileViewController {
+    func configureLoadView() {
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(blurEffectView)
+        spinner.translatesAutoresizingMaskIntoConstraints = false
+        spinner.startAnimating()
+        view.addSubview(spinner)
+        spinner.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        spinner.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+
+    func removeLoadView() {
+        blurEffectView.removeFromSuperview()
+        spinner.removeFromSuperview()
     }
 }
