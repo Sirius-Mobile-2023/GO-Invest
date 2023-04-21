@@ -41,15 +41,15 @@ let package = Package(
         ),
         .target(
             name: "Profile",
-            dependencies: ["DomainModels"]
+            dependencies: ["DomainModels", "AppState", "Theme"]
         ),
         .target(
             name: "QuoteDetail",
-            dependencies: ["Theme", "Profile", "AppState", "Login"]
+            dependencies: ["Theme", "Profile", "AppState", "Login", "QuoteClient", "DomainModels"]
         ),
         .target(
             name: "Strategy",
-            dependencies: ["Theme", "StrategiesCount", "QuoteListModel"]
+            dependencies: ["Theme", "StrategiesCount", "QuoteListModel", "QuoteClient", "DomainModels"]
         ),
         .target(
             name: "Theme",
@@ -57,12 +57,12 @@ let package = Package(
         ),
         .target(
             name: "QuoteListModel",
-            dependencies: []
+            dependencies: ["QuoteClient", "DomainModels"]
         ),
         .target(name: "Login",
-               dependencies: []),
+               dependencies: ["Theme"]),
         .target(
             name: "StrategiesCount",
-            dependencies: []),
+            dependencies: ["QuoteClient", "DomainModels"]),
     ]
 )

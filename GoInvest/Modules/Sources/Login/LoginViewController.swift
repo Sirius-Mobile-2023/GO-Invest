@@ -4,6 +4,7 @@ import UIKit
 
 public class LoginViewController: UIViewController {
     public var loginButtonHandler: ((String, String) -> Void)?
+    var isKeyBoardUp = false
 
     let signUpLabel = {
         let label = UILabel()
@@ -64,12 +65,35 @@ public class LoginViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.Colors.yellow
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+        loginTextField.delegate = self
+        passwordTextField.delegate = self
         setGlassViewSettings()
         setAnimateButtonSettings()
         setImageViewUser()
         setLoginTextField()
         setPasswordTextField()
         setSingUpLabel()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard !isKeyBoardUp else {return}
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as?
+            NSValue {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+            let bottomSpace = self.view.frame.height - (animateButton.frame.origin.y + animateButton.frame.height)
+            view.frame.origin.y -= keyboardHeight - bottomSpace + 10
+        }
+        isKeyBoardUp = true
+    }
+
+    @objc func keyboardWillHide(sender: NSNotification) {
+        self.view.frame.origin.y = 0 // Move view to original position
+        isKeyBoardUp = false
     }
 
     func setSingUpLabel() {
@@ -163,4 +187,12 @@ extension UIView {
         layer.shadowOffset = .zero
         layer.shadowRadius = 100
     }
+}
+
+extension LoginViewController: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        isKeyBoardUp = false
+        return true
+    } // called when 'return' key pressed. return NO to ignore.
 }
