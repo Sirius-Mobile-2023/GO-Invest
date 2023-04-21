@@ -29,6 +29,19 @@ class TabBarCoordinator {
         profileVC.didTapButton = { [weak self] quote in
             self?.showQuoteController(with: quote, navigationController: profileNC)
         }
+        let strategyResultsVC = StrategyResultsViewController()
+        let resultsNC = UINavigationController(rootViewController: strategyResultsVC)
+
+        strategyVC.performToResultsSegue = { [weak self] quotes, amounts in
+            strategyResultsVC.quotesSuggested = quotes
+            strategyResultsVC.amountsToSpendSuggested = amounts
+            strategyResultsVC.modalPresentationStyle = .popover
+            strategyVC.present(resultsNC, animated: true, completion: nil)
+        }
+        strategyResultsVC.toQuoteTapped = { [weak self] quote in
+            self?.showStrategyResults(navigationController: resultsNC, quote: quote)
+        }
+
         quotesNC.tabBarItem = UITabBarItem(title: "Quotes", image: Theme.Images.quotesTabBar, tag: 0)
         strategyNC.tabBarItem = UITabBarItem(title: "Strategy", image: Theme.Images.strategyTabBar, tag: 1)
         profileNC.tabBarItem = UITabBarItem(title: "Favorites", image: Theme.Images.profileTabBarUnchecked, tag: 2)
@@ -54,5 +67,10 @@ class TabBarCoordinator {
             self?.childCoordinators.removeLast()
         }
         quoteCoordinator.start()
+    }
+
+    func showStrategyResults(navigationController: UINavigationController, quote: Quote) {
+        let strategyResults = StrategyResultsCoordinator(navigationController: navigationController, quote: quote)
+        strategyResults.start()
     }
 }

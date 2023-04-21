@@ -1,5 +1,6 @@
 import UIKit
 import SkeletonView
+import StrategiesCount
 
 class AppCoordinator {
     let tabBarController: UITabBarController
