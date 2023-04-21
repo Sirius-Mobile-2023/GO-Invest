@@ -12,27 +12,10 @@ class StrategyView: UIView {var actionForCompute: ((_ amount: Double, _ risk: In
         return textField
     }()
 
-    private let amountTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Input Amount"
-        textField.keyboardType = .numberPad
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-
     private let risksView: SegmentedControl = {
         let view = SegmentedControl(
             title: "Risks",
             segmentsTitle: ["😀 Light", "🥰 Medium", "😁 Normal", "😎 Hard"]
-        )
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-
-    private let strategicsView: SegmentedControl = {
-        let view = SegmentedControl(
-            title: "Strategies",
-            segmentsTitle: ["Sharp", "Rogers-Satchell", "Yang-Zhang"]
         )
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -69,82 +52,30 @@ class StrategyView: UIView {var actionForCompute: ((_ amount: Double, _ risk: In
     }
 
     private func setupUI() {
-        amountTextField.delegate = self
 
-        addSubview(amountView)
-        amountView.addSubview(amountTextField)
         addSubview(risksView)
-        addSubview(strategicsView)
         addSubview(computeButton)
     }
 
     private func setupLayout() {
         NSLayoutConstraint.activate([
-            amountView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            amountView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.margin),
-            amountView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.margin),
-            amountView.heightAnchor.constraint(equalToConstant: 50),
-            amountTextField.topAnchor.constraint(equalTo: amountView.topAnchor),
-            amountTextField.leadingAnchor.constraint(equalTo: amountView.leadingAnchor, constant: 10),
-            amountTextField.trailingAnchor.constraint(equalTo: amountView.trailingAnchor),
-            amountTextField.heightAnchor.constraint(equalToConstant: 50),
-            risksView.topAnchor.constraint(equalTo: amountView.bottomAnchor, constant: 30),
+            self.heightAnchor.constraint(equalToConstant: 663),
+            risksView.topAnchor.constraint(equalTo: topAnchor, constant: 30),
             risksView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.margin),
             risksView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.margin),
             risksView.heightAnchor.constraint(equalToConstant: 280),
-            strategicsView.topAnchor.constraint(equalTo: risksView.bottomAnchor, constant: 30),
-            strategicsView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.margin),
-            strategicsView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.margin),
-            strategicsView.heightAnchor.constraint(equalToConstant: 210),
-            computeButton.topAnchor.constraint(equalTo: strategicsView.bottomAnchor, constant: 50),
             computeButton.heightAnchor.constraint(equalToConstant: 60),
             computeButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.margin),
             computeButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.margin),
-            computeButton.bottomAnchor.constraint(equalTo: bottomAnchor)
+            computeButton.topAnchor.constraint(equalTo: risksView.bottomAnchor, constant: 50)
         ])
-    }
-}
-
-extension StrategyView: UITextFieldDelegate {
-
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        UIView.animate(
-            withDuration: 0.2,
-            delay: 0,
-            options: .curveEaseOut,
-            animations: {
-                self.amountView.transform = CGAffineTransform(scaleX: Constants.selectSize, y: Constants.selectSize)
-                self.amountView.layer.borderWidth = Constants.selectBorderWidth
-            }, completion: nil)
-    }
-
-    func textFieldDidEndEditing(_ textField: UITextField) {
-        UIView.animate(
-            withDuration: 0.2,
-            delay: 0,
-            options: .curveEaseOut,
-            animations: {
-                self.amountView.transform = CGAffineTransform(scaleX: 1, y: 1)
-                self.amountView.layer.borderWidth = Constants.defaultBorderWidth
-            }, completion: nil)
-    }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.endEditing(true)
-        return true
-    }
-
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        super.touchesBegan(touches, with: event)
-        amountTextField.endEditing(true)
-
     }
 }
 
 extension StrategyView {
     @objc
     private func computeStrategiesButtonTapped(button: UIButton) {
-        actionForCompute?(Double(self.amountTextField.text ?? "0") ?? 0.0, self.risksView.selectedSegmentIndex, self.strategicsView.selectedSegmentIndex)
+        actionForCompute?(0.0, self.risksView.selectedSegmentIndex, 0)
     }
 }
 

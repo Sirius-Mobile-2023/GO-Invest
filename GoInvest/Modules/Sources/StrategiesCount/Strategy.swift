@@ -64,18 +64,35 @@ public class StrategyCounter {
                 var vector: [(Quote, Double)] = []
                 switch strategy {
                 case .sharpe:
-                    print("Run countSharpeStrategy")
                     vector = countSharpeStrategy(data: data)
                 case .rogersSatchell:
-                    print("Run countRogersSatchellStrategy")
                     vector = countRogersSatchellStrategy(data: data)
                 case.yangZhang:
-                    print("Run countYangZhangStrategy")
                     vector = countYangZhangStrategy(data: data)
                 }
                 completion(vector)
             }
         }
+    }
+
+    private func convertResult(quotes: [Quote], portfolio: [Double]) -> [(Quote, Double)] {
+        var risk = 1.0
+        switch riskLevel {
+        case .low:
+            risk *= 0.3
+        case .lowMedium:
+            risk *= 0.6
+        case .upperMedium:
+            risk *= 0.8
+        case .high:
+            risk *= 1.0
+        }
+        var cfcnts = portfolio.map { $0 * risk }
+        var result = Array(zip(quotes, cfcnts))
+        result.sort { $0.1 > $1.1 }
+        var nilResult = result.map { $0.0.openPrice == nil ? nil : $0 }
+        result = nilResult.compactMap { $0 }
+        return Array(result[0..<min(6, result.count)])
     }
 }
 
@@ -106,11 +123,7 @@ private extension StrategyCounter {
         }
         portfolioSharp = portfolioSharp.map { $0.isNaN ? 0 : $0 }
         portfolioSharp = getPortfolioSharp(sharpList: portfolioSharp)
-        var result = Array(zip(quotes, portfolioSharp))
-        result.sort { $0.1 > $1.1 }
-        var nilResult = result.map { $0.0.openPrice == nil ? nil : $0 }
-        result = nilResult.compactMap { $0 }
-        return Array(result[0..<min(6, result.count)])
+        return convertResult(quotes: quotes, portfolio: portfolioSharp)
     }
 
     // MARK: - func returns sharp coef
@@ -147,34 +160,38 @@ private extension StrategyCounter {
 // MARK: - Rogers Satchell Strategy
 private extension StrategyCounter {
     func countRogersSatchellStrategy(data: [QuoteCharts?]) -> [(Quote, Double)] {
-        var allData = [[Double]]()
+        var allDataPrice = [[Double]]()
+        var allDataOpenPrice = [[Double]]()
+        var allDataClosePrice = [[Double]]()
         var portfolioRS = [Double](repeating: 0, count: tickers.count)
         for i in data {
-            var dataForQuote = [Double]()
+            var dataPriceForQuote = [Double]()
+            var dataOpenPriceForQuote = [Double]()
+            var dataClosePriceForQuote = [Double]()
             if let quoteCharts = i {
                 for point in quoteCharts.points {
-                    dataForQuote.append(Double(point.1.description)!)
+                    dataPriceForQuote.append(Double(point.1.description)!)
+                    dataOpenPriceForQuote.append(Double(point.2.description)!)
+                    dataClosePriceForQuote.append(Double(point.3.description)!)
                 }
             }
-            allData.append(dataForQuote)
+            allDataPrice.append(dataPriceForQuote)
+            allDataOpenPrice.append(dataOpenPriceForQuote)
+            allDataClosePrice.append(dataClosePriceForQuote)
         }
-        let returns = allData
+
         for i in 0 ..< tickers.count {
-            portfolioRS[i] = -getRSVolatility(dataOpen: returns[i], dataClose: returns[i], dataHigh: returns[i], dataLow: returns[i])
+            portfolioRS[i] = -getRSVolatility(dataOpen: allDataOpenPrice[i], dataClose: allDataClosePrice[i], dataHigh: allDataPrice[i], dataLow: allDataPrice[i])
         }
         portfolioRS = getPortfolioRS(rsList: portfolioRS)
-        var result = Array(zip(quotes, portfolioRS))
-        result.sort { $0.1 > $1.1 }
-        var nilResult = result.map { $0.0.openPrice == nil ? nil : $0 }
-        result = nilResult.compactMap { $0 }
-        return Array(result[0..<min(6, result.count)])
+        return convertResult(quotes: quotes, portfolio: portfolioRS)
     }
 
     func getRSVolatility(dataOpen: [Double], dataClose: [Double], dataHigh: [Double], dataLow: [Double]) -> Double {
-        let firstZip = zip(dataHigh, dataClose).map { $0.0 * 1.2 / $0.1 }
-        let secondZip = zip(dataHigh, dataOpen).map { $0.0 * 1.3 / $0.1 }
-        let thirdZip = zip(dataLow, dataClose).map { $0.0 * 1.4 / $0.1 }
-        let fourthZip = zip(dataLow, dataOpen).map { $0.0 * 1.5 / $0.1 }
+        let firstZip = zip(dataHigh, dataClose).map { $0.0 * 1.1 / $0.1 }
+        let secondZip = zip(dataHigh, dataOpen).map { $0.0 * 1.2 / $0.1 }
+        let thirdZip = zip(dataLow, dataClose).map { $0.0 * 1.3 / $0.1 }
+        let fourthZip = zip(dataLow, dataOpen).map { $0.0 * 1.4 / $0.1 }
         let intermediateArray = zip(zip(firstZip, secondZip), zip(thirdZip, fourthZip))
         let logData = intermediateArray.map { log($0.0.0) * log($0.0.1) * log($0.1.0) * log($0.1.1) }
         return sqrt(logData.reduce(0, +) / Double(dataOpen.count))
@@ -207,11 +224,7 @@ private extension StrategyCounter {
             portfolioYZ[i] = -getYZVolatility(dataOpen: returns[i], dataClose: returns[i], dataHigh: returns[i], dataLow: returns[i])
         }
         portfolioYZ = getPortfolioYZ(yzList: portfolioYZ)
-        var result = Array(zip(quotes, portfolioYZ))
-        result.sort { $0.1 > $1.1 }
-        var nilResult = result.map { $0.0.openPrice == nil ? nil : $0 }
-        result = nilResult.compactMap { $0 }
-        return Array(result[0..<min(6, result.count)])
+        return convertResult(quotes: quotes, portfolio: portfolioYZ)
 
     }
 

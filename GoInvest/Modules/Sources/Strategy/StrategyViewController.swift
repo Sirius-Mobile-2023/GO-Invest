@@ -41,12 +41,6 @@ public class StrategyViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        return scrollView
-    }()
-
     private lazy var strategyView: UIView = {
         title = "Strategy"
         let view = StrategyView()
@@ -62,29 +56,23 @@ public class StrategyViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        view.addSubview(scrollView)
-
-        scrollView.addSubview(strategyView)
+        view.addSubview(strategyView)
         setupLayout()
     }
 
     private func setupLayout() {
         NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            strategyView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            strategyView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            strategyView.trailingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.trailingAnchor),
-            strategyView.leadingAnchor.constraint(equalTo: scrollView.layoutMarginsGuide.leadingAnchor),
+            strategyView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            strategyView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            strategyView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            strategyView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
     }
+
 }
 
 extension StrategyViewController {
     func computeStrategy(amount: Double, risk: RiskLevel, strategy: Strategy) {
-        print("load started")
         viewState = .load
         switch modelQuoteList.state {
         case .success(let quotes):
