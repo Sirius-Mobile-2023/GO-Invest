@@ -128,7 +128,7 @@ class TabBarCoordinator {
         AppState.isAuth = false
         profileVC.refreshVC(with: "")
     }
-    
+
     func showStrategyResults(navigationController: UINavigationController, quote: Quote) {
         let strategyResults = StrategyResultsCoordinator(navigationController: navigationController, quote: quote)
         strategyResults.start()

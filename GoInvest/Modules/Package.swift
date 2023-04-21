@@ -45,7 +45,7 @@ let package = Package(
         ),
         .target(
             name: "QuoteDetail",
-            dependencies: ["Theme", "Profile", "AppState"]
+            dependencies: ["Theme", "Profile", "AppState", "Login"]
         ),
         .target(
             name: "Strategy",
