@@ -4,6 +4,7 @@ import UIKit
 
 public class RegistrationViewController: UIViewController {
     public var regButtonHandler: ((String, String) -> Void)?
+    var isKeyBoardUp = false
 
     let signUpLabel = {
         let label = UILabel()
@@ -64,12 +65,35 @@ public class RegistrationViewController: UIViewController {
     override public func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = Theme.Colors.yellow
+        let tapGesture = UITapGestureRecognizer(target: view, action: #selector(UIView.endEditing))
+        view.addGestureRecognizer(tapGesture)
+        loginTextField.delegate = self
+        passwordTextField.delegate = self
         setGlassViewSettings()
         setAnimateButtonSettings()
         setImageViewUser()
         setLoginTextField()
         setPasswordTextField()
         setSingUpLabel()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(sender:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard !isKeyBoardUp else {return}
+        if let keyboardFrame: NSValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as?
+            NSValue {
+            let keyboardHeight = keyboardFrame.cgRectValue.height
+            let bottomSpace = self.view.frame.height - (animateButton.frame.origin.y + animateButton.frame.height)
+            view.frame.origin.y -= keyboardHeight - bottomSpace + 10
+        }
+        isKeyBoardUp = true
+    }
+
+    @objc func keyboardWillHide(sender: NSNotification) {
+        self.view.frame.origin.y = 0 // Move view to original position
+        isKeyBoardUp = false
     }
 
     func setSingUpLabel() {
@@ -143,4 +167,12 @@ public class RegistrationViewController: UIViewController {
         glassView.widthAnchor.constraint(equalToConstant: 300).isActive = true
         glassView.heightAnchor.constraint(equalToConstant: 280).isActive = true
     }
+}
+
+extension RegistrationViewController: UITextFieldDelegate {
+    public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        isKeyBoardUp = false
+        return true
+    } // called when 'return' key pressed. return NO to ignore.
 }
