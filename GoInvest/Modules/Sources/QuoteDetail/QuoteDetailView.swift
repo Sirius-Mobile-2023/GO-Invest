@@ -41,7 +41,7 @@ class QuoteDetailView: UIView {
     private let openPriceStackView = UIStackView()
     private let closePriceStackView = UIStackView()
     private let averagePriceStackView = UIStackView()
-    public var timeIntervalSelectionHandler: ((QuoteDetailModel.Interval) -> Void)?
+    var timeIntervalSelectionHandler: ((QuoteDetailModel.Interval) -> Void)?
 
     private let addToFavsButton: UIButton = {
         var button = UIButton()

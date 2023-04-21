@@ -1,4 +1,5 @@
 import UIKit
+import AppState
 import DomainModels
 
 enum FavoritesViewState {
@@ -13,6 +14,7 @@ public class ProfileViewController: UIViewController {
     private lazy var tableView = UITableView()
     public var client: QuoteListProvider?
     public var toLogin: (() -> Void)?
+    public var toReg: (() -> Void)?
     private var welcomeView = WelcomeToLoginView()
 
     public init(client: QuoteListProvider) {
@@ -33,6 +35,7 @@ public class ProfileViewController: UIViewController {
         super.viewDidLoad()
 
         welcomeView.loginButtonHandler = toLogin
+        welcomeView.regButtonHandler = toReg
         Storage.fetchDataFromStorage()
         configureTitle()
         configureTableView()
@@ -104,11 +107,26 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
+
+    public func refreshVC(with email: String) {
+        Storage.currentUserEmail = email
+        Storage.getFavQuotesFromStorage()
+        Storage.fetchDataFromStorage()
+        fetchDataFromNetwork()
+        tableView.reloadData()
+        if AppState.isAuth {
+            welcomeView.isHidden = true
+        } else {
+            welcomeView.isHidden = false
+            Storage.freeIds()
+            tableView.reloadData()
+        }
+    }
 }
 
 private extension ProfileViewController {
     func fetchDataFromStorage() {
-        let favIds = Storage.getFavQuotesFromStorage()
+        let favIds = Storage.sharedQuotesIds
         quotesArrayToShow = allQuotesArray.filter({ quote in
             favIds.contains(quote.id)
         })
@@ -125,6 +143,7 @@ extension ProfileViewController {
             switch result {
             case let .success(array):
                 self?.allQuotesArray = array
+
             case .failure:
                 return
             }

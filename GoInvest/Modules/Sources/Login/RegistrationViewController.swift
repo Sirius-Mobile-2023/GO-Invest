@@ -2,14 +2,14 @@ import AudioToolbox
 import Theme
 import UIKit
 
-public class LoginViewController: UIViewController {
-    public var loginButtonHandler: ((String, String) -> Void)?
+public class RegistrationViewController: UIViewController {
+    public var regButtonHandler: ((String, String) -> Void)?
 
     let signUpLabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.textColor = .white
-        label.text = "Sign in"
+        label.text = "Sign up"
         label.font = UIFont(name: "HelveticaNeue-Bold", size: 100)
         return label
     }()
@@ -24,17 +24,17 @@ public class LoginViewController: UIViewController {
 
     let loginTextField = {
         let textField = UITextField()
-        textField.text = "Admin@yandex.ru"
-        textField.borderStyle = UITextField.BorderStyle.roundedRect
-        textField.attributedPlaceholder = NSAttributedString(string: "Login", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
-        textField.backgroundColor = .lightText
         textField.autocapitalizationType = .none
+        // textField.text = "Admin@yandex.ru"
+        textField.borderStyle = UITextField.BorderStyle.roundedRect
+        textField.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
+        textField.backgroundColor = .lightText
         return textField
     }()
 
     let passwordTextField = {
         let textField = UITextField()
-        textField.text = "123456"
+        // textField.text = "123456"
         textField.borderStyle = UITextField.BorderStyle.roundedRect
         textField.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.lightGray])
         textField.backgroundColor = .lightText
@@ -56,7 +56,7 @@ public class LoginViewController: UIViewController {
     let animateButton = {
         let button = UIButton()
         button.backgroundColor = .black
-        button.setTitle("Login", for: .normal)
+        button.setTitle("Register", for: .normal)
         button.layer.cornerRadius = 10
         return button
     }()
@@ -118,7 +118,7 @@ public class LoginViewController: UIViewController {
 
     @objc func action() {
         if let loginText = loginTextField.text, let passwordText = passwordTextField.text {
-            loginButtonHandler?(loginText, passwordText)
+            regButtonHandler?(loginText, passwordText)
         }
     }
 
@@ -134,7 +134,6 @@ public class LoginViewController: UIViewController {
 
     func setGlassViewSettings() {
         glassView.applyBlurEffect()
-       // imageView.addSubview(glassView)
         view.addSubview(glassView)
         glassView.clipsToBounds = true
 
@@ -143,24 +142,5 @@ public class LoginViewController: UIViewController {
         glassView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50).isActive = true
         glassView.widthAnchor.constraint(equalToConstant: 300).isActive = true
         glassView.heightAnchor.constraint(equalToConstant: 280).isActive = true
-    }
-}
-
-extension UIView {
-    func applyBlurEffect() {
-        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterialLight)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-
-        blurEffectView.frame = bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        addSubview(blurEffectView)
-        blurEffectView.clipsToBounds = true
-    }
-
-    func setShadow() {
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOpacity = 10
-        layer.shadowOffset = .zero
-        layer.shadowRadius = 100
     }
 }
