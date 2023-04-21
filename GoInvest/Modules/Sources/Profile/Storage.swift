@@ -8,7 +8,7 @@ public class Storage {
     private static let dbName = "quotes"
     private static let targetField = "id"
     private static let emailField = "owner"
-    public static var currentUserEmail: String = "c@b.com"
+    public static var currentUserEmail: String = ""
 
     public static func fetchDataFromStorage() {
         database.collection(dbName).addSnapshotListener { querySnapshot, error in
@@ -37,6 +37,10 @@ public class Storage {
                 emailField: currentUserEmail
             ])
         }
+    }
+
+    public static func freeIds() {
+        Storage.sharedQuotesIds = []
     }
 
     public static func getFavQuotesFromStorage() -> [String] {

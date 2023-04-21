@@ -1,4 +1,5 @@
 import UIKit
+import AppState
 import DomainModels
 import Theme
 
@@ -17,6 +18,9 @@ public class ProfileViewController: UIViewController {
     private lazy var blurEffect = Theme.StyleElements.blurEffect
     private lazy var blurEffectView = UIVisualEffectView(effect: blurEffect)
     public var client: QuoteListProvider?
+    public var toLogin: (() -> Void)?
+    public var toReg: (() -> Void)?
+    private var welcomeView = WelcomeToLoginView()
 
     private var viewState: FavoritesViewState? {
         didSet {
@@ -35,6 +39,7 @@ public class ProfileViewController: UIViewController {
 
     public init(client: QuoteListProvider) {
         self.client = client
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -48,9 +53,13 @@ public class ProfileViewController: UIViewController {
 
     override public func viewDidLoad() {
         super.viewDidLoad()
+
+        welcomeView.loginButtonHandler = toLogin
+        welcomeView.regButtonHandler = toReg
         Storage.fetchDataFromStorage()
         configureTitle()
         configureTableView()
+        configureWelcomeView()
     }
 
     override public func viewWillAppear(_ animated: Bool) {
@@ -67,6 +76,11 @@ public class ProfileViewController: UIViewController {
 
     private func configureTitle() {
         title = "Favorites"
+    }
+
+    private func configureWelcomeView() {
+        view.addSubview(welcomeView)
+        welcomeView.layoutWelcomView(superView: view)
     }
 
     private func configureTableView() {
@@ -118,11 +132,26 @@ extension ProfileViewController: UITableViewDataSource, UITableViewDelegate {
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
+
+    public func refreshVC(with email: String) {
+        Storage.currentUserEmail = email
+        Storage.getFavQuotesFromStorage()
+        Storage.fetchDataFromStorage()
+        fetchDataFromNetwork()
+        tableView.reloadData()
+        if AppState.isAuth {
+            welcomeView.isHidden = true
+        } else {
+            welcomeView.isHidden = false
+            Storage.freeIds()
+            tableView.reloadData()
+        }
+    }
 }
 
 private extension ProfileViewController {
     func fetchDataFromStorage() {
-        let favIds = Storage.getFavQuotesFromStorage()
+        let favIds = Storage.sharedQuotesIds
         quotesArrayToShow = allQuotesArray.filter({ quote in
             favIds.contains(quote.id)
         })
@@ -141,6 +170,7 @@ extension ProfileViewController {
             case let .success(array):
                 self?.viewState = .success
                 self?.allQuotesArray = array
+
             case .failure:
                 return
             }

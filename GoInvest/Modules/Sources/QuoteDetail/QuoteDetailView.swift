@@ -3,6 +3,8 @@ import SwiftUI
 import Theme
 import SkeletonView
 import DomainModels
+import AppState
+import Login
 
 class QuoteDetailView: UIView {
 
@@ -39,10 +41,12 @@ class QuoteDetailView: UIView {
     private let openPriceStackView = UIStackView()
     private let closePriceStackView = UIStackView()
     private let averagePriceStackView = UIStackView()
-    public var timeIntervalSelectionHandler: ((QuoteDetailModel.Interval) -> Void)?
+    var timeIntervalSelectionHandler: ((QuoteDetailModel.Interval) -> Void)?
 
     private let addToFavsButton: UIButton = {
         var button = UIButton()
+        button.isEnabled = AppState.isAuth
+        button.layer.opacity = AppState.isAuth ? 1 : 0.5
         button.backgroundColor = Theme.Colors.button
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = Theme.StyleElements.buttonCornerRadius
@@ -229,6 +233,8 @@ extension QuoteDetailView {
 
 extension QuoteDetailView {
     @objc private func addToFavoritesTapped(_ sender: UIButton) {
+        guard AppState.isAuth else { return }
+        // addToFavsButton.layer.opacity = 1
         addToFavsHandler?()
         disableButton()
     }
