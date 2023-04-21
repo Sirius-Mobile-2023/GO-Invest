@@ -21,6 +21,8 @@ public enum Theme {
         public static let labelText = UIColor(named: "WhiteColor")!
         public static let subLabelText = UIColor.gray
         public static let borderColor = UIColor.lightGray
+        public static let blackColor = UIColor.black
+        public static let tabBarItemColor = UIColor(named: "TabBarItemColor")!
     }
 
     public enum Images {
